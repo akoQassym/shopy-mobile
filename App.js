@@ -18,7 +18,7 @@ import BottomTabsNavigation from './navigation/BottomTabsNavigation';
 
 const Navigation = () => {
   const authCtx = useContext(AuthContext);
-  console.log(authCtx.isAuthenticated);
+  console.log('--> Authenticated:', authCtx.isAuthenticated);
 
   return (
     <NavigationContainer>
