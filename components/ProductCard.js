@@ -70,17 +70,17 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 17,
     color: GlobalStyles.colors.black,
-    lineHeight: '23',
+    lineHeight: 23,
   },
   categoryTag: {
     fontSize: 12,
     color: GlobalStyles.colors.gray300,
-    lineHeight: '16',
+    lineHeight: 16,
   },
   price: {
     fontSize: 17,
     color: GlobalStyles.colors.black,
-    lineHeight: '27',
+    lineHeight: 27,
     fontFamily: 'Roboto-medium',
   },
   badgesContainer: {

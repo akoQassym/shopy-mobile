@@ -50,6 +50,7 @@ const CatalogScreen = ({ navigation }) => {
   };
 
   const onAddButtonPress = () => {
+    console.log('hello2');
     navigation.navigate('AddProductScreen');
   };
 

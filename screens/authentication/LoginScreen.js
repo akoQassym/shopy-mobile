@@ -13,9 +13,9 @@ const LoginScreen = () => {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   const [enteredPhone, setEnteredPhone] = useState('');
+  const [enteredPassword, setEnteredPassword] = useState('');
   const [code, setCode] = useState('');
   const [verificationId, setVerificationId] = useState('');
-  const recaptchaVerifier = useRef(null);
 
   const updateInputValueHandler = (inputType, enteredValue) => {
     switch (inputType) {

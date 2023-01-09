@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'hidden',
     backgroundColor: GlobalStyles.colors.error250,
-    borderRadius: '50%',
+    borderRadius: 50,
   },
   icon: {},
 });

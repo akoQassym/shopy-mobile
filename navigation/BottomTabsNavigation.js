@@ -6,6 +6,7 @@ import { GlobalStyles } from '../constants/styles';
 import CatalogStack from './CatalogStack';
 import OrderStack from './OrderStack';
 import MyBusinessStack from './MyBusinessStack';
+import { Platform } from 'react-native';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -22,8 +23,9 @@ const BottomTabsNavigation = () => {
         },
         tabBarStyle: {
           backgroundColor: 'white',
-          height: 65,
+          height: Platform.OS === 'android' ? 70 : 65,
           paddingTop: 10,
+          paddingBottom: Platform.OS === 'android' ? 10 : 0,
         },
         tabBarActiveTintColor: GlobalStyles.colors.primary500,
         tabBarLabelStyle: {

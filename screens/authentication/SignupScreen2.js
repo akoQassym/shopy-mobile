@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { View, StyleSheet, Text, Dimensions } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 
@@ -6,22 +7,26 @@ import Link from '../../components/ui/Link';
 import TextField from '../../components/form/TextField';
 
 import { GlobalStyles } from '../../constants/styles';
+import { AuthContext } from '../../store/authContext';
 
 const windowWidth = Dimensions.get('window').width;
 const loaderWidth = windowWidth * 0.8;
 
 const SignupScreen1 = ({ navigation }) => {
+  const authCtx = useContext(AuthContext);
+
   const onSubmit = () => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [
-          {
-            name: 'BottomTabs',
-          },
-        ],
-      }),
-    );
+    authCtx.authenticate('HelloWorldToken');
+    // navigation.dispatch(
+    //   CommonActions.reset({
+    //     index: 0,
+    //     routes: [
+    //       {
+    //         name: 'BottomTabs',
+    //       },
+    //     ],
+    //   }),
+    // );
   };
 
   return (
