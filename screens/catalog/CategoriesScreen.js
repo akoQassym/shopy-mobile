@@ -33,12 +33,12 @@ const DUMMY_DATA = [
 ];
 
 const CategoriesScreen = ({ navigation }) => {
-  const onAddCategory = () => {
+  const addCategory = () => {
     navigation.navigate('AddCategoryScreen');
   };
 
   const RenderCategoryItem = ({ item }) => {
-    const onCategoryPress = () => {
+    const openCategoryPage = () => {
       navigation.navigate('CategoryInfoScreen', {
         id: item.id,
       });
@@ -48,7 +48,7 @@ const CategoriesScreen = ({ navigation }) => {
       item.active && (
         <CategoryCard
           title={item.title}
-          onPress={onCategoryPress}
+          onPress={openCategoryPage}
           productAmount={item.amount}
         />
       )
@@ -62,7 +62,7 @@ const CategoriesScreen = ({ navigation }) => {
           style={styles.addButton}
           textStyle={styles.addButtonText}
           icon={<Ionicons name="md-add" size={25} style={styles.buttonIcon} />}
-          onPress={onAddCategory}
+          onPress={addCategory}
         >
           Создать категорию
         </PrimaryButton>

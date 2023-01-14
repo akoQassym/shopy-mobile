@@ -21,25 +21,25 @@ const ColorSelect = ({ currentColor, colorList, label, bottomText }) => {
   const [customColor, setCustomColor] = useState();
   const [selectedTextColor, setSelectedTextColor] = useState('#202020');
 
-  const onPressCustomColorBtn = () => {
+  const pressCustomColorBtn = () => {
     navigation.navigate('EditColorScreen', {
       selectedColor: selectedColor,
     });
   };
 
-  const onChangeSelectedColor = (newColor) => {
+  const changeSelectedColor = (newColor) => {
     if (selectedColor !== newColor) setSelectedColor(newColor);
   };
 
-  const onSetCustomColor = (newColor) => {
+  const chooseCustomColor = (newColor) => {
     if (customColor !== newColor) setCustomColor(newColor);
     if (selectedColor !== newColor) setSelectedColor(newColor);
   };
 
   useEffect(() => {
-    DeviceEventEmitter.addListener('onSetCustomColor', onSetCustomColor);
+    DeviceEventEmitter.addListener('chooseCustomColor', chooseCustomColor);
     return () => {
-      DeviceEventEmitter.removeAllListeners('onSetCustomColor');
+      DeviceEventEmitter.removeAllListeners('chooseCustomColor');
     };
   }, []);
 
@@ -52,7 +52,7 @@ const ColorSelect = ({ currentColor, colorList, label, bottomText }) => {
     return (
       <PressableContainer
         {...props}
-        onPress={onChangeSelectedColor.bind(this, color)}
+        onPress={changeSelectedColor.bind(this, color)}
       >
         <View
           style={[
@@ -109,7 +109,7 @@ const ColorSelect = ({ currentColor, colorList, label, bottomText }) => {
         {colorList.map((color, key) => (
           <ColorElement color={color} key={key} />
         ))}
-        <CustomColorButton onPress={onPressCustomColorBtn} />
+        <CustomColorButton onPress={pressCustomColorBtn} />
       </ScrollView>
       {selectedColor && (
         <ColorLabelBadge

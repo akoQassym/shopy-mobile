@@ -25,7 +25,7 @@ const CatalogScreen = ({ navigation }) => {
   // const [filter, setFilter] = useState();
 
   const RenderCatalogItem = ({ item }) => {
-    const onCardPress = () => {
+    const openProductPage = () => {
       navigation.navigate('ProductInfoScreen', {
         productId: item.id,
         productName: item.title,
@@ -44,12 +44,12 @@ const CatalogScreen = ({ navigation }) => {
         price={item.price}
         options={item.options}
         isActive={item.activeId === filterOptions[0].id}
-        onPress={onCardPress}
+        onPress={openProductPage}
       />
     );
   };
 
-  const onAddButtonPress = () => {
+  const addProductToCatalog = () => {
     console.log('hello2');
     navigation.navigate('AddProductScreen');
   };
@@ -81,7 +81,7 @@ const CatalogScreen = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
       />
-      <AddButton style={styles.addButton} onPress={onAddButtonPress} />
+      <AddButton style={styles.addButton} onPress={addProductToCatalog} />
     </View>
   );
 };

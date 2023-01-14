@@ -37,7 +37,7 @@ const ImagePicker = ({ label }) => {
     return true;
   };
 
-  const takeImageHandler = async () => {
+  const takeImage = async () => {
     const hasPermission = await verifyCameraPermissions();
     if (!hasPermission) return;
 
@@ -75,7 +75,7 @@ const ImagePicker = ({ label }) => {
     return true;
   };
 
-  const pickImageHandler = async () => {
+  const pickImageFromMedia = async () => {
     const hasPermission = await verifyMediaPermissions();
     if (!hasPermission) return;
     let image = await launchImageLibraryAsync({
@@ -97,7 +97,7 @@ const ImagePicker = ({ label }) => {
     }
   };
 
-  const deleteImageHandler = (key) => {
+  const deleteImage = (key) => {
     setImages([...images.slice(0, key), ...images.slice(key + 1)]);
   };
 
@@ -115,7 +115,7 @@ const ImagePicker = ({ label }) => {
             <View key={key} style={styles.imageContainer}>
               <CloseButton
                 style={styles.closeButton}
-                onPress={deleteImageHandler.bind(this, key)}
+                onPress={deleteImage.bind(this, key)}
               />
               <View>
                 <Image
@@ -135,7 +135,7 @@ const ImagePicker = ({ label }) => {
               />
             }
             form="rectangle"
-            onPress={takeImageHandler}
+            onPress={takeImage}
           >
             Сделать фотографию
           </SecondaryButton>
@@ -148,7 +148,7 @@ const ImagePicker = ({ label }) => {
               />
             }
             form="rectangle"
-            onPress={pickImageHandler}
+            onPress={pickImageFromMedia}
             style={{ marginTop: 5 }}
           >
             Выбрать фотографию

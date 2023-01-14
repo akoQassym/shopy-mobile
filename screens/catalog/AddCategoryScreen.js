@@ -5,7 +5,7 @@ import TextField from '../../components/form/TextField';
 import PrimaryButton from '../../components/ui/buttons/PrimaryButton';
 
 const AddCategoryScreen = () => {
-  const onAddProduct = () => {};
+  const addProduct = () => {};
 
   return (
     <ScrollView style={styles.root}>
@@ -23,7 +23,7 @@ const AddCategoryScreen = () => {
             icon={
               <Ionicons name="md-add" size={25} style={styles.buttonIcon} />
             }
-            onPress={onAddProduct}
+            onPress={addProduct}
           >
             Добавить товары
           </PrimaryButton>

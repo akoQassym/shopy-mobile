@@ -10,11 +10,11 @@ const ColorSelectWheel = ({ currentColor }) => {
   const [selectedColor, setSelectedColor] = useState(currentColor ?? '#000000');
   const [textColor, setTextColor] = useState('#202020');
 
-  const onColorChange = (newColor) => {
+  const changeColor = (newColor) => {
     setSelectedColor(newColor);
   };
 
-  const onSubmitColor = () => {
+  const submitColor = () => {
     DeviceEventEmitter.emit('onSetCustomColor', selectedColor);
     navigation.goBack();
   };
@@ -43,7 +43,7 @@ const ColorSelectWheel = ({ currentColor }) => {
       <ColorPicker
         color={selectedColor}
         swatchesOnly={false}
-        onColorChange={onColorChange}
+        changeColor={changeColor}
         thumbSize={40}
         sliderSize={40}
         noSnap={false}
@@ -52,7 +52,7 @@ const ColorSelectWheel = ({ currentColor }) => {
         autoResetSlider
       />
       <View style={styles.buttonContainer}>
-        <PrimaryButton onPress={onSubmitColor}>Выбрать</PrimaryButton>
+        <PrimaryButton onPress={submitColor}>Выбрать</PrimaryButton>
       </View>
     </View>
   );

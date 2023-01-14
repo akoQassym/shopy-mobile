@@ -4,7 +4,7 @@ import PrimaryButton from '../../components/ui/buttons/PrimaryButton';
 import { GlobalStyles } from '../../constants/styles';
 
 const WelcomeScreen = ({ navigation }) => {
-  const onButtonClick = () => {
+  const proceedToNextPage = () => {
     navigation.navigate('Signup1');
   };
 
@@ -31,7 +31,9 @@ const WelcomeScreen = ({ navigation }) => {
             </Text>
             <Link to={{ screen: 'Login' }}>Логин</Link>
           </View>
-          <PrimaryButton onPress={onButtonClick}>Создать аккаунт</PrimaryButton>
+          <PrimaryButton onPress={proceedToNextPage}>
+            Создать аккаунт
+          </PrimaryButton>
         </View>
       </View>
     </View>

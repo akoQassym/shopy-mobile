@@ -19,11 +19,11 @@ const MyBusinessScreen = ({ navigation }) => {
       );
   };
 
-  const onOpenEditBusinessInfo = () => {
+  const openEditBusinessInfo = () => {
     navigation.navigate('EditBusinessInfoScreen');
   };
 
-  const onOpenEditDesign = () => {
+  const openEditDesign = () => {
     navigation.navigate('EditDesignScreen');
   };
 
@@ -64,7 +64,7 @@ const MyBusinessScreen = ({ navigation }) => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Информация о магазине</Text>
-            <PressableContainer onPress={onOpenEditBusinessInfo}>
+            <PressableContainer onPress={openEditBusinessInfo}>
               <Ionicons
                 name="arrow-forward-circle-sharp"
                 size={30}
@@ -102,7 +102,7 @@ const MyBusinessScreen = ({ navigation }) => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Дизайн сайта</Text>
-            <PressableContainer onPress={onOpenEditDesign}>
+            <PressableContainer onPress={openEditDesign}>
               <Ionicons
                 name="arrow-forward-circle-sharp"
                 size={30}
