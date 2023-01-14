@@ -1,9 +1,16 @@
 import { StyleSheet, View, Text, Pressable } from 'react-native';
 import { GlobalStyles } from '../../../constants/styles';
 
-const PrimaryButton = ({ children, onPress, style, textStyle, icon }) => {
+const PrimaryButton = ({
+  children,
+  onPress,
+  style,
+  textStyle,
+  icon,
+  disabled,
+}) => {
   return (
-    <View style={styles.buttonOuterContainer}>
+    <View style={[styles.buttonOuterContainer, disabled && styles.disabled]}>
       <Pressable
         onPress={onPress}
         android_ripple={{ color: GlobalStyles.colors.primary200 }}
@@ -12,6 +19,7 @@ const PrimaryButton = ({ children, onPress, style, textStyle, icon }) => {
             ? [styles.buttonInnerContainer, style, styles.pressed]
             : [styles.buttonInnerContainer, style]
         }
+        disabled={disabled}
       >
         {icon && icon}
         <Text style={[styles.buttonText, textStyle && textStyle]}>
@@ -47,5 +55,8 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.75,
+  },
+  disabled: {
+    opacity: 0.3,
   },
 });
