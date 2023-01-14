@@ -14,7 +14,7 @@ const EditBusinessInfoScreen = () => {
           <TextField label={'Описание'} type={'multiline'} />
           <TextField
             label={'Домен сайта'}
-            bottomText={
+            helperText={
               'Ссылка на ваш сайт будет выглядеть вот так:\nhttps://iris.shopy.ws/'
             }
           />
