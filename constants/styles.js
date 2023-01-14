@@ -8,8 +8,8 @@ export const GlobalStyles = {
     primary700: '#1d1d76',
     primary800: '#0d0d32',
     accent500: '#f7bc0c',
-    error50: '#fcc4e4',
-    error250: '#F24333',
+    error50: '#f0a8a9',
+    error250: '#e05859',
     error500: '#ba1b1d',
     // '#9b095c',
     green300: '#6be37d',
@@ -21,5 +21,6 @@ export const GlobalStyles = {
     black: '#202020',
     deepBlack: '#000000',
     white: '#ffffff',
+    pink: '#fcc4e4',
   },
 };
