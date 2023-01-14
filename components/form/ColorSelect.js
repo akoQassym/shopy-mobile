@@ -15,7 +15,7 @@ import getDynamicTextColor from '../../utils/getDynamicTextColor';
 import PressableContainer from '../ui/PressableContainer';
 import ColorLabelBadge from '../ui/ColorLabelBadge';
 
-const ColorSelect = ({ currentColor, colorList, label, bottomText }) => {
+const ColorSelect = ({ currentColor, colorList, label, helperText }) => {
   const navigation = useNavigation();
   const [selectedColor, setSelectedColor] = useState(currentColor ?? '#202020');
   const [customColor, setCustomColor] = useState();
@@ -118,7 +118,7 @@ const ColorSelect = ({ currentColor, colorList, label, bottomText }) => {
           textColor={selectedTextColor}
         />
       )}
-      {bottomText && <Text style={styles.bottomText}>{bottomText}</Text>}
+      {helperText && <Text style={styles.helperText}>{helperText}</Text>}
     </View>
   );
 };
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-regular',
     marginBottom: 8,
   },
-  bottomText: {
+  helperText: {
     marginTop: 8,
     fontSize: 14,
     textAlign: 'left',
