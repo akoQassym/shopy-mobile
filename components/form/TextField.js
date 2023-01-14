@@ -34,6 +34,13 @@ const RenderIcon = ({ iconType }) => {
       color={GlobalStyles.colors.gray300}
       style={[styles.icon]}
     />
+  ) : iconType === 'email' ? (
+    <Feather
+      name="mail"
+      size={16}
+      color={GlobalStyles.colors.gray300}
+      style={[styles.icon]}
+    />
   ) : iconType === 'shop' ? (
     <Entypo
       name="shop"
@@ -52,7 +59,7 @@ const TextField = ({
   style,
   error,
   label,
-  bottomText,
+  helperText,
   iconType,
   customIcon,
   required,
@@ -93,7 +100,7 @@ const TextField = ({
           {...props}
         />
       </View>
-      {bottomText && <Text style={styles.bottomText}>{bottomText}</Text>}
+      {helperText && <Text style={styles.helperText}>{helperText}</Text>}
     </View>
   );
 };
@@ -137,7 +144,7 @@ const styles = StyleSheet.create({
   multiline: {
     minHeight: 100,
   },
-  bottomText: {
+  helperText: {
     marginTop: 8,
     fontSize: 14,
     textAlign: 'left',
