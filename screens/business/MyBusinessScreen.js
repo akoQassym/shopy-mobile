@@ -1,12 +1,16 @@
-import { useState } from 'react';
-import { View, StyleSheet, Text, ScrollView, Image } from 'react-native';
+import { useContext, useState } from 'react';
+import { View, StyleSheet, Text, ScrollView, Image, Alert } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import * as Clipboard from 'expo-clipboard';
+import auth from '@react-native-firebase/auth';
+
 import PressableContainer from '../../components/ui/PressableContainer';
 import PrimaryButton from '../../components/ui/buttons/PrimaryButton';
 import { GlobalStyles } from '../../constants/styles';
+import { AuthContext } from '../../store/authContext';
 
 const MyBusinessScreen = ({ navigation }) => {
+  const authCtx = useContext(AuthContext);
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
 
   const copyToClipboard = async () => {
@@ -25,6 +29,19 @@ const MyBusinessScreen = ({ navigation }) => {
 
   const openEditDesign = () => {
     navigation.navigate('EditDesignScreen');
+  };
+
+  const logout = () => {
+    Alert.alert('Вы хотите выйти из системы?', undefined, [
+      {
+        text: 'Выйти',
+        onPress: () => {
+          auth().signOut();
+          authCtx.logout();
+        },
+      },
+      { text: 'Отмена', onPress: () => {} },
+    ]);
   };
 
   return (
@@ -170,6 +187,7 @@ const MyBusinessScreen = ({ navigation }) => {
           <PrimaryButton
             style={styles.logoutButton}
             textStyle={styles.logoutButtonText}
+            onPress={logout}
           >
             Выйти
           </PrimaryButton>
