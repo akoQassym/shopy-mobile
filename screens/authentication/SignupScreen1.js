@@ -1,4 +1,12 @@
-import { View, StyleSheet, Text, Dimensions } from 'react-native';
+import { useState } from 'react';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Dimensions,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import TextField from '../../components/form/TextField';
 import PrimaryButton from '../../components/ui/buttons/PrimaryButton';
 import Link from '../../components/ui/Link';
@@ -8,31 +16,48 @@ const windowWidth = Dimensions.get('window').width;
 const loaderWidth = windowWidth * 0.4;
 
 const SignupScreen1 = ({ navigation }) => {
-  const onSubmit = () => {
-    navigation.navigate('Signup2');
+  const [shopName, setShopName] = useState(null);
+
+  const changeShopName = (value) => {
+    setShopName(value);
+  };
+
+  const submit = () => {
+    navigation.navigate('Signup2', {
+      enteredShopName: shopName,
+    });
   };
 
   return (
-    <View style={styles.root}>
-      <View style={styles.content}>
-        <View style={styles.loadingSlider} />
-        <View>
-          <Text style={styles.title}>Как называется ваш магазин?</Text>
-          <TextField placeholder="Название" iconType="shop" />
-        </View>
-        <View style={styles.buttonContainer}>
-          <View style={styles.supplementaryTextContainer}>
-            <Text style={styles.supplementaryText}>
-              У вас уже есть аккаунт?{' '}
-            </Text>
-            <Link to={{ screen: 'Login' }} replace>
-              Войти
-            </Link>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.root}>
+        <View style={styles.content}>
+          <View style={styles.loadingSlider} />
+          <View>
+            <Text style={styles.title}>Как называется ваш магазин?</Text>
+            <TextField
+              placeholder="Название"
+              iconType="shop"
+              value={shopName}
+              onUpdateValue={changeShopName}
+            />
           </View>
-          <PrimaryButton onPress={onSubmit}>Далее</PrimaryButton>
+          <View style={styles.buttonContainer}>
+            <View style={styles.supplementaryTextContainer}>
+              <Text style={styles.supplementaryText}>
+                У вас уже есть аккаунт?{' '}
+              </Text>
+              <Link to={{ screen: 'Login' }} replace>
+                Войти
+              </Link>
+            </View>
+            <PrimaryButton onPress={submit} disabled={shopName === null}>
+              Далее
+            </PrimaryButton>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
