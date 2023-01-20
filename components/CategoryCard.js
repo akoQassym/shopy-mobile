@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { GlobalStyles } from '../constants/styles';
 import { MaterialIcons } from '@expo/vector-icons';
+import Text from './ui/Text';
 import PressableContainer from './ui/PressableContainer';
 
 const CategoryCard = ({ title, productAmount, onPress }) => {

@@ -1,4 +1,5 @@
-import { StyleSheet, View, Text, Pressable } from 'react-native';
+import { StyleSheet, View, Pressable } from 'react-native';
+import Text from '../Text';
 import { GlobalStyles } from '../../../constants/styles';
 
 const PrimaryButton = ({

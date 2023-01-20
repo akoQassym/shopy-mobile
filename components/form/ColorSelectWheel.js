@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, DeviceEventEmitter } from 'react-native';
+import { View, StyleSheet, DeviceEventEmitter } from 'react-native';
+import Text from '../ui/Text';
 import ColorPicker from 'react-native-wheel-color-picker';
 import getDynamicTextColor from '../../utils/getDynamicTextColor';
 import PrimaryButton from '../ui/buttons/PrimaryButton';

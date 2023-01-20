@@ -1,4 +1,5 @@
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
+import Text from '../../components/ui/Text';
 import Link from '../../components/ui/Link';
 import PrimaryButton from '../../components/ui/buttons/PrimaryButton';
 import { GlobalStyles } from '../../constants/styles';

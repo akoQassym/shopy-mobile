@@ -1,9 +1,11 @@
-import { TextInput, Text, View, StyleSheet } from 'react-native';
+import { TextInput, View, StyleSheet } from 'react-native';
+import Text from '../ui/Text';
 import { GlobalStyles } from '../../constants/styles';
 
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { useState } from 'react';
 
 const RenderIcon = ({ iconType }) => {
   return iconType === 'tenge' ? (
@@ -69,6 +71,11 @@ const TextField = ({
   value,
   props,
 }) => {
+  const [isSecure, setIsSecure] = useState(type === 'password' || secure);
+  const invertIsSecure = () => {
+    setIsSecure((prev) => !prev);
+  };
+
   return (
     <View style={styles.container}>
       {label && (
@@ -84,7 +91,7 @@ const TextField = ({
           customIcon && customIcon
         )}
         <TextInput
-          secureTextEntry={type === 'password' || secure}
+          secureTextEntry={isSecure}
           multiline={type === 'multiline' ? true : false}
           placeholder={placeholder}
           keyboardType={keyboardType}
@@ -99,6 +106,15 @@ const TextField = ({
           ]}
           {...props}
         />
+        {type === 'password' && (
+          <Feather
+            name={isSecure ? 'eye-off' : 'eye'}
+            size={16}
+            color={GlobalStyles.colors.gray300}
+            style={[styles.rightEndIcon]}
+            onPress={invertIsSecure}
+          />
+        )}
       </View>
       {helperText && <Text style={styles.helperText}>{helperText}</Text>}
     </View>
@@ -120,6 +136,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginLeft: 15,
+  },
+  rightEndIcon: {
+    marginRight: 15,
   },
   textInput: {
     flex: 1,

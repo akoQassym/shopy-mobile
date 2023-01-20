@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import Text from '../ui/Text';
 import { GlobalStyles } from '../../constants/styles';
 
 const InformBadge = ({ type, errorHighlightedText, customMessage }) => {

@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  ScrollView,
-  DeviceEventEmitter,
-} from 'react-native';
+import { View, StyleSheet, ScrollView, DeviceEventEmitter } from 'react-native';
+import Text from '../ui/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalStyles } from '../../constants/styles';

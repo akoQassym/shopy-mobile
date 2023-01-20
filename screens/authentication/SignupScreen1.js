@@ -2,11 +2,11 @@ import { useState } from 'react';
 import {
   View,
   StyleSheet,
-  Text,
   Dimensions,
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
+import Text from '../../components/ui/Text';
 import TextField from '../../components/form/TextField';
 import PrimaryButton from '../../components/ui/buttons/PrimaryButton';
 import Link from '../../components/ui/Link';
@@ -51,7 +51,7 @@ const SignupScreen1 = ({ navigation }) => {
                 Войти
               </Link>
             </View>
-            <PrimaryButton onPress={submit} disabled={shopName === null}>
+            <PrimaryButton onPress={submit} disabled={!shopName}>
               Далее
             </PrimaryButton>
           </View>

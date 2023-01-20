@@ -1,6 +1,6 @@
 import { View, StyleSheet } from 'react-native';
-import PressableContainer from './ui/PressableContainer';
 import Text from './ui/Text';
+import PressableContainer from './ui/PressableContainer';
 
 const FilterBadge = ({ id, title, onPress, backgroundColor, active }) => {
   return (
