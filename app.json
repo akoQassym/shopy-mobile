@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "ShopyMobile",
+    "name": "Shopy",
     "slug": "ShopyMobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -18,18 +18,27 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.shopyws.app",
+      "googleServicesFile": "./assets/GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.shopyws.app",
+      "googleServicesFile": "./assets/google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
+      "@react-native-firebase/app", 
+      "@react-native-firebase/auth",
       [
         "expo-image-picker",
         {
@@ -45,6 +54,11 @@
           }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "2c320bc5-6254-4898-940d-92e3a368c577"
+      }
+    }
   }
 }

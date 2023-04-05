@@ -1,64 +1,64 @@
 import { useEffect, useState } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  ScrollView,
-  DeviceEventEmitter,
-} from 'react-native';
+import { View, StyleSheet, ScrollView, DeviceEventEmitter } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import Text from '../../ui/Text';
+import PressableContainer from '../../ui/PressableContainer';
+import ColorLabelBadge from '../../ui/ColorLabelBadge';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { GlobalStyles } from '../../constants/styles';
-import { useNavigation } from '@react-navigation/native';
-import getDynamicTextColor from '../../utils/getDynamicTextColor';
+import { GlobalStyles } from '../../../constants/styles';
+import getDynamicTextColor from '../../../utils/getDynamicTextColor';
 
-import PressableContainer from '../ui/PressableContainer';
-import ColorLabelBadge from '../ui/ColorLabelBadge';
-
-const ColorSelect = ({ currentColor, colorList, label, bottomText }) => {
+const ColorSelect = ({
+  colorList,
+  label,
+  helperText,
+  currentColor,
+  onSelect,
+  style,
+}) => {
   const navigation = useNavigation();
-  const [selectedColor, setSelectedColor] = useState(currentColor ?? '#202020');
   const [customColor, setCustomColor] = useState();
   const [selectedTextColor, setSelectedTextColor] = useState('#202020');
 
-  const onPressCustomColorBtn = () => {
+  const pressCustomColorBtn = () => {
     navigation.navigate('EditColorScreen', {
-      selectedColor: selectedColor,
+      selectedColor: currentColor,
     });
   };
 
-  const onChangeSelectedColor = (newColor) => {
-    if (selectedColor !== newColor) setSelectedColor(newColor);
+  const changeSelectedColor = (value) => {
+    if (currentColor !== value) onSelect(value);
   };
 
-  const onSetCustomColor = (newColor) => {
-    if (customColor !== newColor) setCustomColor(newColor);
-    if (selectedColor !== newColor) setSelectedColor(newColor);
+  const chooseCustomColor = (value) => {
+    if (customColor !== value) setCustomColor(value);
+    if (currentColor !== value) onSelect(value);
   };
 
   useEffect(() => {
-    DeviceEventEmitter.addListener('onSetCustomColor', onSetCustomColor);
+    DeviceEventEmitter.addListener('chooseCustomColor', chooseCustomColor);
     return () => {
-      DeviceEventEmitter.removeAllListeners('onSetCustomColor');
+      DeviceEventEmitter.removeAllListeners('chooseCustomColor');
     };
   }, []);
 
   useEffect(() => {
-    const dynamicTextColor = getDynamicTextColor(selectedColor);
+    const dynamicTextColor = getDynamicTextColor(currentColor);
     setSelectedTextColor(dynamicTextColor);
-  }, [selectedColor]);
+  }, [currentColor]);
 
   const ColorElement = ({ color, props }) => {
     return (
       <PressableContainer
         {...props}
-        onPress={onChangeSelectedColor.bind(this, color)}
+        onPress={changeSelectedColor.bind(this, color)}
       >
         <View
           style={[
             styles.colorElement,
             { backgroundColor: color },
-            selectedColor === color && styles.colorElementSelected,
+            currentColor === color && styles.colorElementSelected,
           ]}
         />
       </PressableContainer>
@@ -97,7 +97,7 @@ const ColorSelect = ({ currentColor, colorList, label, bottomText }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style && style]}>
       {label && <Text style={styles.label}>{label}</Text>}
       <ScrollView
         style={styles.colorSetContainer}
@@ -105,20 +105,19 @@ const ColorSelect = ({ currentColor, colorList, label, bottomText }) => {
         showsHorizontalScrollIndicator={false}
       >
         {customColor && <ColorElement color={customColor} />}
-        <ColorElement color={currentColor} />
         {colorList.map((color, key) => (
           <ColorElement color={color} key={key} />
         ))}
-        <CustomColorButton onPress={onPressCustomColorBtn} />
+        <CustomColorButton onPress={pressCustomColorBtn} />
       </ScrollView>
-      {selectedColor && (
+      {currentColor && (
         <ColorLabelBadge
           label={'Выбранный цвет:'}
-          color={selectedColor}
+          color={currentColor}
           textColor={selectedTextColor}
         />
       )}
-      {bottomText && <Text style={styles.bottomText}>{bottomText}</Text>}
+      {helperText && <Text style={styles.helperText}>{helperText}</Text>}
     </View>
   );
 };
@@ -126,15 +125,12 @@ const ColorSelect = ({ currentColor, colorList, label, bottomText }) => {
 export default ColorSelect;
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 10,
-    marginBottom: 10,
-  },
+  container: {},
   error: {
-    borderColor: GlobalStyles.colors.error250,
+    borderColor: GlobalStyles.colors.error,
   },
   textInputLabelStyle: {
-    borderColor: GlobalStyles.colors.gray200,
+    borderColor: GlobalStyles.colors.gray,
   },
   label: {
     fontSize: 16,
@@ -142,11 +138,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-regular',
     marginBottom: 8,
   },
-  bottomText: {
+  helperText: {
     marginTop: 8,
     fontSize: 14,
     textAlign: 'left',
-    color: GlobalStyles.colors.gray300,
+    color: GlobalStyles.colors.darkGray,
   },
   colorSetContainer: {
     display: 'flex',
@@ -159,7 +155,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginRight: 15,
     borderWidth: 1,
-    borderColor: GlobalStyles.colors.gray200,
+    borderColor: GlobalStyles.colors.gray,
   },
   customColorElement: {
     opacity: 0.3,
@@ -170,6 +166,6 @@ const styles = StyleSheet.create({
   },
   colorElementSelected: {
     borderWidth: 3,
-    borderColor: GlobalStyles.colors.primary500,
+    borderColor: GlobalStyles.colors.primary,
   },
 });

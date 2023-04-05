@@ -18,7 +18,7 @@ export default Link;
 
 const styles = StyleSheet.create({
   link: {
-    color: GlobalStyles.colors.primary400,
+    color: GlobalStyles.colors.primary,
     textDecorationLine: 'underline',
   },
 });

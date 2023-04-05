@@ -1,21 +1,22 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, DeviceEventEmitter } from 'react-native';
+import { View, StyleSheet, DeviceEventEmitter } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
-import getDynamicTextColor from '../../utils/getDynamicTextColor';
-import PrimaryButton from '../ui/buttons/PrimaryButton';
+import Text from '../../ui/Text';
+import PrimaryButton from '../../ui/buttons/PrimaryButton';
+import getDynamicTextColor from '../../../utils/getDynamicTextColor';
 
 const ColorSelectWheel = ({ currentColor }) => {
   const navigation = useNavigation();
   const [selectedColor, setSelectedColor] = useState(currentColor ?? '#000000');
   const [textColor, setTextColor] = useState('#202020');
 
-  const onColorChange = (newColor) => {
-    setSelectedColor(newColor);
+  const changeColor = (value) => {
+    setSelectedColor(value);
   };
 
-  const onSubmitColor = () => {
-    DeviceEventEmitter.emit('onSetCustomColor', selectedColor);
+  const submitColor = () => {
+    DeviceEventEmitter.emit('chooseCustomColor', selectedColor);
     navigation.goBack();
   };
 
@@ -43,16 +44,16 @@ const ColorSelectWheel = ({ currentColor }) => {
       <ColorPicker
         color={selectedColor}
         swatchesOnly={false}
-        onColorChange={onColorChange}
-        thumbSize={40}
-        sliderSize={40}
+        onColorChange={changeColor}
+        thumbSize={20}
+        sliderSize={30}
         noSnap={false}
         row={false}
         shadeWheelThumb
         autoResetSlider
       />
       <View style={styles.buttonContainer}>
-        <PrimaryButton onPress={onSubmitColor}>Выбрать</PrimaryButton>
+        <PrimaryButton onPress={submitColor}>Выбрать</PrimaryButton>
       </View>
     </View>
   );

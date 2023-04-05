@@ -1,8 +1,11 @@
-import { Image, StyleSheet, View } from 'react-native';
-import Text from './ui/Text';
-import { GlobalStyles } from '../constants/styles';
-import OptionBadge from './OptionBadge';
+import { memo } from 'react';
+import { StyleSheet, View } from 'react-native';
+import IconButton from './ui/buttons/IconButton';
 import PressableContainer from './ui/PressableContainer';
+import Text from './ui/Text';
+import OptionBadge from './OptionBadge';
+import { GlobalStyles } from '../constants/styles';
+import ProgressiveImage from './ui/ProgressiveImage';
 
 const ProductCard = ({
   title,
@@ -16,12 +19,21 @@ const ProductCard = ({
   return (
     <PressableContainer onPress={onPress}>
       <View style={[styles.cardContainer, !isActive && { opacity: 0.5 }]}>
-        <View style={styles.imageContainer}>
-          <Image source={imageUri} style={styles.image} />
+        <View style={[styles.imageContainer, !imageUri && styles.blankImage]}>
+          {imageUri ? (
+            <ProgressiveImage source={{ uri: imageUri }} style={styles.image} />
+          ) : (
+            <IconButton
+              icon="ionicons"
+              name="image-outline"
+              size={35}
+              color={GlobalStyles.colors.gray}
+            />
+          )}
         </View>
         <View style={styles.contentContainer}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.categoryTag}>{category}</Text>
+          {category && <Text style={styles.categoryTag}>{category}</Text>}
           <Text style={styles.price}>{price}₸</Text>
           <View style={styles.badgesContainer}>
             {options.map((optionSet, optionSetKey) => (
@@ -42,7 +54,7 @@ const ProductCard = ({
   );
 };
 
-export default ProductCard;
+export default memo(ProductCard);
 
 const styles = StyleSheet.create({
   cardContainer: {
@@ -59,6 +71,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: 85,
     height: 85,
+    backgroundColor: GlobalStyles.colors.veryLightGray,
+  },
+  blankImage: {
+    backgroundColor: GlobalStyles.colors.veryLightGray,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   image: {
     width: 85,
@@ -66,21 +84,23 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingLeft: 13,
+    flexShrink: 1,
   },
   title: {
     fontSize: 17,
     color: GlobalStyles.colors.black,
-    lineHeight: '23',
+    lineHeight: 23,
   },
   categoryTag: {
     fontSize: 12,
-    color: GlobalStyles.colors.gray300,
-    lineHeight: '16',
+    color: GlobalStyles.colors.darkGray,
+    fontFamily: 'Roboto-light',
+    lineHeight: 16,
   },
   price: {
     fontSize: 17,
     color: GlobalStyles.colors.black,
-    lineHeight: '27',
+    lineHeight: 27,
     fontFamily: 'Roboto-medium',
   },
   badgesContainer: {

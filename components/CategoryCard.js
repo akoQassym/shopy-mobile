@@ -1,22 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { GlobalStyles } from '../constants/styles';
 import { MaterialIcons } from '@expo/vector-icons';
+import Text from './ui/Text';
 import PressableContainer from './ui/PressableContainer';
 
-const CategoryCard = ({ title, productAmount, onPress }) => {
+const CategoryCard = ({ title, onPress }) => {
   return (
     <PressableContainer onPress={onPress}>
       <View style={styles.categoryContainer}>
         <View>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.subText}>
-            Товаров в категории: {productAmount}
-          </Text>
         </View>
         <MaterialIcons
           name="keyboard-arrow-right"
           size={24}
-          color={GlobalStyles.colors.gray300}
+          color={GlobalStyles.colors.darkGray}
         />
       </View>
     </PressableContainer>
@@ -43,7 +41,7 @@ const styles = StyleSheet.create({
   },
   subText: {
     fontSize: 14,
-    color: GlobalStyles.colors.gray300,
+    color: GlobalStyles.colors.darkGray,
     marginVertical: 3,
   },
 });

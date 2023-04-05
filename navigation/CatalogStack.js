@@ -8,6 +8,11 @@ import AddProductScreen from '../screens/catalog/AddProductScreen';
 import CategoriesScreen from '../screens/catalog/CategoriesScreen';
 import AddCategoryScreen from '../screens/catalog/AddCategoryScreen';
 import CategoryInfoScreen from '../screens/catalog/CategoryInfoScreen';
+import EditProductScreen from '../screens/catalog/EditProductScreen';
+import EditCategoryScreen from '../screens/catalog/EditCategoryScreen';
+import AddOptionGroupScreen from '../screens/catalog/AddOptionGroupScreen';
+import SelectOptionGroupsScreen from '../screens/catalog/SelectOptionGroupsScreen';
+import EditOptionGroupScreen from '../screens/catalog/EditOptionGroupScreen';
 
 const Stack = createNativeStackNavigator();
 const TopTab = createMaterialTopTabNavigator();
@@ -19,9 +24,9 @@ const CatalogTabs = () => {
         tabBarLabelStyle: {
           fontFamily: 'Roboto-regular',
         },
-        tabBarActiveTintColor: GlobalStyles.colors.primary500,
+        tabBarActiveTintColor: GlobalStyles.colors.primary,
         tabBarIndicatorStyle: {
-          backgroundColor: GlobalStyles.colors.primary500,
+          backgroundColor: GlobalStyles.colors.primary,
         },
       }}
       initialRouteName={'CatalogScreen'}
@@ -81,10 +86,10 @@ const CatalogStack = () => {
         }}
       />
       <Stack.Screen
-        name="AddCategoryScreen"
-        component={AddCategoryScreen}
+        name="EditProductScreen"
+        component={EditProductScreen}
         options={{
-          title: 'Новая категория',
+          title: null,
         }}
       />
       <Stack.Screen
@@ -92,6 +97,42 @@ const CatalogStack = () => {
         component={CategoryInfoScreen}
         options={{
           title: 'Загрузка...',
+        }}
+      />
+      <Stack.Screen
+        name="AddCategoryScreen"
+        component={AddCategoryScreen}
+        options={{
+          title: 'Новая категория',
+        }}
+      />
+      <Stack.Screen
+        name="EditCategoryScreen"
+        component={EditCategoryScreen}
+        options={{
+          title: null,
+        }}
+      />
+      <Stack.Screen
+        name="AddOptionGroupScreen"
+        component={AddOptionGroupScreen}
+        options={{
+          title: 'Новая опция',
+        }}
+      />
+      <Stack.Screen
+        name="SelectOptionGroupsScreen"
+        component={SelectOptionGroupsScreen}
+        options={{
+          title: 'Опции',
+        }}
+      />
+      <Stack.Screen
+        name="EditOptionGroupScreen"
+        component={EditOptionGroupScreen}
+        options={{
+          title: 'Информация о заказе',
+          presentation: 'modal',
         }}
       />
     </Stack.Navigator>

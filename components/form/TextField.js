@@ -1,44 +1,50 @@
-import { TextInput, Text, View, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { TextInput, View, StyleSheet } from 'react-native';
+import { Feather, FontAwesome5, Entypo } from '@expo/vector-icons';
 import { GlobalStyles } from '../../constants/styles';
-
-import { Feather } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
+import Text from '../ui/Text';
 
 const RenderIcon = ({ iconType }) => {
   return iconType === 'tenge' ? (
     <FontAwesome5
       name="tenge"
       size={16}
-      color={GlobalStyles.colors.gray300}
+      color={GlobalStyles.colors.darkGray}
       style={[styles.icon]}
     />
   ) : iconType === 'user' ? (
     <FontAwesome5
       name="user"
       size={16}
-      color={GlobalStyles.colors.gray300}
+      color={GlobalStyles.colors.darkGray}
       style={[styles.icon]}
     />
   ) : iconType === 'password' ? (
     <Feather
       name="lock"
       size={16}
-      color={GlobalStyles.colors.gray300}
+      color={GlobalStyles.colors.darkGray}
       style={[styles.icon]}
     />
   ) : iconType === 'phone' ? (
     <Feather
       name="phone"
       size={16}
-      color={GlobalStyles.colors.gray300}
+      color={GlobalStyles.colors.darkGray}
+      style={[styles.icon]}
+    />
+  ) : iconType === 'email' ? (
+    <Feather
+      name="mail"
+      size={16}
+      color={GlobalStyles.colors.darkGray}
       style={[styles.icon]}
     />
   ) : iconType === 'shop' ? (
     <Entypo
       name="shop"
       size={16}
-      color={GlobalStyles.colors.gray300}
+      color={GlobalStyles.colors.darkGray}
       style={[styles.icon]}
     />
   ) : (
@@ -50,9 +56,10 @@ const TextField = ({
   type,
   placeholder,
   style,
+  wrapperStyle,
   error,
   label,
-  bottomText,
+  helperText,
   iconType,
   customIcon,
   required,
@@ -62,8 +69,13 @@ const TextField = ({
   value,
   props,
 }) => {
+  const [isSecure, setIsSecure] = useState(type === 'password' || secure);
+  const invertIsSecure = () => {
+    setIsSecure((prev) => !prev);
+  };
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, wrapperStyle && wrapperStyle]}>
       {label && (
         <Text style={styles.label}>
           {label}
@@ -77,7 +89,7 @@ const TextField = ({
           customIcon && customIcon
         )}
         <TextInput
-          secureTextEntry={type === 'password' || secure}
+          secureTextEntry={isSecure}
           multiline={type === 'multiline' ? true : false}
           placeholder={placeholder}
           keyboardType={keyboardType}
@@ -92,8 +104,17 @@ const TextField = ({
           ]}
           {...props}
         />
+        {type === 'password' && (
+          <Feather
+            name={isSecure ? 'eye-off' : 'eye'}
+            size={16}
+            color={GlobalStyles.colors.darkGray}
+            style={[styles.rightEndIcon]}
+            onPress={invertIsSecure}
+          />
+        )}
       </View>
-      {bottomText && <Text style={styles.bottomText}>{bottomText}</Text>}
+      {helperText && <Text style={styles.helperText}>{helperText}</Text>}
     </View>
   );
 };
@@ -103,16 +124,20 @@ export default TextField;
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
+    width: '100%',
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: GlobalStyles.colors.gray300,
+    borderColor: GlobalStyles.colors.darkGray,
   },
   icon: {
     marginLeft: 15,
+  },
+  rightEndIcon: {
+    marginRight: 15,
   },
   textInput: {
     flex: 1,
@@ -122,13 +147,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   error: {
-    borderColor: GlobalStyles.colors.error250,
+    borderColor: GlobalStyles.colors.error,
   },
   textInputLabelStyle: {
-    borderColor: GlobalStyles.colors.gray200,
+    borderColor: GlobalStyles.colors.gray,
   },
   label: {
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'left',
     fontFamily: 'Roboto-regular',
     marginBottom: 8,
@@ -137,10 +162,10 @@ const styles = StyleSheet.create({
   multiline: {
     minHeight: 100,
   },
-  bottomText: {
+  helperText: {
     marginTop: 8,
     fontSize: 14,
     textAlign: 'left',
-    color: GlobalStyles.colors.gray300,
+    color: GlobalStyles.colors.darkGray,
   },
 });

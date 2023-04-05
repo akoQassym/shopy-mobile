@@ -1,107 +1,154 @@
 import { useState, useContext } from 'react';
-import { View, StyleSheet, Text, Alert } from 'react-native';
-import { AuthContext } from '../../store/authContext';
+import {
+  View,
+  StyleSheet,
+  Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import { GlobalStyles } from '../../constants/styles';
+import functions from '@react-native-firebase/functions';
+import auth from '@react-native-firebase/auth';
 
-import PrimaryButton from '../../components/ui/buttons/PrimaryButton';
-import Link from '../../components/ui/Link';
-import TextField from '../../components/form/TextField';
-import LoadingOverlay from '../../components/ui/LoadingOverlay';
+import {
+  Text,
+  Link,
+  LoadingOverlay,
+  PrimaryButton,
+  TextField,
+  InformBadge,
+} from '../../components';
+import { AuthContext, ShopContext } from '../../store';
 
 const LoginScreen = () => {
   const authCtx = useContext(AuthContext);
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const shopCtx = useContext(ShopContext);
+  const [status, setStatus] = useState(null);
 
-  const [enteredPhone, setEnteredPhone] = useState('');
-  const [code, setCode] = useState('');
-  const [verificationId, setVerificationId] = useState('');
-  const recaptchaVerifier = useRef(null);
+  const [enteredPhoneNumber, setEnteredPhoneNumber] = useState('+7');
+  const [enteredPassword, setEnteredPassword] = useState(null);
+  const [phoneError, setPhoneError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
-  const updateInputValueHandler = (inputType, enteredValue) => {
-    switch (inputType) {
-      case 'phone':
-        setEnteredPhone(enteredValue);
-        break;
-      case 'password':
-        setEnteredPassword(enteredValue);
-        break;
-    }
+  const changePhoneNumber = (value) => setEnteredPhoneNumber(value);
+  const changePassword = (value) => setEnteredPassword(value);
+
+  const validatePhoneNumber = (value) => {
+    const phoneRegex = /^(\+7)([0-9]{3})(\d{7})$/;
+    return phoneRegex.test(value);
   };
 
-  const login = async (phone, password) => {
-    console.log('signing in...', phone, password);
-    return 'token123';
+  const validatePassword = (value) => {
+    return value !== null && value.length > 6;
   };
 
-  const handleLogin = async ({ phone, password }) => {
-    setIsAuthenticating(true);
-    try {
-      const token = await login(phone, password);
-      authCtx.authenticate(token);
-    } catch (error) {
-      Alert.alert('Authentication failed!', 'Please check your credentials');
-      setIsAuthenticating(false);
-    }
-  };
-
-  const submitHandler = () => {
-    const phone = enteredPhone.trim();
-    const password = enteredPassword.trim();
-
-    // Validation
-    const demoIsValid = true;
-
-    if (!demoIsValid) {
-      Alert.alert('Invalid input', 'Please check your entered credentials.');
+  const submit = async () => {
+    const phoneValid = validatePhoneNumber(enteredPhoneNumber);
+    const passwordValid = validatePassword(enteredPassword);
+    if (!phoneValid || !passwordValid) {
+      if (!phoneValid) setPhoneError(true);
+      if (!passwordValid) setPasswordError(true);
       return;
     }
-    handleLogin({ phone, password });
+    if (phoneValid) setPhoneError(false);
+    if (passwordValid) setPasswordError(false);
+
+    setStatus('authenticating');
+    try {
+      const email = await functions().httpsCallable('getEmailByPhoneNumber')({
+        phoneNumber: enteredPhoneNumber,
+      });
+      const userRes = await auth().signInWithEmailAndPassword(
+        email.data.email,
+        enteredPassword,
+      );
+      setStatus('retrievingData');
+      authCtx.setUser(
+        userRes.user.displayName,
+        userRes.user.email,
+        userRes.user.phoneNumber,
+        userRes.user.uid,
+      );
+      const shopsRes = await functions().httpsCallable('getShops')();
+      shopCtx.setShopsList(shopsRes.data);
+      await shopCtx.fetchShopInfo(shopsRes.data[0]);
+      await userRes.user.getIdToken(true).then((token) => {
+        authCtx.authenticate(token);
+      });
+    } catch (error) {
+      setStatus(null);
+      Alert.alert('Ошибка при входе!', error.toString());
+    }
   };
 
-  if (isAuthenticating) {
+  if (status === 'authenticating') {
     return <LoadingOverlay message="Сверяем данные..." />;
+  } else if (status === 'retrievingData') {
+    return <LoadingOverlay message="Загружаем ваш магазин..." />;
   }
 
   return (
-    <View style={styles.root}>
-      <View style={styles.content}>
-        <View>
-          <Text style={styles.title}>
-            Рады видеть вас снова, войдите в систему
-          </Text>
-          <TextField
-            placeholder="Номер телефона"
-            iconType="phone"
-            onUpdateValue={updateInputValueHandler.bind(this, 'phone')}
-            value={enteredPhone}
-          />
-          <TextField
-            placeholder="Пароль"
-            type={'password'}
-            iconType="password"
-            onUpdateValue={updateInputValueHandler.bind(this, 'password')}
-            value={enteredPassword}
-          />
-          <Link
-            style={[styles.supplementaryText, { textAlign: 'right' }]}
-            to={{ screen: 'PasswordReset' }}
-          >
-            Забыли пароль?
-          </Link>
-        </View>
-        <View style={styles.buttonContainer}>
-          <View style={styles.supplementaryTextContainer}>
-            <Text style={styles.supplementaryText}>
-              У вас нет аккаунта?{' '}
-              <Link to={{ screen: 'Signup1' }} replace>
-                Регистрация
-              </Link>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.root}>
+        <View style={styles.content}>
+          <View>
+            <Text style={styles.title}>
+              Рады видеть вас снова, войдите в систему
             </Text>
+            {phoneError && (
+              <InformBadge
+                type="error"
+                errorHighlightedText="номер телефона (+7XXXXXXXXXX)"
+              />
+            )}
+            {passwordError && (
+              <InformBadge
+                type="error"
+                customMessage="Пароль должен содержать больше 6 символов"
+              />
+            )}
+            <View style={styles.form}>
+              <TextField
+                placeholder="Номер телефона"
+                iconType="phone"
+                onUpdateValue={changePhoneNumber}
+                value={enteredPhoneNumber}
+                keyboardType="phone-pad"
+              />
+              <TextField
+                placeholder="Пароль"
+                type="password"
+                iconType="password"
+                onUpdateValue={changePassword}
+                value={enteredPassword}
+              />
+            </View>
+            <Link
+              style={[styles.supplementaryText, { textAlign: 'right' }]}
+              to={{ screen: 'PasswordReset' }}
+            >
+              Забыли пароль?
+            </Link>
           </View>
-          <PrimaryButton onPress={submitHandler}>Войти</PrimaryButton>
+          <View style={styles.buttonContainer}>
+            <View style={styles.supplementaryTextContainer}>
+              <Text style={styles.supplementaryText}>
+                У вас нет аккаунта?{' '}
+                <Link to={{ screen: 'Signup1' }} replace>
+                  Регистрация
+                </Link>
+              </Text>
+            </View>
+            <PrimaryButton
+              onPress={submit}
+              disabled={!enteredPhoneNumber || !enteredPassword}
+            >
+              Войти
+            </PrimaryButton>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -122,8 +169,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-semi-bold',
     textAlign: 'left',
     marginTop: 100,
-    marginBottom: 40,
+    marginBottom: 25,
     width: 320,
+  },
+  form: {
+    paddingVertical: 15,
   },
   buttonContainer: {
     justifyContent: 'flex-end',
@@ -138,6 +188,6 @@ const styles = StyleSheet.create({
   },
   supplementaryText: {
     textAlign: 'center',
-    color: GlobalStyles.colors.gray300,
+    color: GlobalStyles.colors.darkGray,
   },
 });

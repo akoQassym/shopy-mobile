@@ -21,6 +21,7 @@ const AuthenticationStack = () => {
           fontFamily: 'Roboto-regular',
         },
         headerBackTitleVisible: false,
+        gestureEnabled: false,
       }}
     >
       <Stack.Screen
