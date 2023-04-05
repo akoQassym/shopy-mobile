@@ -1,18 +1,27 @@
 import { View, StyleSheet } from 'react-native';
-import PressableContainer from './ui/PressableContainer';
 import Text from './ui/Text';
+import PressableContainer from './ui/PressableContainer';
+import { GlobalStyles } from '../constants/styles';
 
-const FilterBadge = ({ id, title, onPress, backgroundColor, active }) => {
+const FilterBadge = ({
+  id,
+  title,
+  onPress,
+  activeBackgroundColor,
+  activeLabelColor,
+  active,
+}) => {
   return (
     <PressableContainer onPress={onPress.bind(this, id)}>
       <View
         style={[
           styles.container,
-          active && styles.containerActive,
-          active && { backgroundColor: backgroundColor },
+          active && { backgroundColor: activeBackgroundColor },
         ]}
       >
-        <Text style={styles.label}>{title}</Text>
+        <Text style={[styles.label, active && { color: activeLabelColor }]}>
+          {title}
+        </Text>
       </View>
     </PressableContainer>
   );
@@ -23,16 +32,13 @@ export default FilterBadge;
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 9,
-    paddingHorizontal: 0,
-    backgroundColor: 'transparent',
-    marginRight: 17,
+    paddingHorizontal: 15,
+    backgroundColor: GlobalStyles.colors.white,
+    marginRight: 10,
     borderRadius: 5,
   },
-  containerActive: {
-    paddingHorizontal: 15,
-  },
   label: {
-    textTransform: 'uppercase',
-    fontFamily: 'Roboto-regular',
+    fontSize: 14,
+    color: GlobalStyles.colors.black,
   },
 });

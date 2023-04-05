@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import ColorSelectWheel from '../../components/form/ColorSelectWheel';
+import { ColorSelectWheel } from '../../components';
 import { GlobalStyles } from '../../constants/styles';
 
 const EditColorScreen = ({ route }) => {
@@ -7,9 +7,7 @@ const EditColorScreen = ({ route }) => {
   return (
     <View style={styles.root}>
       <View style={styles.formContainer}>
-        <ColorSelectWheel
-          currentColor={selectedColor.toUpperCase() ?? '#000000'}
-        />
+        <ColorSelectWheel currentColor={selectedColor ?? '#ffffff'} />
       </View>
     </View>
   );

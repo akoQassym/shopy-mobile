@@ -1,18 +1,23 @@
-import { View, StyleSheet, Text, Image } from 'react-native';
-import Link from '../../components/ui/Link';
-import PrimaryButton from '../../components/ui/buttons/PrimaryButton';
+import { View, StyleSheet, Dimensions } from 'react-native';
+import { Text, PrimaryButton, Link, ProgressiveImage } from '../../components';
 import { GlobalStyles } from '../../constants/styles';
 
+const windowHeight = Dimensions.get('window').height;
+
 const WelcomeScreen = ({ navigation }) => {
-  const onButtonClick = () => {
+  const proceedToNextPage = () => {
     navigation.navigate('Signup1');
   };
 
   return (
     <View style={styles.root}>
       <View style={styles.imageContainer}>
-        <Image
-          source={require('../../assets/images/welcomeBanner2.jpg')}
+        <ProgressiveImage
+          source={
+            windowHeight < 700
+              ? require('../../assets/images/welcomeBanner1.jpg')
+              : require('../../assets/images/welcomeBanner2.jpg')
+          }
           style={styles.image}
         />
       </View>
@@ -31,7 +36,9 @@ const WelcomeScreen = ({ navigation }) => {
             </Text>
             <Link to={{ screen: 'Login' }}>Логин</Link>
           </View>
-          <PrimaryButton onPress={onButtonClick}>Создать аккаунт</PrimaryButton>
+          <PrimaryButton onPress={proceedToNextPage}>
+            Создать аккаунт
+          </PrimaryButton>
         </View>
       </View>
     </View>
@@ -50,12 +57,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: 10,
     width: '100%',
-    height: 300,
+    height: windowHeight < 700 ? 200 : 300,
     marginVertical: 15,
   },
   image: {
     width: '100%',
-    height: 300,
+    height: windowHeight < 700 ? 200 : 300,
   },
   content: {
     flex: 1,
@@ -77,7 +84,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     width: 290,
-    color: GlobalStyles.colors.gray300,
+    color: GlobalStyles.colors.darkGray,
   },
   buttonContainer: {
     justifyContent: 'flex-end',
@@ -92,6 +99,6 @@ const styles = StyleSheet.create({
   },
   supplementaryText: {
     textAlign: 'center',
-    color: GlobalStyles.colors.gray300,
+    color: GlobalStyles.colors.darkGray,
   },
 });

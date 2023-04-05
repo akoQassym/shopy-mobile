@@ -1,4 +1,5 @@
-import { Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import Text from './Text';
 import { GlobalStyles } from '../../constants/styles';
 
 const ColorLabelBadge = ({ label, color, textColor }) => {
@@ -24,7 +25,7 @@ export default ColorLabelBadge;
 
 const styles = StyleSheet.create({
   colorText: {
-    color: GlobalStyles.colors.gray300,
+    color: GlobalStyles.colors.darkGray,
   },
   selectedColorText: {
     fontFamily: 'Roboto-medium',

@@ -1,29 +1,73 @@
-import { Pressable, StyleSheet, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet, View } from 'react-native';
+import PressableContainer from '../PressableContainer';
+import Text from '../Text';
+import { GlobalStyles } from '../../../constants/styles';
+import {
+  Ionicons,
+  Feather,
+  MaterialIcons,
+  FontAwesome5,
+  Foundation,
+} from '@expo/vector-icons';
 
-const IconButton = ({ icon, color, size, onPress }) => {
+const IconButton = ({
+  icon = 'ionicons',
+  color = GlobalStyles.colors.black,
+  size = 24,
+  onPress,
+  name,
+  label,
+  labelColor,
+  labelStyle,
+  disabled,
+  style,
+}) => {
   return (
-    <Pressable
-      onPress={onPress}
-      style={({ pressed }) => pressed && styles.pressed}
-    >
-      <View style={styles.buttonContainer}>
-        <Ionicons name={icon} color={color} size={size} />
+    <PressableContainer onPress={onPress}>
+      <View
+        style={[styles.container, style && style, disabled && styles.disabled]}
+      >
+        {label && (
+          <Text
+            style={[
+              styles.label,
+              labelColor && { color: labelColor },
+              labelStyle && labelStyle,
+            ]}
+          >
+            {label}
+          </Text>
+        )}
+        {icon === 'feather' ? (
+          <Feather name={name} size={size} color={color} />
+        ) : icon === 'ionicons' ? (
+          <Ionicons name={name} size={size} color={color} />
+        ) : icon === 'material' ? (
+          <MaterialIcons name={name} size={size} color={color} />
+        ) : icon === 'fontAwesome5' ? (
+          <FontAwesome5 name={name} size={size} color={color} />
+        ) : icon === 'foundation' ? (
+          <Foundation name={name} size={size} color={color} />
+        ) : (
+          ''
+        )}
       </View>
-    </Pressable>
+    </PressableContainer>
   );
 };
 
 export default IconButton;
 
 const styles = StyleSheet.create({
-  buttonContainer: {
-    borderRadius: 24,
-    padding: 8,
-    marginHorizontal: 8,
-    marginVertical: 2,
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  pressed: {
-    opacity: 0.75,
+  label: {
+    fontSize: 16,
+    marginRight: 7,
+  },
+  disabled: {
+    opacity: 0.3,
   },
 });

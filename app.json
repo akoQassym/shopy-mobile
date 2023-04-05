@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "ShopyMobile",
+    "name": "Shopy",
     "slug": "ShopyMobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -37,7 +37,7 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "@react-native-firebase/app",
+      "@react-native-firebase/app", 
       "@react-native-firebase/auth",
       [
         "expo-image-picker",

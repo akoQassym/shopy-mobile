@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   badgeContainer: {
     paddingVertical: 2,
     paddingHorizontal: 8,
-    backgroundColor: GlobalStyles.colors.gray100,
+    backgroundColor: GlobalStyles.colors.veryLightGray,
     borderRadius: 5,
     marginRight: 10,
   },

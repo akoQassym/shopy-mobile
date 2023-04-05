@@ -5,6 +5,8 @@ import MyBusinessScreen from '../screens/business/MyBusinessScreen';
 import EditBusinessInfoScreen from '../screens/business/EditBusinessInfoScreen';
 import EditDesignScreen from '../screens/business/EditDesignScreen';
 import EditColorScreen from '../screens/business/EditColorScreen';
+import EditSubdomainScreen from '../screens/business/EditSubdomainScreen';
+import EditContactDetailsScreen from '../screens/business/EditContactDetailsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,17 +32,31 @@ const MyBusinessStack = () => {
         }}
       />
       <Stack.Screen
+        name="EditSubdomainScreen"
+        component={EditSubdomainScreen}
+        options={{
+          title: null,
+        }}
+      />
+      <Stack.Screen
         name="EditBusinessInfoScreen"
         component={EditBusinessInfoScreen}
         options={{
-          title: 'Информация о бизнесе',
+          title: null,
+        }}
+      />
+      <Stack.Screen
+        name="EditContactDetailsScreen"
+        component={EditContactDetailsScreen}
+        options={{
+          title: null,
         }}
       />
       <Stack.Screen
         name="EditDesignScreen"
         component={EditDesignScreen}
         options={{
-          title: 'Дизайн сайта',
+          title: null,
         }}
       />
       <Stack.Screen
