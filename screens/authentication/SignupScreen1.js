@@ -6,11 +6,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import Text from '../../components/ui/Text';
-import TextField from '../../components/form/TextField';
-import PrimaryButton from '../../components/ui/buttons/PrimaryButton';
-import Link from '../../components/ui/Link';
 import { GlobalStyles } from '../../constants/styles';
+import { Text, PrimaryButton, Link, TextField } from '../../components';
 
 const windowWidth = Dimensions.get('window').width;
 const loaderWidth = windowWidth * 0.4;
@@ -79,7 +76,7 @@ const styles = StyleSheet.create({
     top: 0,
     width: loaderWidth,
     height: 5,
-    backgroundColor: GlobalStyles.colors.primary400,
+    backgroundColor: GlobalStyles.colors.primary,
   },
   title: {
     fontSize: 25,
@@ -102,6 +99,6 @@ const styles = StyleSheet.create({
   },
   supplementaryText: {
     textAlign: 'center',
-    color: GlobalStyles.colors.gray300,
+    color: GlobalStyles.colors.darkGray,
   },
 });

@@ -1,56 +1,52 @@
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { View, StyleSheet, RefreshControl, Alert } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import { Text, View, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import CategoryCard from '../../components/CategoryCard';
-import PrimaryButton from '../../components/ui/buttons/PrimaryButton';
 import { GlobalStyles } from '../../constants/styles';
 
-const DUMMY_DATA = [
-  {
-    id: '1',
-    title: 'День Рождения',
-    active: true,
-    amount: 4,
-  },
-  {
-    id: '2',
-    title: 'Милота',
-    active: true,
-    amount: 3,
-  },
-  {
-    id: '3',
-    title: 'Маме',
-    active: true,
-    amount: 1,
-  },
-  {
-    id: '4',
-    title: 'Love',
-    active: true,
-    amount: 1,
-  },
-];
+import CategoryCard from '../../components/CategoryCard';
+import { PrimaryButton, IconButton, LoadingOverlay } from '../../components';
+import { CatalogContext } from '../../store';
 
 const CategoriesScreen = ({ navigation }) => {
+  const catalogCtx = useContext(CatalogContext);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+
+  const onRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    await catalogCtx.fetchCategories();
+    setIsRefreshing(false);
+  }, []);
+
   const addCategory = () => {
     navigation.navigate('AddCategoryScreen');
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsFetching(true);
+      await catalogCtx
+        .fetchCategories()
+        .catch((error) => Alert.alert('Ошибка!', error.message));
+      setIsFetching(false);
+    };
+
+    if (!catalogCtx.categories || !catalogCtx.categories.length) {
+      fetchData();
+    }
+  }, []);
+
   const RenderCategoryItem = ({ item }) => {
     const openCategoryPage = () => {
       navigation.navigate('CategoryInfoScreen', {
-        id: item.id,
+        categoryId: item.id,
+        categoryData: item.data,
       });
     };
 
     return (
-      item.active && (
-        <CategoryCard
-          title={item.title}
-          onPress={openCategoryPage}
-          productAmount={item.amount}
-        />
+      item.data.active && (
+        <CategoryCard title={item.data.name} onPress={openCategoryPage} />
       )
     );
   };
@@ -61,19 +57,31 @@ const CategoriesScreen = ({ navigation }) => {
         <PrimaryButton
           style={styles.addButton}
           textStyle={styles.addButtonText}
-          icon={<Ionicons name="md-add" size={25} style={styles.buttonIcon} />}
+          iconBefore={
+            <IconButton
+              icon="ionicons"
+              name="md-add"
+              size={25}
+              style={styles.buttonIcon}
+              color={GlobalStyles.colors.primary}
+            />
+          }
           onPress={addCategory}
         >
           Создать категорию
         </PrimaryButton>
       </View>
+      {isFetching && <LoadingOverlay />}
       <FlashList
-        data={DUMMY_DATA}
+        data={catalogCtx.categories}
         renderItem={(itemData) => RenderCategoryItem(itemData)}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.id}
         estimatedItemSize={60}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+        }
       />
     </View>
   );
@@ -90,15 +98,14 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   addButton: {
-    backgroundColor: GlobalStyles.colors.primary100,
+    backgroundColor: GlobalStyles.colors.veryLightPrimary,
     paddingVertical: 12,
   },
   addButtonText: {
-    color: GlobalStyles.colors.primary500,
+    color: GlobalStyles.colors.primary,
     fontFamily: 'Roboto-regular',
   },
   buttonIcon: {
-    color: GlobalStyles.colors.primary500,
     marginHorizontal: 2,
   },
 });

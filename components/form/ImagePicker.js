@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { Alert, Text, Image, StyleSheet, View, ScrollView } from 'react-native';
+import { Alert, StyleSheet, View, ScrollView } from 'react-native';
+import Text from '../ui/Text';
+import CloseButton from '../ui/buttons/CloseButton';
+import SecondaryButton from '../ui/buttons/SecondaryButton';
 import {
   launchCameraAsync,
   PermissionStatus,
@@ -10,12 +12,17 @@ import {
 } from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalStyles } from '../../constants/styles';
-import SecondaryButton from './buttons/SecondaryButton';
-import CloseButton from './buttons/CloseButton';
+import FastImage from 'react-native-fast-image';
 
-const ImagePicker = ({ label }) => {
-  const [images, setImages] = useState(null);
-
+const ImagePicker = ({
+  label,
+  images,
+  setImages,
+  maxLength,
+  style,
+  quality,
+  aspect,
+}) => {
   const [cameraPermissionStatus, requestCameraPermission] =
     useCameraPermissions();
   const [mediaPermissionStatus, requestMediaPermission] =
@@ -33,7 +40,6 @@ const ImagePicker = ({ label }) => {
       );
       return false;
     }
-
     return true;
   };
 
@@ -43,8 +49,8 @@ const ImagePicker = ({ label }) => {
 
     const image = await launchCameraAsync({
       allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
+      aspect: aspect ?? [1, 1],
+      quality: quality ?? 1,
     });
 
     if (!image.canceled) {
@@ -81,8 +87,8 @@ const ImagePicker = ({ label }) => {
     let image = await launchImageLibraryAsync({
       mediaTypes: MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
+      aspect: aspect ?? [1, 1],
+      quality: quality ?? 1,
     });
 
     if (!image.canceled) {
@@ -98,11 +104,21 @@ const ImagePicker = ({ label }) => {
   };
 
   const deleteImage = (key) => {
-    setImages([...images.slice(0, key), ...images.slice(key + 1)]);
+    Alert.alert('Вы уверены, что хотите удалить изображение?', undefined, [
+      {
+        text: 'Удалить',
+        onPress: () =>
+          setImages([...images.slice(0, key), ...images.slice(key + 1)]),
+      },
+      {
+        text: 'Отменить',
+        onPress: () => {},
+      },
+    ]);
   };
 
   return (
-    <View style={styles.root}>
+    <View style={[styles.root, style && style]}>
       {label && <Text style={styles.label}>{label}</Text>}
       <ScrollView
         showsHorizontalScrollIndicator
@@ -118,42 +134,44 @@ const ImagePicker = ({ label }) => {
                 onPress={deleteImage.bind(this, key)}
               />
               <View>
-                <Image
+                <FastImage
                   source={{ uri: image.uri }}
                   style={styles.previewImage}
                 />
               </View>
             </View>
           ))}
-        <View style={styles.buttonsContainer}>
-          <SecondaryButton
-            icon={
-              <Ionicons
-                name="camera"
-                size={20}
-                color={GlobalStyles.colors.black}
-              />
-            }
-            form="rectangle"
-            onPress={takeImage}
-          >
-            Сделать фотографию
-          </SecondaryButton>
-          <SecondaryButton
-            icon={
-              <Ionicons
-                name="image"
-                size={20}
-                color={GlobalStyles.colors.black}
-              />
-            }
-            form="rectangle"
-            onPress={pickImageFromMedia}
-            style={{ marginTop: 5 }}
-          >
-            Выбрать фотографию
-          </SecondaryButton>
-        </View>
+        {(!maxLength || (images && images.length < maxLength)) && (
+          <View style={styles.buttonsContainer}>
+            <SecondaryButton
+              icon={
+                <Ionicons
+                  name="camera"
+                  size={20}
+                  color={GlobalStyles.colors.black}
+                />
+              }
+              form="rectangle"
+              onPress={takeImage}
+            >
+              Сделать фотографию
+            </SecondaryButton>
+            <SecondaryButton
+              icon={
+                <Ionicons
+                  name="image"
+                  size={20}
+                  color={GlobalStyles.colors.black}
+                />
+              }
+              form="rectangle"
+              onPress={pickImageFromMedia}
+              style={{ marginTop: 5 }}
+            >
+              Выбрать фотографию
+            </SecondaryButton>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -162,9 +180,7 @@ const ImagePicker = ({ label }) => {
 export default ImagePicker;
 
 const styles = StyleSheet.create({
-  root: {
-    marginVertical: 10,
-  },
+  root: {},
   content: {
     alignItems: 'center',
   },
@@ -173,9 +189,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   label: {
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'left',
     fontFamily: 'Roboto-regular',
+    marginTop: 10,
     marginBottom: 8,
     color: GlobalStyles.colors.black,
   },
@@ -193,7 +210,7 @@ const styles = StyleSheet.create({
   closeButton: {
     position: 'absolute',
     top: 0,
-    right: 2,
+    right: 3,
     zIndex: 3,
     elevation: 3,
   },

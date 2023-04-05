@@ -25,7 +25,7 @@ export default ColorLabelBadge;
 
 const styles = StyleSheet.create({
   colorText: {
-    color: GlobalStyles.colors.gray300,
+    color: GlobalStyles.colors.darkGray,
   },
   selectedColorText: {
     fontFamily: 'Roboto-medium',

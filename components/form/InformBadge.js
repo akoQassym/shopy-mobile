@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   badge: {
     paddingHorizontal: 15,
     paddingVertical: 10,
-    backgroundColor: GlobalStyles.colors.gray200,
+    backgroundColor: GlobalStyles.colors.gray,
     borderRadius: 10,
     marginVertical: 7,
   },
@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   error: {
-    backgroundColor: GlobalStyles.colors.error50,
+    backgroundColor: GlobalStyles.colors.lightError,
   },
   errorText: {
-    color: GlobalStyles.colors.error500,
+    color: GlobalStyles.colors.darkError,
   },
 });

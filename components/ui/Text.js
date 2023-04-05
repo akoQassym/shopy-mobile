@@ -11,5 +11,6 @@ export default Text;
 const styles = StyleSheet.create({
   text: {
     fontFamily: 'Roboto-regular',
+    flexShrink: 1,
   },
 });

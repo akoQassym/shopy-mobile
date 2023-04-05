@@ -1,17 +1,53 @@
-import { useContext, useState } from 'react';
-import { View, StyleSheet, Text, ScrollView, Image, Alert } from 'react-native';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { useContext, useState, useCallback } from 'react';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  RefreshControl,
+  Linking,
+} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import * as Clipboard from 'expo-clipboard';
-import auth from '@react-native-firebase/auth';
-
-import PressableContainer from '../../components/ui/PressableContainer';
-import PrimaryButton from '../../components/ui/buttons/PrimaryButton';
 import { GlobalStyles } from '../../constants/styles';
-import { AuthContext } from '../../store/authContext';
+import {
+  PrimaryButton,
+  IconButton,
+  Text,
+  HintBox,
+  PressableContainer,
+} from '../../components';
+import { AuthContext, ShopContext, CatalogContext } from '../../store';
 
 const MyBusinessScreen = ({ navigation }) => {
   const authCtx = useContext(AuthContext);
+  const shopCtx = useContext(ShopContext);
+  const catalogCtx = useContext(CatalogContext);
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const shopInfo = {
+    shopName: shopCtx.shopInfo?.shopName ?? '-',
+    subdomain: shopCtx.shopInfo?.subdomain ?? null,
+    websiteActivated: shopCtx.shopInfo?.websiteActivated ?? null,
+    description: shopCtx.shopInfo?.description ?? '-',
+    address: shopCtx.shopInfo?.address ?? '-',
+    workingHours: shopCtx.shopInfo?.workingHours ?? '-',
+    phoneNumber: shopCtx.shopInfo?.phoneNumber ?? '-',
+    instagram: shopCtx.shopInfo?.instagram ?? '-',
+    whatsapp: shopCtx.shopInfo?.whatsapp ?? '-',
+    telegram: shopCtx.shopInfo?.telegram ?? '-',
+    twoGis: shopCtx.shopInfo?.twoGis ?? '-',
+    colorAccent: shopCtx.shopInfo?.colorAccent ?? null,
+    logo: shopCtx.shopInfo?.logo ?? null,
+    backgroundBanner: shopCtx.shopInfo?.backgroundBanner ?? null,
+  };
+
+  const onRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    await shopCtx.fetchShopInfo();
+    setIsRefreshing(false);
+  }, []);
 
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync('https://iris.shopy.ws/')
@@ -23,110 +59,254 @@ const MyBusinessScreen = ({ navigation }) => {
       );
   };
 
-  const openEditBusinessInfo = () => {
-    navigation.navigate('EditBusinessInfoScreen');
+  const openWebsite = () => {
+    Linking.openURL(`https://${shopInfo.subdomain}.shopy.ws/`);
   };
 
-  const openEditDesign = () => {
-    navigation.navigate('EditDesignScreen');
-  };
-
-  const logout = () => {
-    Alert.alert('Вы хотите выйти из системы?', undefined, [
-      {
-        text: 'Выйти',
-        onPress: () => {
-          auth().signOut();
-          authCtx.logout();
-        },
-      },
-      { text: 'Отмена', onPress: () => {} },
-    ]);
+  const navigateToScreen = (screen) => {
+    switch (screen) {
+      case 'editSubdomain':
+        navigation.navigate('EditSubdomainScreen');
+        break;
+      case 'editBusinessInfo':
+        navigation.navigate('EditBusinessInfoScreen');
+        break;
+      case 'editContactDetails':
+        navigation.navigate('EditContactDetailsScreen');
+        break;
+      case 'editDesign':
+        navigation.navigate('EditDesignScreen');
+        break;
+      default:
+        return;
+    }
   };
 
   return (
-    <ScrollView style={styles.root}>
+    <ScrollView
+      style={styles.root}
+      refreshControl={
+        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+      }
+    >
       <View style={styles.screenView}>
-        <View style={[styles.section, styles.header]}>
-          <Text style={styles.companyName}>IRIS cosmetics</Text>
-          <View style={styles.websiteContainer}>
-            <Text style={styles.introText}>Ссылка на сайт вашего бизнеса:</Text>
-            <View
-              style={[
-                styles.linkContainer,
-                copiedToClipboard && {
-                  backgroundColor: GlobalStyles.colors.green300,
-                },
-              ]}
-            >
-              <Text style={styles.link}>https://iris.shopy.ws/</Text>
-              <PressableContainer onPress={copyToClipboard}>
+        <View
+          style={[
+            styles.section,
+            styles.header,
+            shopInfo.colorAccent && {
+              borderColor: shopInfo.colorAccent,
+              borderWidth: 3,
+            },
+          ]}
+        >
+          <Text style={[styles.companyName]}>{shopInfo.shopName}</Text>
+        </View>
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Сайт вашего магазина</Text>
+            <IconButton
+              icon="ionicons"
+              name="arrow-forward-circle-sharp"
+              size={30}
+              color={GlobalStyles.colors.black}
+              onPress={navigateToScreen.bind(this, 'editSubdomain')}
+            />
+          </View>
+          <View>
+            {!shopInfo.websiteActivated && !shopInfo.subdomain ? (
+              <View style={styles.websiteActivationWarningContainer}>
+                <IconButton
+                  icon="material"
+                  name="warning"
+                  size={18}
+                  color={GlobalStyles.colors.warning}
+                />
+                <Text style={{ marginLeft: 10 }}>
+                  Для активации укажите{' '}
+                  <Text style={{ fontFamily: 'Roboto-medium' }}>домен</Text> -
+                  название вашего сайта
+                </Text>
+              </View>
+            ) : (
+              <View
+                style={[
+                  styles.linkContainer,
+                  copiedToClipboard && {
+                    backgroundColor: GlobalStyles.colors.success,
+                  },
+                ]}
+              >
+                <PressableContainer
+                  onPress={openWebsite}
+                  style={styles.linkUnderline}
+                >
+                  <Text style={styles.link}>
+                    https://
+                    {shopInfo.subdomain}
+                    .shopy.ws/
+                  </Text>
+                </PressableContainer>
                 {!copiedToClipboard ? (
-                  <Ionicons
+                  <IconButton
+                    icon="ionicons"
                     name="copy-outline"
                     size={18}
                     color={GlobalStyles.colors.white}
+                    onPress={copyToClipboard}
                   />
                 ) : (
-                  <MaterialIcons
+                  <IconButton
+                    icon="material"
                     name="file-download-done"
                     size={19}
                     color={GlobalStyles.colors.white}
                   />
                 )}
-              </PressableContainer>
-            </View>
+              </View>
+            )}
           </View>
         </View>
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Информация о магазине</Text>
-            <PressableContainer onPress={openEditBusinessInfo}>
-              <Ionicons
-                name="arrow-forward-circle-sharp"
-                size={30}
-                color={GlobalStyles.colors.black}
-              />
-            </PressableContainer>
+            <IconButton
+              icon="ionicons"
+              name="arrow-forward-circle-sharp"
+              size={30}
+              color={GlobalStyles.colors.black}
+              onPress={navigateToScreen.bind(this, 'editBusinessInfo')}
+            />
+          </View>
+          <HintBox
+            style={styles.hintBox}
+            label="Актуальная информация о вашем магазине будет отображена на сайте"
+          />
+          <View style={styles.infoElementContainer}>
+            <Text style={styles.infoTitle}>Название</Text>
+            <View style={styles.infoElement}>
+              <Text style={styles.infoElementText}>{shopInfo.shopName}</Text>
+            </View>
+          </View>
+          <View style={styles.infoElementContainer}>
+            <Text style={styles.infoTitle}>Описание</Text>
+            <View style={styles.infoElement}>
+              <Text style={styles.infoElementText}>{shopInfo.description}</Text>
+            </View>
           </View>
           <View style={styles.sectionContent}>
             <View style={styles.infoElementContainer}>
-              <Text style={styles.infoTitle}>Название</Text>
-              <Text style={styles.infoElement}>IRIS cosmetics</Text>
-            </View>
-            <View style={styles.infoElementContainer}>
               <Text style={styles.infoTitle}>Адрес</Text>
-              <Text style={styles.infoElement}>
-                г. Астана, ул. Кабанбай батыра, 5
-              </Text>
+              <View style={styles.infoElement}>
+                <Text style={styles.infoElementText}>{shopInfo.address}</Text>
+              </View>
             </View>
-            <View style={styles.infoElementContainer}>
+            <View style={[styles.infoElementContainer, styles.last]}>
               <Text style={styles.infoTitle}>Рабочее время</Text>
-              <Text style={styles.infoElement}>Пон-Пят, 9.00 - 18.00</Text>
+              <View style={styles.infoElement}>
+                <Text style={styles.infoElementText}>
+                  {shopInfo.workingHours}
+                </Text>
+              </View>
             </View>
-            <View style={styles.infoElementContainer}>
-              <Text style={styles.infoTitle}>Ссылка на соц. сети</Text>
-              <Text style={styles.infoElement}>Instagram, Whatsapp</Text>
+          </View>
+        </View>
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Контактные данные</Text>
+            <IconButton
+              icon="ionicons"
+              name="arrow-forward-circle-sharp"
+              size={30}
+              color={GlobalStyles.colors.black}
+              onPress={navigateToScreen.bind(this, 'editContactDetails')}
+            />
+          </View>
+          <HintBox
+            style={styles.hintBox}
+            label="Укажите контактные данные, чтобы клиентам было легко с вами связаться"
+          />
+          <View style={styles.infoElementContainer}>
+            <Text style={styles.infoTitle}>Номер телефона</Text>
+            <View style={styles.infoElement}>
+              <IconButton
+                icon="feather"
+                name="phone"
+                size={16}
+                color={GlobalStyles.colors.black}
+                style={styles.infoElementIcon}
+              />
+              <Text style={styles.infoElementText}>{shopInfo.phoneNumber}</Text>
             </View>
-            <View
-              style={[styles.infoElementContainer, { borderBottomWidth: 0 }]}
-            >
-              <Text style={styles.infoTitle}>Дополнительная информация</Text>
-              <Text style={styles.infoElement}>-</Text>
+          </View>
+          <View style={styles.infoElementContainer}>
+            <Text style={styles.infoTitle}>WhatsApp</Text>
+            <View style={styles.infoElement}>
+              <IconButton
+                icon="ionicons"
+                name="logo-whatsapp"
+                size={18}
+                color={GlobalStyles.colors.black}
+                style={styles.infoElementIcon}
+              />
+              <Text style={styles.infoElementText}>{shopInfo.whatsapp}</Text>
+            </View>
+          </View>
+          <View style={styles.infoElementContainer}>
+            <Text style={styles.infoTitle}>Instagram</Text>
+            <View style={styles.infoElement}>
+              <IconButton
+                icon="ionicons"
+                name="logo-instagram"
+                size={18}
+                color={GlobalStyles.colors.black}
+                style={styles.infoElementIcon}
+              />
+              <Text style={styles.infoElementText}>{shopInfo.instagram}</Text>
+            </View>
+          </View>
+          <View style={styles.infoElementContainer}>
+            <Text style={styles.infoTitle}>Telegram</Text>
+            <View style={styles.infoElement}>
+              <IconButton
+                icon="fontAwesome5"
+                name="telegram-plane"
+                size={18}
+                color={GlobalStyles.colors.black}
+                style={styles.infoElementIcon}
+              />
+              <Text style={styles.infoElementText}>{shopInfo.telegram}</Text>
+            </View>
+          </View>
+          <View style={[styles.infoElementContainer, styles.last]}>
+            <Text style={styles.infoTitle}>2Гис</Text>
+            <View style={styles.infoElement}>
+              <IconButton
+                icon="foundation"
+                name="map"
+                size={18}
+                color={GlobalStyles.colors.black}
+                style={styles.infoElementIcon}
+              />
+              <Text style={styles.infoElementText}>{shopInfo.twoGis}</Text>
             </View>
           </View>
         </View>
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Дизайн сайта</Text>
-            <PressableContainer onPress={openEditDesign}>
-              <Ionicons
-                name="arrow-forward-circle-sharp"
-                size={30}
-                color={GlobalStyles.colors.black}
-              />
-            </PressableContainer>
+            <IconButton
+              icon="ionicons"
+              name="arrow-forward-circle-sharp"
+              size={30}
+              color={GlobalStyles.colors.black}
+              onPress={navigateToScreen.bind(this, 'editDesign')}
+            />
           </View>
+          <HintBox
+            style={styles.hintBox}
+            label="Персонализируйте сайт, изменив дизайн"
+          />
           <View style={styles.sectionContent}>
             <View
               style={[
@@ -137,9 +317,17 @@ const MyBusinessScreen = ({ navigation }) => {
               <Text style={[styles.infoTitle, styles.flexHorizontalElement]}>
                 Акцентирующий цвет
               </Text>
-              <Text style={[styles.infoElement, styles.flexHorizontalElement]}>
+              <Text
+                style={[styles.infoElementText, styles.flexHorizontalElement]}
+              >
                 <View
-                  style={[styles.colorView, { backgroundColor: '#ECAFF3' }]}
+                  style={[
+                    styles.colorView,
+                    {
+                      backgroundColor:
+                        shopInfo.colorAccent ?? GlobalStyles.colors.black,
+                    },
+                  ]}
                 />
               </Text>
             </View>
@@ -152,45 +340,43 @@ const MyBusinessScreen = ({ navigation }) => {
               <Text style={[styles.infoTitle, styles.flexHorizontalElement]}>
                 Лого
               </Text>
-              <Text style={[styles.infoElement, styles.flexHorizontalElement]}>
-                <View style={styles.logoContainer}>
-                  <Image
-                    source={require('../../assets/images/sampleLogo.jpg')}
-                    style={styles.logo}
-                  />
-                </View>
-              </Text>
+              <View style={[styles.flexHorizontalElement]}>
+                {shopInfo.logo ? (
+                  <View style={styles.logoContainer}>
+                    <FastImage
+                      source={{ uri: shopInfo.logo.uri }}
+                      style={styles.logo}
+                    />
+                  </View>
+                ) : (
+                  <Text style={styles.infoElementText}>-</Text>
+                )}
+              </View>
             </View>
             <View
               style={[
                 styles.infoElementContainer,
                 styles.flexHorizontalContainer,
-                { borderBottomWidth: 0 },
+                styles.last,
               ]}
             >
               <Text style={[styles.infoTitle, styles.flexHorizontalElement]}>
                 Задний фон
               </Text>
-              <Text style={[styles.infoElement, styles.flexHorizontalElement]}>
-                <View style={styles.bgBannerContainer}>
-                  <Image
-                    source={require('../../assets/images/sampleBgBanner.jpg')}
-                    style={styles.bgBanner}
-                  />
-                </View>
-              </Text>
+              <View style={[styles.flexHorizontalElement]}>
+                {shopInfo.backgroundBanner ? (
+                  <View style={styles.bgBannerContainer}>
+                    <FastImage
+                      source={{ uri: shopInfo.backgroundBanner.uri }}
+                      style={styles.bgBanner}
+                    />
+                  </View>
+                ) : (
+                  <Text style={styles.infoElementText}>-</Text>
+                )}
+              </View>
             </View>
           </View>
-        </View>
-        <View>
-          <PrimaryButton>Оставить отзыв</PrimaryButton>
-          <PrimaryButton
-            style={styles.logoutButton}
-            textStyle={styles.logoutButtonText}
-            onPress={logout}
-          >
-            Выйти
-          </PrimaryButton>
         </View>
       </View>
     </ScrollView>
@@ -213,6 +399,8 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.white,
     borderRadius: 10,
     marginBottom: 15,
+    borderWidth: 1,
+    borderColor: GlobalStyles.colors.gray,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -228,6 +416,10 @@ const styles = StyleSheet.create({
   sectionContent: {
     marginTop: 7,
   },
+  hintBox: {
+    marginTop: 10,
+    marginBottom: 0,
+  },
   header: {
     marginTop: 15,
     backgroundColor: GlobalStyles.colors.deepBlack,
@@ -239,31 +431,56 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: GlobalStyles.colors.white,
   },
-  websiteContainer: {
+  websiteActivationWarningContainer: {
+    backgroundColor: GlobalStyles.colors.white,
+    borderWidth: 2,
+    borderColor: GlobalStyles.colors.warning,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 10,
+    paddingVertical: 20,
+    paddingHorizontal: 15,
     marginTop: 15,
-  },
-  introText: {
-    color: GlobalStyles.colors.white,
-    marginVertical: 10,
   },
   linkContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     borderRadius: 10,
-    backgroundColor: GlobalStyles.colors.primary500,
+    backgroundColor: GlobalStyles.colors.primary,
     padding: 20,
+    marginTop: 15,
+  },
+  linkUnderline: {
+    borderBottomColor: GlobalStyles.colors.darkGray,
+    borderBottomWidth: 1,
+    paddingBottom: 2,
+    maxWidth: '92%',
   },
   link: {
     fontFamily: 'Roboto-medium',
     color: GlobalStyles.colors.white,
-    maxWidth: '80%',
   },
   infoElementContainer: {
     flexDirection: 'column',
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: GlobalStyles.colors.gray200,
+    borderBottomColor: GlobalStyles.colors.gray,
+  },
+  last: {
+    borderBottomWidth: 0,
+  },
+  infoElement: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  infoElementIcon: {
+    marginVertical: 2,
+    marginRight: 7,
+  },
+  infoElementText: {
+    fontSize: 14,
   },
   flexHorizontalContainer: {
     flexDirection: 'row',
@@ -275,10 +492,6 @@ const styles = StyleSheet.create({
   },
   infoTitle: {
     fontSize: 18,
-  },
-  infoElement: {
-    fontSize: 14,
-    marginTop: 8,
   },
   colorView: {
     width: 25,
@@ -308,10 +521,10 @@ const styles = StyleSheet.create({
   logoutButton: {
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: GlobalStyles.colors.error500,
+    borderColor: GlobalStyles.colors.darkError,
     borderRadius: 10,
   },
   logoutButtonText: {
-    color: GlobalStyles.colors.error500,
+    color: GlobalStyles.colors.darkError,
   },
 });

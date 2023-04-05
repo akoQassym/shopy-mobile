@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.6,
     shadowRadius: 12,
     elevation: 10,
-    backgroundColor: GlobalStyles.colors.primary500,
+    backgroundColor: GlobalStyles.colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',

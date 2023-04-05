@@ -1,8 +1,7 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
-  Text,
   Dimensions,
   ScrollView,
   Alert,
@@ -11,46 +10,60 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import { CommonActions } from '@react-navigation/native';
-import functions from '@react-native-firebase/functions';
+import { GlobalStyles } from '../../constants/styles';
 import auth from '@react-native-firebase/auth';
 
-import PrimaryButton from '../../components/ui/buttons/PrimaryButton';
-import Link from '../../components/ui/Link';
-import TextField from '../../components/form/TextField';
-import LoadingOverlay from '../../components/ui/LoadingOverlay';
-
-import { GlobalStyles } from '../../constants/styles';
-import { AuthContext } from '../../store/authContext';
-import InformBadge from '../../components/form/InformBadge';
+import {
+  Text,
+  PrimaryButton,
+  Link,
+  LoadingOverlay,
+  TextField,
+  InformBadge,
+} from '../../components';
+import { AuthContext, ShopContext } from '../../store';
 
 const windowWidth = Dimensions.get('window').width;
 const loaderWidth = windowWidth * 0.8;
 
-const SignupScreen1 = ({ navigation, route }) => {
+const SignupScreen1 = ({ route }) => {
   const authCtx = useContext(AuthContext);
+  const shopCtx = useContext(ShopContext);
   const { enteredShopName } = route.params;
-  const [isCreatingAccount, setIsCreatingAccount] = useState(false);
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [status, setStatus] = useState(null);
 
-  const [enteredName, setEnteredName] = useState(null);
-  const [enteredSurname, setEnteredSurname] = useState(null);
-  const [enteredPhoneNumber, setEnteredPhoneNumber] = useState(null);
+  const [enteredFullName, setEnteredFullName] = useState(null);
+  const [enteredPhoneNumber, setEnteredPhoneNumber] = useState('+7');
   const [enteredPassword, setEnteredPassword] = useState(null);
   const [enteredEmail, setEnteredEmail] = useState(null);
-  const [phoneError, setPhoneError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
 
-  const changeName = (value) => setEnteredName(value);
-  const changeSurname = (value) => setEnteredSurname(value);
-  const changePhoneNumber = (value) => setEnteredPhoneNumber(value);
-  const changeEmail = (value) => setEnteredEmail(value);
-  const changePassword = (value) => setEnteredPassword(value);
+  const [errors, setErrors] = useState({
+    phoneError: false,
+    emailError: false,
+    passwordError: false,
+  });
+
+  const changeSignUpDetails = (fieldName, value) => {
+    switch (fieldName) {
+      case 'fullName':
+        setEnteredFullName(value);
+        break;
+      case 'phoneNumber':
+        setEnteredPhoneNumber(value);
+        break;
+      case 'email':
+        setEnteredEmail(value);
+        break;
+      case 'password':
+        setEnteredPassword(value);
+        break;
+      default:
+        return;
+    }
+  };
 
   const validatePhoneNumber = (value) => {
-    const phoneRegex =
-      /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+    const phoneRegex = /^(\+7)([0-9]{3})(\d{7})$/;
     return phoneRegex.test(value);
   };
 
@@ -61,73 +74,70 @@ const SignupScreen1 = ({ navigation, route }) => {
   };
 
   const validatePassword = (value) => {
-    return value !== null && value.length > 6;
+    return value !== null && value.length > 6 ? true : false;
   };
 
   const submit = async () => {
     const phoneValid = validatePhoneNumber(enteredPhoneNumber);
     const emailValid = validateEmail(enteredEmail);
     const passwordValid = validatePassword(enteredPassword);
-    if (!phoneValid || !passwordValid || !emailValid) {
-      if (!phoneValid) setPhoneError(true);
-      if (!emailValid) setEmailError(true);
-      if (!passwordValid) setPasswordError(true);
-      return;
+    setErrors({
+      phoneError: !phoneValid,
+      emailError: !emailValid,
+      passwordError: !passwordValid,
+    });
+    if (!phoneValid || !emailValid || !passwordValid) return;
+
+    setStatus('creating');
+    let isSignupSuccessful = false;
+    const signupResponse = await authCtx
+      .signup(
+        enteredEmail,
+        enteredPhoneNumber,
+        enteredPassword,
+        enteredFullName,
+        enteredFullName,
+        enteredShopName,
+      )
+      .then((res) => {
+        isSignupSuccessful = true;
+        return res;
+      })
+      .catch(() => {
+        setStatus(null);
+      });
+
+    if (!isSignupSuccessful) return;
+
+    setStatus('entering');
+    try {
+      const userRes = await auth().signInWithEmailAndPassword(
+        enteredEmail,
+        enteredPassword,
+      );
+      authCtx.setUser(
+        userRes.user.displayName,
+        userRes.user.email,
+        userRes.user.phoneNumber,
+        userRes.user.uid,
+      );
+      await shopCtx.fetchShopInfo(signupResponse.shopId);
+      userRes.user
+        .getIdToken(true)
+        .then((token) => authCtx.authenticate(token));
+    } catch (error) {
+      setStatus(null);
+      Alert.alert(
+        'Ошибка при входе!',
+        `Обратитесь в службу поддержки или попробуйте позже. ${error}`,
+      );
     }
-    if (phoneValid) setPhoneError(false);
-    if (emailValid) setEmailError(false);
-    if (passwordValid) setPasswordError(false);
-
-    setIsCreatingAccount(true);
-    await functions()
-      .httpsCallable('signup')({
-        email: enteredEmail,
-        phoneNumber: enteredPhoneNumber,
-        password: enteredPassword,
-        displayName: enteredName,
-        name: enteredName,
-        surname: enteredSurname,
-        shopName: enteredShopName,
-      })
-      .then((response) => {
-        console.log(response);
-        setIsCreatingAccount(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsCreatingAccount(false);
-        Alert.alert(
-          'Ошибка при регистрации!',
-          'Обратитесь в службу поддержки или попробуйте позже.',
-        );
-        return;
-      });
-
-    setIsAuthenticating(true);
-    await auth()
-      .signInWithEmailAndPassword(enteredEmail, enteredPassword)
-      .then((token) => {
-        console.log(token.user);
-        setIsAuthenticating(false);
-        authCtx.authenticate(token.user);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsAuthenticating(false);
-        Alert.alert(
-          'Ошибка при входе!',
-          'Обратитесь в службу поддержки или попробуйте позже.',
-        );
-      });
   };
 
-  if (isCreatingAccount) {
+  if (status === 'creating') {
     return <LoadingOverlay message="Создаем аккаунт..." />;
-  }
-
-  if (isAuthenticating) {
+  } else if (status === 'entering')
     return <LoadingOverlay message="Входим в систему..." />;
-  }
 
   return (
     <View style={styles.root}>
@@ -146,16 +156,16 @@ const SignupScreen1 = ({ navigation, route }) => {
                 showsVerticalScrollIndicator={false}
               >
                 <Text style={styles.title}>Создание аккаунта</Text>
-                {phoneError && (
+                {errors.phoneError && (
                   <InformBadge
                     type="error"
-                    errorHighlightedText="номер телефона"
+                    errorHighlightedText="номер телефона (+7XXXXXXXXXX)"
                   />
                 )}
-                {emailError && (
+                {errors.emailError && (
                   <InformBadge type="error" errorHighlightedText="email" />
                 )}
-                {passwordError && (
+                {errors.passwordError && (
                   <InformBadge
                     type="error"
                     customMessage="Пароль должен содержать больше 6 символов"
@@ -163,36 +173,33 @@ const SignupScreen1 = ({ navigation, route }) => {
                 )}
                 <View style={styles.form}>
                   <TextField
-                    placeholder="Имя"
+                    placeholder="Имя и Фамилия"
                     iconType="user"
-                    value={enteredName}
-                    onUpdateValue={changeName}
-                  />
-                  <TextField
-                    placeholder="Фамилия"
-                    iconType="user"
-                    value={enteredSurname}
-                    onUpdateValue={changeSurname}
+                    value={enteredFullName}
+                    onUpdateValue={changeSignUpDetails.bind(this, 'fullName')}
                   />
                   <TextField
                     placeholder="Номер телефона"
                     iconType="phone"
                     value={enteredPhoneNumber}
-                    onUpdateValue={changePhoneNumber}
+                    onUpdateValue={changeSignUpDetails.bind(
+                      this,
+                      'phoneNumber',
+                    )}
                     keyboardType="phone-pad"
                   />
                   <TextField
                     placeholder="Email"
                     iconType="email"
                     value={enteredEmail}
-                    onUpdateValue={changeEmail}
+                    onUpdateValue={changeSignUpDetails.bind(this, 'email')}
                   />
                   <TextField
                     placeholder="Пароль"
                     iconType="password"
                     type="password"
                     value={enteredPassword}
-                    onUpdateValue={changePassword}
+                    onUpdateValue={changeSignUpDetails.bind(this, 'password')}
                     helperText="Должен содержать больше 6 символов"
                   />
                 </View>
@@ -212,11 +219,10 @@ const SignupScreen1 = ({ navigation, route }) => {
           <PrimaryButton
             onPress={submit}
             disabled={
-              enteredName === null ||
-              enteredSurname === null ||
-              enteredPhoneNumber === null ||
-              enteredEmail === null ||
-              enteredPassword === null
+              !enteredFullName ||
+              !enteredPhoneNumber ||
+              !enteredEmail ||
+              !enteredPassword
             }
           >
             Создать
@@ -245,7 +251,7 @@ const styles = StyleSheet.create({
     top: 0,
     width: loaderWidth,
     height: 5,
-    backgroundColor: GlobalStyles.colors.primary400,
+    backgroundColor: GlobalStyles.colors.primary,
     zIndex: 10,
   },
   content: {
@@ -275,6 +281,6 @@ const styles = StyleSheet.create({
   },
   supplementaryText: {
     textAlign: 'center',
-    color: GlobalStyles.colors.gray300,
+    color: GlobalStyles.colors.darkGray,
   },
 });

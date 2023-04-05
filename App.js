@@ -4,26 +4,49 @@ import {
   SafeAreaView,
   ActivityIndicator,
   View,
+  Platform,
+  NativeModules,
+  UIManager,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
-
-import AuthContextProvider from './store/authContext';
-import { AuthContext } from './store/authContext';
-
+import {
+  AuthContextProvider,
+  AuthContext,
+  SnackbarContextProvider,
+  SnackbarContext,
+  ShopContextProvider,
+  CatalogContextProvider,
+} from './store';
+import { SnackbarGroup } from './components';
 import AuthenticationStack from './navigation/AuthenticationStack';
 import BottomTabsNavigation from './navigation/BottomTabsNavigation';
+import OrderContextProvider from './store/orderContext';
+
+const { StatusBarManager } = NativeModules;
+
+if (Platform.OS === 'android') {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+}
 
 const Navigation = () => {
   const authCtx = useContext(AuthContext);
-  console.log('--> Authenticated:', authCtx.isAuthenticated);
+  const snackbarCtx = useContext(SnackbarContext);
 
   return (
     <NavigationContainer>
-      {!authCtx.isAuthenticated && <AuthenticationStack />}
-      {authCtx.isAuthenticated && <BottomTabsNavigation />}
+      {snackbarCtx.snackbar && snackbarCtx.snackbar.length > 0 && (
+        <SnackbarGroup data={snackbarCtx.snackbar} />
+      )}
+      {authCtx.isAuthenticated ? (
+        <BottomTabsNavigation />
+      ) : (
+        <AuthenticationStack />
+      )}
     </NavigationContainer>
   );
 };
@@ -60,11 +83,19 @@ export default function App() {
 
   return (
     <>
-      <StatusBar style="dark" />
-      <SafeAreaView style={styles.rootScreen} onLayout={onLayoutRootView}>
-        <AuthContextProvider>
-          <Navigation />
-        </AuthContextProvider>
+      <StatusBar backgroundColor="transparent" translucent={true} />
+      <SafeAreaView style={[styles.rootScreen]} onLayout={onLayoutRootView}>
+        <SnackbarContextProvider>
+          <AuthContextProvider>
+            <ShopContextProvider>
+              <CatalogContextProvider>
+                <OrderContextProvider>
+                  <Navigation />
+                </OrderContextProvider>
+              </CatalogContextProvider>
+            </ShopContextProvider>
+          </AuthContextProvider>
+        </SnackbarContextProvider>
       </SafeAreaView>
     </>
   );
@@ -74,5 +105,6 @@ const styles = StyleSheet.create({
   rootScreen: {
     flex: 1,
     fontFamily: 'Roboto-regular',
+    paddingTop: Platform.OS === 'android' ? StatusBarManager.HEIGHT : 0,
   },
 });

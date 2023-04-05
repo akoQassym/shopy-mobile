@@ -1,8 +1,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { GlobalStyles } from '../constants/styles';
+import { IconButton } from '../components';
 
-import OrdersScreen from '../screens/OrdersScreen';
-import OrderInfoScreen from '../screens/OrderInfoScreen';
+import OrdersScreen from '../screens/orders/OrdersScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,14 +25,20 @@ const OrderStack = () => {
         component={OrdersScreen}
         options={{
           title: 'Заказы',
-        }}
-      />
-      <Stack.Screen
-        name="OrderInfoScreen"
-        component={OrderInfoScreen}
-        options={{
-          title: 'Информация о заказе',
-          presentation: 'modal',
+          headerSearchBarOptions: {
+            placeholder: 'Search',
+            cancelButtonText: 'Отмена',
+            hideWhenScrolling: false,
+          },
+          headerRight: () => (
+            <IconButton
+              icon="material"
+              name="add"
+              size={22}
+              onPress={() => {}}
+              color={GlobalStyles.colors.primary}
+            />
+          ),
         }}
       />
     </Stack.Navigator>

@@ -1,38 +1,93 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { useContext, useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Alert,
+} from 'react-native';
 import { GlobalStyles } from '../../constants/styles';
-import TextField from '../../components/form/TextField';
-import PrimaryButton from '../../components/ui/buttons/PrimaryButton';
+import {
+  PrimaryButton,
+  IconButton,
+  Text,
+  LoadingOverlay,
+  SectionWrapper,
+  TextField,
+} from '../../components';
+import { CatalogContext } from '../../store';
 
-const AddCategoryScreen = () => {
-  const addProduct = () => {};
+const AddCategoryScreen = ({ navigation }) => {
+  const catalogCtx = useContext(CatalogContext);
+  const [isCreating, setIsCreating] = useState(false);
+  const [enteredCategoryName, setEnteredCategoryName] = useState();
+  const [enteredCategoryDescription, setEnteredCategoryDescription] =
+    useState();
+
+  const changeCategoryName = (value) => setEnteredCategoryName(value);
+  const changeCategoryDescription = (value) =>
+    setEnteredCategoryDescription(value);
+
+  const chooseProductToCategory = () => {};
+
+  const submit = () => {
+    if (enteredCategoryName === null) {
+      Alert.alert(
+        'Заполните поля',
+        'Название категории является обязательным полем',
+      );
+      return;
+    }
+    catalogCtx.addCategory(enteredCategoryName, enteredCategoryDescription);
+    navigation.goBack();
+  };
+
+  if (isCreating) {
+    return <LoadingOverlay message="Создаем новую категорию..." />;
+  }
 
   return (
-    <ScrollView style={styles.root}>
-      <View style={styles.content}>
-        <View style={styles.formContainer}>
-          <TextField label={'Фото'} />
-          <TextField label={'Название категории'} placeholder={'Обувь'} />
-          <TextField label={'Описание'} type={'multiline'} />
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <ScrollView style={styles.root}>
+        <View style={styles.content}>
+          <SectionWrapper>
+            <TextField
+              label={'Название категории'}
+              placeholder={'Обувь'}
+              onUpdateValue={changeCategoryName}
+              required
+            />
+            <TextField
+              label={'Описание'}
+              type={'multiline'}
+              onUpdateValue={changeCategoryDescription}
+            />
+          </SectionWrapper>
+          <SectionWrapper>
+            <Text style={styles.addText}>Товаров в категории: 0</Text>
+            <PrimaryButton
+              style={styles.addButton}
+              textStyle={styles.addButtonText}
+              icon={
+                <IconButton
+                  icon="ionicons"
+                  name="md-add"
+                  size={25}
+                  color={GlobalStyles.colors.primary}
+                />
+              }
+              onPress={chooseProductToCategory}
+            >
+              Добавить товары
+            </PrimaryButton>
+          </SectionWrapper>
         </View>
-        <View style={styles.formContainer}>
-          <Text style={styles.addText}>Товаров в категории: 0</Text>
-          <PrimaryButton
-            style={styles.addButton}
-            textStyle={styles.addButtonText}
-            icon={
-              <Ionicons name="md-add" size={25} style={styles.buttonIcon} />
-            }
-            onPress={addProduct}
-          >
-            Добавить товары
-          </PrimaryButton>
+        <View style={styles.buttonContainer}>
+          <PrimaryButton onPress={submit}>Создать</PrimaryButton>
         </View>
-      </View>
-      <View style={styles.buttonContainer}>
-        <PrimaryButton>Создать</PrimaryButton>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -49,31 +104,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingBottom: 20,
   },
-  formContainer: {
-    marginVertical: 5,
-    paddingTop: 8,
-    paddingBottom: 12,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    backgroundColor: GlobalStyles.colors.white,
-  },
   buttonContainer: {
     justifyContent: 'flex-end',
   },
   addText: {
-    fontSize: 16,
+    fontSize: 14,
     marginVertical: 10,
   },
   addButton: {
-    backgroundColor: GlobalStyles.colors.primary100,
+    backgroundColor: GlobalStyles.colors.veryLightPrimary,
     paddingVertical: 12,
   },
   addButtonText: {
-    color: GlobalStyles.colors.primary500,
+    color: GlobalStyles.colors.primary,
     fontFamily: 'Roboto-regular',
-  },
-  buttonIcon: {
-    color: GlobalStyles.colors.primary500,
-    marginHorizontal: 2,
   },
 });

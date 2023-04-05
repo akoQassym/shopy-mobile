@@ -1,6 +1,6 @@
 import { View, StyleSheet } from 'react-native';
-import Text from '../Text';
 import { GlobalStyles } from '../../../constants/styles';
+import Text from '../Text';
 import PressableContainer from '../PressableContainer';
 
 const SecondaryButton = ({
@@ -33,7 +33,7 @@ export default SecondaryButton;
 const styles = StyleSheet.create({
   container: {
     borderRadius: 10,
-    backgroundColor: GlobalStyles.colors.gray100,
+    backgroundColor: GlobalStyles.colors.veryLightGray,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   label: {
-    fontSize: 10,
+    fontSize: 12,
     color: GlobalStyles.colors.black,
     textAlign: 'center',
     marginTop: 2,

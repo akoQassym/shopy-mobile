@@ -1,53 +1,50 @@
-import { TextInput, View, StyleSheet } from 'react-native';
-import Text from '../ui/Text';
-import { GlobalStyles } from '../../constants/styles';
-
-import { Feather } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
 import { useState } from 'react';
+import { TextInput, View, StyleSheet } from 'react-native';
+import { Feather, FontAwesome5, Entypo } from '@expo/vector-icons';
+import { GlobalStyles } from '../../constants/styles';
+import Text from '../ui/Text';
 
 const RenderIcon = ({ iconType }) => {
   return iconType === 'tenge' ? (
     <FontAwesome5
       name="tenge"
       size={16}
-      color={GlobalStyles.colors.gray300}
+      color={GlobalStyles.colors.darkGray}
       style={[styles.icon]}
     />
   ) : iconType === 'user' ? (
     <FontAwesome5
       name="user"
       size={16}
-      color={GlobalStyles.colors.gray300}
+      color={GlobalStyles.colors.darkGray}
       style={[styles.icon]}
     />
   ) : iconType === 'password' ? (
     <Feather
       name="lock"
       size={16}
-      color={GlobalStyles.colors.gray300}
+      color={GlobalStyles.colors.darkGray}
       style={[styles.icon]}
     />
   ) : iconType === 'phone' ? (
     <Feather
       name="phone"
       size={16}
-      color={GlobalStyles.colors.gray300}
+      color={GlobalStyles.colors.darkGray}
       style={[styles.icon]}
     />
   ) : iconType === 'email' ? (
     <Feather
       name="mail"
       size={16}
-      color={GlobalStyles.colors.gray300}
+      color={GlobalStyles.colors.darkGray}
       style={[styles.icon]}
     />
   ) : iconType === 'shop' ? (
     <Entypo
       name="shop"
       size={16}
-      color={GlobalStyles.colors.gray300}
+      color={GlobalStyles.colors.darkGray}
       style={[styles.icon]}
     />
   ) : (
@@ -59,6 +56,7 @@ const TextField = ({
   type,
   placeholder,
   style,
+  wrapperStyle,
   error,
   label,
   helperText,
@@ -77,7 +75,7 @@ const TextField = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, wrapperStyle && wrapperStyle]}>
       {label && (
         <Text style={styles.label}>
           {label}
@@ -110,7 +108,7 @@ const TextField = ({
           <Feather
             name={isSecure ? 'eye-off' : 'eye'}
             size={16}
-            color={GlobalStyles.colors.gray300}
+            color={GlobalStyles.colors.darkGray}
             style={[styles.rightEndIcon]}
             onPress={invertIsSecure}
           />
@@ -126,13 +124,14 @@ export default TextField;
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
+    width: '100%',
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: GlobalStyles.colors.gray300,
+    borderColor: GlobalStyles.colors.darkGray,
   },
   icon: {
     marginLeft: 15,
@@ -148,13 +147,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   error: {
-    borderColor: GlobalStyles.colors.error250,
+    borderColor: GlobalStyles.colors.error,
   },
   textInputLabelStyle: {
-    borderColor: GlobalStyles.colors.gray200,
+    borderColor: GlobalStyles.colors.gray,
   },
   label: {
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'left',
     fontFamily: 'Roboto-regular',
     marginBottom: 8,
@@ -167,6 +166,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 14,
     textAlign: 'left',
-    color: GlobalStyles.colors.gray300,
+    color: GlobalStyles.colors.darkGray,
   },
 });
