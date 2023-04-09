@@ -1,5 +1,11 @@
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { Text, PrimaryButton, Link, ProgressiveImage } from '../../components';
+import { View, StyleSheet, Dimensions, Linking } from 'react-native';
+import {
+  Text,
+  PrimaryButton,
+  Link,
+  ProgressiveImage,
+  PressableContainer,
+} from '../../components';
 import { GlobalStyles } from '../../constants/styles';
 
 const windowHeight = Dimensions.get('window').height;
@@ -7,6 +13,12 @@ const windowHeight = Dimensions.get('window').height;
 const WelcomeScreen = ({ navigation }) => {
   const proceedToNextPage = () => {
     navigation.navigate('Signup1');
+  };
+
+  const openPrivacyPolicy = () => {
+    Linking.openURL(
+      'https://www.privacypolicies.com/live/795bc214-e653-4a88-8183-2cabd322c39a',
+    );
   };
 
   return (
@@ -39,6 +51,19 @@ const WelcomeScreen = ({ navigation }) => {
           <PrimaryButton onPress={proceedToNextPage}>
             Создать аккаунт
           </PrimaryButton>
+          <PressableContainer
+            style={{ marginTop: 10 }}
+            onPress={openPrivacyPolicy}
+          >
+            <Text
+              style={[
+                styles.supplementaryText,
+                { fontSize: 10, textDecorationLine: 'underline' },
+              ]}
+            >
+              Политика конфиденциальности
+            </Text>
+          </PressableContainer>
         </View>
       </View>
     </View>
