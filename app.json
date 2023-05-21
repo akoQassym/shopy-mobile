@@ -2,7 +2,7 @@
   "expo": {
     "name": "Shopy",
     "slug": "ShopyMobile",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,7 +20,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.shopyws.app",
-      "googleServicesFile": "./assets/GoogleService-Info.plist"
+      "googleServicesFile": "./assets/GoogleService-Info.plist",
+      "buildNumber": "11",
+      "infoPlist": {
+        "NSUserTrackingUsageDescription": "Мы используем данные для исправления багов/ошибок и улучшения опыта использования приложения" 
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -31,19 +35,20 @@
         "android.permission.RECORD_AUDIO"
       ],
       "package": "com.shopyws.app",
+      "versionCode": 1,
       "googleServicesFile": "./assets/google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "@react-native-firebase/app", 
+      "@react-native-firebase/app",
       "@react-native-firebase/auth",
       [
         "expo-image-picker",
         {
-          "cameraPermission": "Приложению нужен доступе к камере для выбора фотографий",
-          "photosPermission": "Приложению нужен доступе к галерее для выбора фотографий"
+          "cameraPermission": "Приложению нужен доступ к камере для выбора фотографий",
+          "photosPermission": "Приложению нужен доступ к галерее для выбора фотографий"
         }
       ],
       [
@@ -52,6 +57,12 @@
           "ios": {
             "useFrameworks": "static"
           }
+        }
+      ],
+      [
+        "expo-tracking-transparency",
+        {
+          "userTrackingPermission": "Мы используем данные для исправления багов/ошибок и улучшения опыта использования приложения"
         }
       ]
     ],

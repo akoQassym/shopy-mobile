@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from 'react';
 import functions from '@react-native-firebase/functions';
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SnackbarContext } from './snackbarContext';
 
 export const AuthContext = createContext({
@@ -91,6 +92,16 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const logout = () => {
+    const removeCredentials = async () => {
+      try {
+        await AsyncStorage.removeItem('shopId');
+        await AsyncStorage.removeItem('token');
+        await AsyncStorage.removeItem('loggedIn');
+      } catch (e) {
+        console.log('Произошла ошибка при выходе из аккаунта', e);
+      }
+    };
+    removeCredentials();
     auth().signOut();
     setToken(null);
     setUserInfo(null);

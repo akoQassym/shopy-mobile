@@ -1,6 +1,6 @@
 import { useContext, useState, useLayoutEffect } from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
-import { IconButton, TextField } from '../../components';
+import { IconButton, TextField, Text, ToggleSwitch } from '../../components';
 import { ShopContext } from '../../store';
 import { GlobalStyles } from '../../constants/styles';
 
@@ -9,6 +9,9 @@ const EditBusinessInfoScreen = ({ navigation }) => {
   const [isChanged, setIsChanged] = useState(false);
   const [shopName, setShopName] = useState(shopCtx.shopInfo.shopName ?? null);
   const [address, setAddress] = useState(shopCtx.shopInfo.address ?? null);
+  const [isAddressShown, setIsAddressShown] = useState(
+    shopCtx.shopInfo.isAddressShown ?? false,
+  );
   const [description, setDescription] = useState(
     shopCtx.shopInfo.description ?? null,
   );
@@ -24,6 +27,9 @@ const EditBusinessInfoScreen = ({ navigation }) => {
         break;
       case 'address':
         setAddress(value);
+        break;
+      case 'isAddressShown':
+        setIsAddressShown(!isAddressShown);
         break;
       case 'description':
         setDescription(value);
@@ -41,6 +47,7 @@ const EditBusinessInfoScreen = ({ navigation }) => {
       shopName,
       description,
       address,
+      isAddressShown,
       workingTime,
       shopCtx.shopInfo.phoneNumber,
       shopCtx.shopInfo.instagram,
@@ -94,7 +101,7 @@ const EditBusinessInfoScreen = ({ navigation }) => {
           />
         ),
       });
-  }, [isChanged, shopName, description, address, workingTime]);
+  }, [isChanged, shopName, description, address, workingTime, isAddressShown]);
 
   return (
     <ScrollView style={styles.root}>
@@ -107,9 +114,19 @@ const EditBusinessInfoScreen = ({ navigation }) => {
           />
           <TextField
             label={'Адрес'}
+            type={'multiline'}
             value={address}
             onUpdateValue={changeBusinessInfo.bind(this, 'address')}
           />
+          <View style={styles.fieldContainer}>
+            <Text style={styles.fieldContainerText}>
+              Показывать адрес на сайте
+            </Text>
+            <ToggleSwitch
+              value={isAddressShown}
+              onValueChange={changeBusinessInfo.bind(this, 'isAddressShown')}
+            />
+          </View>
           <TextField
             label={'Рабочее время'}
             value={workingTime}
@@ -145,5 +162,14 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     justifyContent: 'flex-end',
+  },
+  fieldContainer: {
+    marginVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  fieldContainerText: {
+    fontSize: 16,
   },
 });

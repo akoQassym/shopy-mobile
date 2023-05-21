@@ -7,10 +7,16 @@ import {
   PressableContainer,
 } from '../../components';
 import { GlobalStyles } from '../../constants/styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useContext, useEffect } from 'react';
+import { AuthContext, ShopContext } from '../../store';
 
 const windowHeight = Dimensions.get('window').height;
 
 const WelcomeScreen = ({ navigation }) => {
+  const authCtx = useContext(AuthContext);
+  const shopCtx = useContext(ShopContext);
+
   const proceedToNextPage = () => {
     navigation.navigate('Signup1');
   };
@@ -20,6 +26,31 @@ const WelcomeScreen = ({ navigation }) => {
       'https://www.privacypolicies.com/live/795bc214-e653-4a88-8183-2cabd322c39a',
     );
   };
+
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        const shopId = await AsyncStorage.getItem('shopId');
+        const userJson = await AsyncStorage.getItem('user');
+        if (token !== null && userJson != null && shopId !== null) {
+          const user = JSON.parse(userJson);
+          authCtx.setUser(
+            user.displayName,
+            user.email,
+            user.phoneNumber,
+            user.uid,
+          );
+          await shopCtx.fetchShopInfo(shopId);
+          authCtx.authenticate(token);
+        }
+      } catch (e) {
+        console.log('Произошла ошибка!', e);
+      }
+    };
+
+    checkLoggedIn();
+  }, []);
 
   return (
     <View style={styles.root}>

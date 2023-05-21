@@ -7,6 +7,7 @@ import EditDesignScreen from '../screens/business/EditDesignScreen';
 import EditColorScreen from '../screens/business/EditColorScreen';
 import EditSubdomainScreen from '../screens/business/EditSubdomainScreen';
 import EditContactDetailsScreen from '../screens/business/EditContactDetailsScreen';
+import EditLinksScreen from '../screens/business/EditLinksScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -64,6 +65,13 @@ const MyBusinessStack = () => {
         component={EditColorScreen}
         options={{
           title: 'Цветовая палитра',
+        }}
+      />
+      <Stack.Screen
+        name="EditLinksScreen"
+        component={EditLinksScreen}
+        options={{
+          title: 'Ссылки',
         }}
       />
     </Stack.Navigator>

@@ -41,6 +41,7 @@ const MyBusinessScreen = ({ navigation }) => {
     colorAccent: shopCtx.shopInfo?.colorAccent ?? null,
     logo: shopCtx.shopInfo?.logo ?? null,
     backgroundBanner: shopCtx.shopInfo?.backgroundBanner ?? null,
+    links: shopCtx.shopInfo?.links ?? null,
   };
 
   const onRefresh = useCallback(async () => {
@@ -76,6 +77,9 @@ const MyBusinessScreen = ({ navigation }) => {
         break;
       case 'editDesign':
         navigation.navigate('EditDesignScreen');
+        break;
+      case 'editLinks':
+        navigation.navigate('EditLinksScreen');
         break;
       default:
         return;
@@ -377,6 +381,53 @@ const MyBusinessScreen = ({ navigation }) => {
               </View>
             </View>
           </View>
+        </View>
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Ссылки</Text>
+            <IconButton
+              icon="ionicons"
+              name="arrow-forward-circle-sharp"
+              size={30}
+              color={GlobalStyles.colors.black}
+              onPress={navigateToScreen.bind(this, 'editLinks')}
+            />
+          </View>
+          <HintBox
+            style={styles.hintBox}
+            label="Ссылки будут отображаться на вашем сайте"
+          />
+          {shopInfo.links?.length > 0 ? (
+            shopInfo.links.map((linkElement, key) => (
+              <View style={styles.infoElementContainer} key={key}>
+                <View style={{ paddingLeft: 15, borderLeftWidth: 2 }}>
+                  <Text
+                    style={[
+                      styles.infoElementText,
+                      { fontFamily: 'Roboto-medium' },
+                    ]}
+                  >
+                    {linkElement.title}
+                  </Text>
+                  <Text style={styles.infoElementText}>
+                    {linkElement.subtitle}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.infoElementText,
+                      { color: GlobalStyles.colors.gray },
+                    ]}
+                  >
+                    {linkElement.link}
+                  </Text>
+                </View>
+              </View>
+            ))
+          ) : (
+            <View style={styles.infoElementContainer}>
+              <Text style={styles.infoTitle}>-</Text>
+            </View>
+          )}
         </View>
       </View>
     </ScrollView>

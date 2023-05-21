@@ -1,4 +1,4 @@
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -9,6 +9,8 @@ import {
   UIManager,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
+import { firebase } from '@react-native-firebase/analytics';
 import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
@@ -72,6 +74,15 @@ export default function App() {
       await SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await requestTrackingPermissionsAsync();
+      if (status === 'granted') {
+        await firebase.analytics().setAnalyticsCollectionEnabled(true);
+      }
+    })();
+  }, []);
 
   if (!fontsLoaded) {
     return (

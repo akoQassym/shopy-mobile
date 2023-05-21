@@ -5,10 +5,13 @@ import {
   Alert,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { GlobalStyles } from '../../constants/styles';
 import functions from '@react-native-firebase/functions';
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   Text,
@@ -63,16 +66,31 @@ const LoginScreen = () => {
         enteredPassword,
       );
       setStatus('retrievingData');
-      authCtx.setUser(
-        userRes.user.displayName,
-        userRes.user.email,
-        userRes.user.phoneNumber,
-        userRes.user.uid,
-      );
+      const userDisplayName = userRes.user.displayName;
+      const userEmail = userRes.user.email;
+      const userPhoneNumber = userRes.user.phoneNumber;
+      const userUID = userRes.user.uid;
+      authCtx.setUser(userDisplayName, userEmail, userPhoneNumber, userUID);
       const shopsRes = await functions().httpsCallable('getShops')();
       shopCtx.setShopsList(shopsRes.data);
       await shopCtx.fetchShopInfo(shopsRes.data[0]);
-      await userRes.user.getIdToken(true).then((token) => {
+      await userRes.user.getIdToken(true).then(async (token) => {
+        try {
+          await AsyncStorage.setItem(
+            'user',
+            JSON.stringify({
+              displayName: userDisplayName,
+              email: userEmail,
+              phoneNumber: userPhoneNumber,
+              uid: userUID,
+            }),
+          );
+          await AsyncStorage.setItem('shopId', shopsRes.data[0]);
+          await AsyncStorage.setItem('token', token);
+          await AsyncStorage.setItem('loggedIn', JSON.stringify(true));
+        } catch (e) {
+          console.log('Ошибка при сохранении данных!');
+        }
         authCtx.authenticate(token);
       });
     } catch (error) {
@@ -89,7 +107,10 @@ const LoginScreen = () => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.root}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.root}
+      >
         <View style={styles.content}>
           <View>
             <Text style={styles.title}>
@@ -147,7 +168,7 @@ const LoginScreen = () => {
             </PrimaryButton>
           </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 };
