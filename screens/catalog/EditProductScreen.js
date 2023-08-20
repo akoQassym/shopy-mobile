@@ -40,6 +40,7 @@ const EditProductScreen = ({ navigation, route }) => {
   const [productName, setProductName] = useState(productData.name ?? '');
   const [description, setDescription] = useState(productData.description ?? '');
   const [price, setPrice] = useState(productData.price ?? '');
+  const [oldPrice, setOldPrice] = useState(productData.oldPrice ?? '');
   const [categoryId, setCategoryId] = useState(productData.categoryId ?? '');
   const [activityStatus, setActivityStatus] = useState(
     productData.active ?? null,
@@ -65,6 +66,9 @@ const EditProductScreen = ({ navigation, route }) => {
         break;
       case 'price':
         setPrice(value);
+        break;
+      case 'oldPrice':
+        setOldPrice(value);
         break;
       case 'category':
         setCategoryId(value);
@@ -142,12 +146,14 @@ const EditProductScreen = ({ navigation, route }) => {
       productName,
       description,
       price,
+      oldPrice,
       categoryId,
       uploadedPhotosArr,
       selectedOptionGroups,
       inStockStatus,
       activityStatus,
       selectedOptionGroups,
+      100000,
     );
     navigation.pop(2);
   };
@@ -237,6 +243,7 @@ const EditProductScreen = ({ navigation, route }) => {
     activityStatus,
     categoryId,
     selectedPhotos,
+    oldPrice,
   ]);
 
   if (isUploading) {
@@ -298,6 +305,14 @@ const EditProductScreen = ({ navigation, route }) => {
               value={price}
               onUpdateValue={changeProductInfo.bind(this, 'price')}
               required
+            />
+            <TextField
+              label={'Старая цена (необязательно)'}
+              iconType="tenge"
+              required
+              keyboardType={'decimal-pad'}
+              value={oldPrice}
+              onUpdateValue={changeProductInfo.bind(this, 'oldPrice')}
             />
           </SectionWrapper>
           <SectionWrapper label={'Фото'}>

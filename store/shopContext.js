@@ -11,6 +11,7 @@ export const ShopContext = createContext({
     websiteActivated: null,
     description: '',
     address: '',
+    isAddressShown: null,
     workingHours: '',
     phoneNumber: '',
     instagram: '',
@@ -21,6 +22,9 @@ export const ShopContext = createContext({
     colorAccent: '',
     logo: {},
     backgroundBanner: {},
+    instagram2: '',
+    whatsapp2: '',
+    links: [],
   },
   fetchShopInfo: async () => {},
   setShopInfo: () => {},
@@ -30,14 +34,18 @@ export const ShopContext = createContext({
     shopName,
     description,
     address,
+    isAddressShown,
     workingHours,
     phoneNumber,
     instagram,
     telegram,
     whatsapp,
     twoGis,
+    instagram2,
+    whatsapp2,
   ) => {},
   editShopDesign: async (colorAccent, logo, backgroundBanner) => {},
+  editLinks: async (links) => {},
   clean: () => {},
 });
 
@@ -68,6 +76,7 @@ const ShopContextProvider = ({ children }) => {
           shopRes.data.data.websiteActivated,
           shopRes.data.data.description,
           shopRes.data.data.address,
+          shopRes.data.data.isAddressShown,
           shopRes.data.data.workingHours,
           shopRes.data.data.phoneNumber,
           shopRes.data.data.instagram,
@@ -78,6 +87,9 @@ const ShopContextProvider = ({ children }) => {
           shopRes.data.data.colorAccent,
           shopRes.data.data.logo,
           shopRes.data.data.backgroundBanner,
+          shopRes.data.data.links,
+          shopRes.data.data.instagram2,
+          shopRes.data.data.whatsapp2,
         );
       })
       .catch((error) => {
@@ -101,6 +113,7 @@ const ShopContextProvider = ({ children }) => {
     websiteActivated,
     description,
     address,
+    isAddressShown,
     workingHours,
     phoneNumber,
     instagram,
@@ -111,6 +124,9 @@ const ShopContextProvider = ({ children }) => {
     colorAccent,
     logo,
     backgroundBanner,
+    links,
+    instagram2,
+    whatsapp2,
   ) => {
     setShopInfo({
       shopId: shopId,
@@ -119,6 +135,7 @@ const ShopContextProvider = ({ children }) => {
       websiteActivated: websiteActivated,
       description: description,
       address: address,
+      isAddressShown: isAddressShown,
       workingHours: workingHours,
       phoneNumber: phoneNumber,
       instagram: instagram,
@@ -129,6 +146,9 @@ const ShopContextProvider = ({ children }) => {
       colorAccent: colorAccent,
       logo: logo,
       backgroundBanner: backgroundBanner,
+      links: links,
+      instagram2: instagram2,
+      whatsapp2: whatsapp2,
     });
   };
 
@@ -176,12 +196,15 @@ const ShopContextProvider = ({ children }) => {
     shopName,
     description,
     address,
+    isAddressShown,
     workingHours,
     phoneNumber,
     instagram,
     telegram,
     whatsapp,
     twoGis,
+    instagram2,
+    whatsapp2,
   ) => {
     if (!value.shopInfo.shopId) {
       snackbarCtx.createSnackbar(
@@ -199,12 +222,15 @@ const ShopContextProvider = ({ children }) => {
         name: shopName,
         description: description,
         address: address,
+        isAddressShown: isAddressShown,
         workingHours: workingHours,
         phoneNumber: phoneNumber,
         instagram: instagram,
         telegram: telegram,
         whatsapp: whatsapp,
         twoGis: twoGis,
+        instagram2: instagram2,
+        whatsapp2: whatsapp2,
       })
       .then(() => {
         setShopInfo({
@@ -212,12 +238,15 @@ const ShopContextProvider = ({ children }) => {
           name: shopName,
           description: description,
           address: address,
+          isAddressShown: isAddressShown,
           workingHours: workingHours,
           phoneNumber: phoneNumber,
           instagram: instagram,
           telegram: telegram,
           whatsapp: whatsapp,
           twoGis: twoGis,
+          instagram2: instagram2,
+          whatsapp2: whatsapp2,
         });
         snackbarCtx.createSnackbar(
           'success',
@@ -229,7 +258,7 @@ const ShopContextProvider = ({ children }) => {
         snackbarCtx.createSnackbar(
           'error',
           shopName,
-          'Произошла ошибка при загрузке обновленных данных о вашем магазине!',
+          `Произошла ошибка при загрузке обновленных данных о вашем магазине!`,
         );
       });
   };
@@ -274,6 +303,42 @@ const ShopContextProvider = ({ children }) => {
       });
   };
 
+  const editLinks = async (links) => {
+    if (!value.shopInfo.shopId) {
+      snackbarCtx.createSnackbar(
+        'error',
+        null,
+        'Произошла ошибка. Отсутствует ID. Попробуйте еще раз или обратитесь в службу поддержки.',
+        4500,
+      );
+      return;
+    }
+    snackbarCtx.createSnackbar('info', null, 'Изменения загружаются...');
+    await functions()
+      .httpsCallable('updateShopLinks')({
+        shopId: value.shopInfo.shopId,
+        links: links,
+      })
+      .then(() => {
+        setShopInfo({
+          ...shopInfo,
+          links: links,
+        });
+        snackbarCtx.createSnackbar(
+          'success',
+          null,
+          'Ссылки были успешно изменены',
+        );
+      })
+      .catch(() => {
+        snackbarCtx.createSnackbar(
+          'error',
+          null,
+          'Произошла ошибка при изменении ссылок!',
+        );
+      });
+  };
+
   const clean = () => {
     setShopsList(null);
     setShopInfo(null);
@@ -288,6 +353,7 @@ const ShopContextProvider = ({ children }) => {
     editSubdomain: editSubdomain,
     editShopInfo: editShopInfo,
     editShopDesign: editShopDesign,
+    editLinks: editLinks,
     clean: clean,
   };
 

@@ -160,22 +160,6 @@ const EditDesignScreen = ({ navigation }) => {
     <ScrollView style={styles.root}>
       <View style={styles.content}>
         <View style={styles.formContainer}>
-          <ColorSelect
-            label={'Акцентирующий цвет'}
-            colorList={[
-              '#ffffff',
-              '#000000',
-              '#4287f5',
-              '#f0e80c',
-              '#18c40c',
-              '#c40cb5',
-              '#c40c25',
-            ]}
-            currentColor={colorAccent}
-            onSelect={changeDesignInfo.bind(this, 'colorAccent')}
-          />
-        </View>
-        <View style={styles.formContainer}>
           <ImagePicker
             images={selectedLogo}
             setImages={changeDesignInfo.bind(this, 'logo')}

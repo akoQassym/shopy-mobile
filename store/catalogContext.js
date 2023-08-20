@@ -16,11 +16,13 @@ export const CatalogContext = createContext({
     name,
     description,
     price,
+    oldPrice,
     categoryId,
     content,
     optionVariants,
     inStock,
     active,
+    orderNumber,
   ) => {},
   deleteProduct: async (productId) => {},
   fetchOptionGroups: async () => {},
@@ -79,6 +81,7 @@ const CatalogContextProvider = ({ children }) => {
         }
       })
       .catch((error) => {
+        console.log(error);
         snackbarCtx.createSnackbar(
           'error',
           null,
@@ -125,11 +128,13 @@ const CatalogContextProvider = ({ children }) => {
     name,
     description,
     price,
+    oldPrice,
     categoryId,
     content,
     optionVariants,
     inStock,
     active,
+    orderNumber,
   ) => {
     snackbarCtx.createSnackbar('info', name, 'Изменения загружаются...');
     await functions()
@@ -138,11 +143,13 @@ const CatalogContextProvider = ({ children }) => {
         name: name,
         description: description,
         price: price,
+        oldPrice: oldPrice,
         categoryId: categoryId,
         content: content,
         optionVariants: optionVariants,
         inStock: inStock,
         active: active,
+        orderNumber: orderNumber,
       })
       .then(() => {
         const list = [...productsList];
@@ -156,12 +163,14 @@ const CatalogContextProvider = ({ children }) => {
           name: name,
           description: description,
           price: price,
+          oldPrice: oldPrice,
           categoryId: categoryId,
           content: content,
           optionVariants: optionVariants,
           inStock: inStock,
           active: active,
           categoryName: categoryName,
+          orderNumber: orderNumber,
         };
         setProductsList(list);
         snackbarCtx.createSnackbar('success', name, 'Товар успешно изменен');
