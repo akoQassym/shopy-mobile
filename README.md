@@ -26,8 +26,8 @@ Create a unique online presence with ease:
 - Share external links to social media profiles and more
 
 ![Website Configuration Page](screenshots/website_screen.png)
-![Editing Store Information](screenshots/website_configuration.png)
-![Website examples](screenshots/website_example.png)
+![Editing Store Information](screenshots/webstite_configuration.png)
+![Website examples](screenshots/websites_example.png)
 
 ### 3. Catalog
 
@@ -35,7 +35,7 @@ Effortlessly manage your products and categories:
 
 - **Showcase Products**: Display all your products in one centralized catalog for easy browsing.
 
-![Display Catalog](screenshots/catalog_srceen.png)
+![Display Catalog](screenshots/catalog_screen.png)
 
 - **Create Categories**: Organize your products by creating custom categories to help customers navigate your offerings.
 
@@ -61,7 +61,7 @@ Easily manage your profile information:
 
 - Update your personal and store-related details
 
-![Profile](screenshots/profile+screen.png)
+![Profile](screenshots/profile_screen.png)
 
 ## Technologies and Stack
 
