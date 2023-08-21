@@ -20,7 +20,6 @@ import { CatalogContext } from '../../store';
 
 const AddCategoryScreen = ({ navigation }) => {
   const catalogCtx = useContext(CatalogContext);
-  const [isCreating, setIsCreating] = useState(false);
   const [enteredCategoryName, setEnteredCategoryName] = useState();
   const [enteredCategoryDescription, setEnteredCategoryDescription] =
     useState();
@@ -42,10 +41,6 @@ const AddCategoryScreen = ({ navigation }) => {
     catalogCtx.addCategory(enteredCategoryName, enteredCategoryDescription);
     navigation.goBack();
   };
-
-  if (isCreating) {
-    return <LoadingOverlay message="Создаем новую категорию..." />;
-  }
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
