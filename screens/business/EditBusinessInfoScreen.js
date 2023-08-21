@@ -59,10 +59,10 @@ const EditBusinessInfoScreen = ({ navigation }) => {
   };
 
   const cancelChanges = () => {
-    Alert.alert('Вы уверены, что хотите отменить все изменения?', undefined, [
-      { text: 'Продолжить редактирование', onPress: () => {} },
+    Alert.alert('Are you sure you want to undo all the changes?', undefined, [
+      { text: 'Continue editing', onPress: () => {} },
       {
-        text: 'Отменить',
+        text: 'Cancel',
         onPress: () => {
           setIsChanged(false);
           navigation.goBack();
@@ -80,7 +80,7 @@ const EditBusinessInfoScreen = ({ navigation }) => {
           name="save-sharp"
           size={22}
           onPress={submit}
-          label="Сохранить"
+          label="Save"
           labelColor={GlobalStyles.colors.primary}
           color={
             isChanged
@@ -96,7 +96,7 @@ const EditBusinessInfoScreen = ({ navigation }) => {
         headerLeft: () => (
           <IconButton
             onPress={cancelChanges}
-            label="Отмена"
+            label="Cancel"
             labelColor={GlobalStyles.colors.error}
           />
         ),
@@ -108,19 +108,19 @@ const EditBusinessInfoScreen = ({ navigation }) => {
       <View style={styles.content}>
         <View style={styles.formContainer}>
           <TextField
-            label={'Название'}
+            label={'Name'}
             value={shopName}
             onUpdateValue={changeBusinessInfo.bind(this, 'name')}
           />
           <TextField
-            label={'Адрес'}
+            label={'Address'}
             type={'multiline'}
             value={address}
             onUpdateValue={changeBusinessInfo.bind(this, 'address')}
           />
           <View style={styles.fieldContainer}>
             <Text style={styles.fieldContainerText}>
-              Показывать адрес на сайте
+              Display address on the website
             </Text>
             <ToggleSwitch
               value={isAddressShown}
@@ -128,12 +128,12 @@ const EditBusinessInfoScreen = ({ navigation }) => {
             />
           </View>
           <TextField
-            label={'Рабочее время'}
+            label={'Working hours'}
             value={workingTime}
             onUpdateValue={changeBusinessInfo.bind(this, 'workingTime')}
           />
           <TextField
-            label={'Слоган/Описание'}
+            label={'Slogan/Description'}
             type={'multiline'}
             value={description}
             onUpdateValue={changeBusinessInfo.bind(this, 'description')}

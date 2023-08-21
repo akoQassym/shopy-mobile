@@ -59,7 +59,7 @@ const ShopContextProvider = ({ children }) => {
       snackbarCtx.createSnackbar(
         'error',
         null,
-        'Произошла ошибка. Отсутствует ID. Попробуйте еще раз или обратитесь в службу поддержки.',
+        'There has been an error. No ID. Try again or contact support.',
         4500,
       );
       return;
@@ -92,11 +92,11 @@ const ShopContextProvider = ({ children }) => {
           shopRes.data.data.whatsapp2,
         );
       })
-      .catch((error) => {
+      .catch(() => {
         snackbarCtx.createSnackbar(
           'error',
           null,
-          'Произошла ошибка при загрузке магазина. Попробуйте еще раз или обратитесь в службу поддержки.',
+          'An error occurred while loading the store. Try again or contact support.',
           4500,
         );
       });
@@ -157,12 +157,16 @@ const ShopContextProvider = ({ children }) => {
       snackbarCtx.createSnackbar(
         'error',
         null,
-        'Произошла ошибка. Отсутствует ID. Попробуйте еще раз или обратитесь в службу поддержки.',
+        'There has been an error. No ID. Try again or contact support.',
         4500,
       );
       return;
     }
-    snackbarCtx.createSnackbar('info', null, 'Изменения загружаются...');
+    snackbarCtx.createSnackbar(
+      'info',
+      null,
+      'The changes are being uploaded...',
+    );
     await functions()
       .httpsCallable('updateSubdomain')({
         shopId: value.shopInfo.shopId,
@@ -173,7 +177,7 @@ const ShopContextProvider = ({ children }) => {
         snackbarCtx.createSnackbar(
           'success',
           null,
-          'Домен вашего сайта был изменен',
+          'The domain of your website has been changed',
         );
       })
       .catch((error) => {
@@ -181,13 +185,13 @@ const ShopContextProvider = ({ children }) => {
           ? snackbarCtx.createSnackbar(
               'error',
               null,
-              'Такой домен уже существует!',
+              'Such a domain already exists!',
               3500,
             )
           : snackbarCtx.createSnackbar(
               'error',
               null,
-              'Произошла ошибка при обновлении домена вашего сайта!',
+              'There was an error when updating your website domain!',
             );
       });
   };
@@ -210,12 +214,16 @@ const ShopContextProvider = ({ children }) => {
       snackbarCtx.createSnackbar(
         'error',
         null,
-        'Произошла ошибка. Отсутствует ID. Попробуйте еще раз или обратитесь в службу поддержки.',
+        'There has been an error. No ID. Try again or contact support.',
         4500,
       );
       return;
     }
-    snackbarCtx.createSnackbar('info', shopName, 'Изменения загружаются...');
+    snackbarCtx.createSnackbar(
+      'info',
+      shopName,
+      'The changes are being uploaded...',
+    );
     await functions()
       .httpsCallable('updateShopInfo')({
         shopId: value.shopInfo.shopId,
@@ -251,14 +259,14 @@ const ShopContextProvider = ({ children }) => {
         snackbarCtx.createSnackbar(
           'success',
           shopName,
-          'Данные о вашем магазине были успешно изменены',
+          'Your store data has been successfully changed',
         );
       })
       .catch(() => {
         snackbarCtx.createSnackbar(
           'error',
           shopName,
-          `Произошла ошибка при загрузке обновленных данных о вашем магазине!`,
+          `There was an error loading updated data about your store!`,
         );
       });
   };
@@ -268,12 +276,16 @@ const ShopContextProvider = ({ children }) => {
       snackbarCtx.createSnackbar(
         'error',
         null,
-        'Произошла ошибка. Отсутствует ID. Попробуйте еще раз или обратитесь в службу поддержки.',
+        'There has been an error. No ID. Try again or contact support.',
         4500,
       );
       return;
     }
-    snackbarCtx.createSnackbar('info', null, 'Изменения загружаются...');
+    snackbarCtx.createSnackbar(
+      'info',
+      null,
+      'The changes are being uploaded...',
+    );
     await functions()
       .httpsCallable('updateShopDesign')({
         shopId: value.shopInfo.shopId,
@@ -291,14 +303,14 @@ const ShopContextProvider = ({ children }) => {
         snackbarCtx.createSnackbar(
           'success',
           null,
-          'Дизайн магазина был успешно изменен',
+          'The design of the store was successfully changed',
         );
       })
       .catch(() => {
         snackbarCtx.createSnackbar(
           'error',
           null,
-          'Произошла ошибка при изменении дизайна!',
+          'An error occurred when changing the design!',
         );
       });
   };
@@ -308,12 +320,16 @@ const ShopContextProvider = ({ children }) => {
       snackbarCtx.createSnackbar(
         'error',
         null,
-        'Произошла ошибка. Отсутствует ID. Попробуйте еще раз или обратитесь в службу поддержки.',
+        'There has been an error. No ID. Try again or contact support.',
         4500,
       );
       return;
     }
-    snackbarCtx.createSnackbar('info', null, 'Изменения загружаются...');
+    snackbarCtx.createSnackbar(
+      'info',
+      null,
+      'The changes are being uploaded...',
+    );
     await functions()
       .httpsCallable('updateShopLinks')({
         shopId: value.shopInfo.shopId,
@@ -327,14 +343,14 @@ const ShopContextProvider = ({ children }) => {
         snackbarCtx.createSnackbar(
           'success',
           null,
-          'Ссылки были успешно изменены',
+          'The links have been successfully modified',
         );
       })
       .catch(() => {
         snackbarCtx.createSnackbar(
           'error',
           null,
-          'Произошла ошибка при изменении ссылок!',
+          'An error occurred while changing links!',
         );
       });
   };

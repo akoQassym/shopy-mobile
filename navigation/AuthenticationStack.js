@@ -35,7 +35,7 @@ const AuthenticationStack = () => {
         name="Login"
         component={LoginScreen}
         options={{
-          headerTitle: 'Вход',
+          headerTitle: 'Login',
           headerBackTitleVisible: false,
         }}
       />
@@ -43,7 +43,7 @@ const AuthenticationStack = () => {
         name="Signup1"
         component={SignupScreen1}
         options={{
-          headerTitle: 'Регистрация',
+          headerTitle: 'Sign up',
           headerBackTitleVisible: false,
         }}
       />
@@ -51,7 +51,7 @@ const AuthenticationStack = () => {
         name="Signup2"
         component={SignupScreen2}
         options={{
-          headerTitle: 'Регистрация',
+          headerTitle: 'Sign up',
           headerBackTitleVisible: false,
         }}
       />
@@ -59,7 +59,7 @@ const AuthenticationStack = () => {
         name="PasswordReset"
         component={PasswordResetScreen}
         options={{
-          headerTitle: 'Восстановление',
+          headerTitle: 'Password Reset',
           headerBackTitleVisible: false,
         }}
       />

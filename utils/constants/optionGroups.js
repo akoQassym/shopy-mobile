@@ -2,14 +2,14 @@ export const DEFAULT_OPTION_GROUPS = [
   {
     id: '0',
     data: {
-      name: 'Размер (одежда)',
+      name: 'Size (clothing)',
       optionGroupVariants: ['XXS', 'XS', 'S', 'M', 'L', 'XXL', '3XL', '4XL'],
     },
   },
   {
     id: '1',
     data: {
-      name: 'Размер (обувь)',
+      name: 'Size (footwear)',
       optionGroupVariants: [
         '32',
         '33',
@@ -32,7 +32,7 @@ export const DEFAULT_OPTION_GROUPS = [
   {
     id: '2',
     data: {
-      name: 'Размер (обувь - детская)',
+      name: 'Size (footwear - children)',
       optionGroupVariants: [
         '16',
         '17',

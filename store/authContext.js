@@ -53,7 +53,7 @@ const AuthContextProvider = ({ children }) => {
         snackbarCtx.createSnackbar(
           'error',
           fullName,
-          `Ошибка при регистрации! (${error})`,
+          `Sign up error! (${error})`,
           3500,
         );
       });
@@ -83,7 +83,7 @@ const AuthContextProvider = ({ children }) => {
         snackbarCtx.createSnackbar(
           'error',
           fullName,
-          `Ошибка при регистрации! (${error})`,
+          `Sign up error! (${error})`,
           3500,
         );
       });
@@ -98,7 +98,7 @@ const AuthContextProvider = ({ children }) => {
         await AsyncStorage.removeItem('token');
         await AsyncStorage.removeItem('loggedIn');
       } catch (e) {
-        console.log('Произошла ошибка при выходе из аккаунта', e);
+        console.log('There was an error when logging out of the account', e);
       }
     };
     removeCredentials();

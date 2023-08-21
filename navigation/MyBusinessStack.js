@@ -29,7 +29,7 @@ const MyBusinessStack = () => {
         name="MyBusinessScreen"
         component={MyBusinessScreen}
         options={{
-          title: 'Мой Бизнес',
+          title: 'My Business',
         }}
       />
       <Stack.Screen
@@ -64,14 +64,14 @@ const MyBusinessStack = () => {
         name="EditColorScreen"
         component={EditColorScreen}
         options={{
-          title: 'Цветовая палитра',
+          title: 'Color Palette',
         }}
       />
       <Stack.Screen
         name="EditLinksScreen"
         component={EditLinksScreen}
         options={{
-          title: 'Ссылки',
+          title: 'Links',
         }}
       />
     </Stack.Navigator>

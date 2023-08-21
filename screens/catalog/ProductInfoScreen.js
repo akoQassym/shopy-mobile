@@ -71,7 +71,7 @@ const ProductInfoScreen = ({ route, navigation }) => {
               },
             ]}
           >
-            Есть в наличии
+            In stock
           </Text>
           <ToggleSwitch
             value={productData.inStock}
@@ -85,17 +85,17 @@ const ProductInfoScreen = ({ route, navigation }) => {
           />
         </View>
       </SectionWrapper>
-      <SectionWrapper label="Галерея">
+      <SectionWrapper label="Gallery">
         <ImageScroller images={productData.content ?? []} />
       </SectionWrapper>
-      <SectionWrapper label="Описание">
+      <SectionWrapper label="Description">
         <Text style={styles.text}>
           {!productData.description || productData.description === ''
             ? '-'
             : productData.description}
         </Text>
       </SectionWrapper>
-      <SectionWrapper label="Опции товара">
+      <SectionWrapper label="Product Options">
         <Card>
           {productData.optionVariants?.length ? (
             <View>
@@ -103,7 +103,7 @@ const ProductInfoScreen = ({ route, navigation }) => {
                 {productData.optionVariants[0].name}
               </Text>
               <Text style={styles.cardSubtitle}>
-                {productData.optionVariants[0].items?.length} выбрано:{' '}
+                {productData.optionVariants[0].items?.length} selected:{' '}
                 {productData.optionVariants[0].items.map((itemIndex, key) =>
                   key === productData.optionVariants[0].items?.length - 1
                     ? `${optionGroup.data.optionGroupVariants[itemIndex]}`
@@ -118,7 +118,7 @@ const ProductInfoScreen = ({ route, navigation }) => {
       </SectionWrapper>
       <SectionWrapper>
         <View style={styles.fieldContainer}>
-          <Text style={styles.text}>Показано на сайте</Text>
+          <Text style={styles.text}>Displayed on website</Text>
           <ToggleSwitch value={productData.active} disabled />
         </View>
       </SectionWrapper>

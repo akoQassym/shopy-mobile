@@ -12,7 +12,7 @@ const BottomTabs = createBottomTabNavigator();
 const BottomTabsNavigation = () => {
   return (
     <BottomTabs.Navigator
-      screenOptions={({ navigation }) => ({
+      screenOptions={() => ({
         headerStyle: {
           backgroundColor: 'white',
         },
@@ -38,7 +38,7 @@ const BottomTabsNavigation = () => {
         component={MyBusinessStack}
         options={{
           headerShown: false,
-          tabBarLabel: 'Вебсайт',
+          tabBarLabel: 'Website',
           tabBarIcon: ({ color }) => (
             <Entypo color={color} size={30} name="shop" />
           ),
@@ -49,7 +49,7 @@ const BottomTabsNavigation = () => {
         component={CatalogStack}
         options={{
           headerShown: false,
-          tabBarLabel: 'Каталог',
+          tabBarLabel: 'Catalog',
           tabBarIcon: ({ color }) => (
             <Ionicons color={color} size={30} name="grid" />
           ),
@@ -60,7 +60,7 @@ const BottomTabsNavigation = () => {
         component={UserProfileStack}
         options={{
           headerShown: false,
-          tabBarLabel: 'Профиль',
+          tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (
             <FontAwesome5 color={color} size={26} name="user-alt" />
           ),

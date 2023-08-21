@@ -3,27 +3,27 @@ import { GlobalStyles } from '../../constants/styles';
 export const DEFAULT_ORDER_STATUSES = {
   new: {
     id: '0',
-    label: 'Новый',
+    label: 'New',
     bgColor: GlobalStyles.colors.success,
   },
   payment: {
     id: '1',
-    label: 'Ожидается оплата',
+    label: 'Payment is pending',
     bgColor: GlobalStyles.colors.warning,
   },
   delivery: {
     id: '2',
-    label: 'В доставке',
+    label: 'In the delivery',
     bgColor: GlobalStyles.colors.pink,
   },
   cancelled: {
     id: '3',
-    label: 'Отменено',
+    label: 'Canceled',
     bgColor: GlobalStyles.colors.lightError,
   },
   done: {
     id: '4',
-    label: 'Выполнено',
+    label: 'Done',
     bgColor: GlobalStyles.colors.gray,
   },
 };

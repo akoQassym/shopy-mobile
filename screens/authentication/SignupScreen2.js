@@ -155,11 +155,11 @@ const SignupScreen1 = ({ route }) => {
                 style={styles.content}
                 showsVerticalScrollIndicator={false}
               >
-                <Text style={styles.title}>Создание аккаунта</Text>
+                <Text style={styles.title}>Create a profile</Text>
                 {errors.phoneError && (
                   <InformBadge
                     type="error"
-                    errorHighlightedText="номер телефона (+7XXXXXXXXXX)"
+                    errorHighlightedText="Phone number (+7XXXXXXXXXX)"
                   />
                 )}
                 {errors.emailError && (
@@ -168,18 +168,18 @@ const SignupScreen1 = ({ route }) => {
                 {errors.passwordError && (
                   <InformBadge
                     type="error"
-                    customMessage="Пароль должен содержать больше 6 символов"
+                    customMessage="Password must contain more than 6 characters"
                   />
                 )}
                 <View style={styles.form}>
                   <TextField
-                    placeholder="Имя и Фамилия"
+                    placeholder="Full name"
                     iconType="user"
                     value={enteredFullName}
                     onUpdateValue={changeSignUpDetails.bind(this, 'fullName')}
                   />
                   <TextField
-                    placeholder="Номер телефона"
+                    placeholder="Phone number"
                     iconType="phone"
                     value={enteredPhoneNumber}
                     onUpdateValue={changeSignUpDetails.bind(
@@ -195,12 +195,12 @@ const SignupScreen1 = ({ route }) => {
                     onUpdateValue={changeSignUpDetails.bind(this, 'email')}
                   />
                   <TextField
-                    placeholder="Пароль"
+                    placeholder="Password"
                     iconType="password"
                     type="password"
                     value={enteredPassword}
                     onUpdateValue={changeSignUpDetails.bind(this, 'password')}
-                    helperText="Должен содержать больше 6 символов"
+                    helperText="Password must contain more than 6 characters"
                   />
                 </View>
               </ScrollView>
@@ -210,10 +210,10 @@ const SignupScreen1 = ({ route }) => {
         <View style={styles.buttonContainer}>
           <View style={styles.supplementaryTextContainer}>
             <Text style={styles.supplementaryText}>
-              У вас уже есть аккаунт?{' '}
+              Do you already have an account?{' '}
             </Text>
             <Link to={{ screen: 'Login' }} replace>
-              Войти
+              Login
             </Link>
           </View>
           <PrimaryButton
@@ -225,7 +225,7 @@ const SignupScreen1 = ({ route }) => {
               !enteredPassword
             }
           >
-            Создать
+            Create
           </PrimaryButton>
         </View>
       </View>

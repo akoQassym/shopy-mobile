@@ -12,7 +12,6 @@ import {
   PrimaryButton,
   IconButton,
   Text,
-  LoadingOverlay,
   SectionWrapper,
   TextField,
 } from '../../components';
@@ -33,8 +32,8 @@ const AddCategoryScreen = ({ navigation }) => {
   const submit = () => {
     if (enteredCategoryName === null) {
       Alert.alert(
-        'Заполните поля',
-        'Название категории является обязательным полем',
+        'Fill in the blanks',
+        'The category name is a required field',
       );
       return;
     }
@@ -48,19 +47,19 @@ const AddCategoryScreen = ({ navigation }) => {
         <View style={styles.content}>
           <SectionWrapper>
             <TextField
-              label={'Название категории'}
-              placeholder={'Обувь'}
+              label={'Category name'}
+              placeholder={'Sneakers'}
               onUpdateValue={changeCategoryName}
               required
             />
             <TextField
-              label={'Описание'}
+              label={'Description'}
               type={'multiline'}
               onUpdateValue={changeCategoryDescription}
             />
           </SectionWrapper>
           <SectionWrapper>
-            <Text style={styles.addText}>Товаров в категории: 0</Text>
+            <Text style={styles.addText}>Products in category: 0</Text>
             <PrimaryButton
               style={styles.addButton}
               textStyle={styles.addButtonText}
@@ -74,12 +73,12 @@ const AddCategoryScreen = ({ navigation }) => {
               }
               onPress={chooseProductToCategory}
             >
-              Добавить товары
+              Add products
             </PrimaryButton>
           </SectionWrapper>
         </View>
         <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={submit}>Создать</PrimaryButton>
+          <PrimaryButton onPress={submit}>Create</PrimaryButton>
         </View>
       </ScrollView>
     </TouchableWithoutFeedback>

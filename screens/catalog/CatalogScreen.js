@@ -10,19 +10,19 @@ import { CatalogContext } from '../../store';
 const FILTERS = [
   {
     name: 'all',
-    label: 'Все',
+    label: 'All',
     activeBgColor: GlobalStyles.colors.veryLightPrimary,
     activeLabelColor: GlobalStyles.colors.primary,
   },
   {
     name: 'active',
-    label: 'Активные',
+    label: 'Active',
     activeBgColor: GlobalStyles.colors.veryLightPrimary,
     activeLabelColor: GlobalStyles.colors.primary,
   },
   {
     name: 'archived',
-    label: 'Неактивные',
+    label: 'Inactive',
     activeBgColor: GlobalStyles.colors.veryLightPrimary,
     activeLabelColor: GlobalStyles.colors.primary,
   },
@@ -39,9 +39,9 @@ const RenderCatalogItem = ({ item, onPress, filterValue }) => {
         }}
       >
         {item.customComponent === 'loader'
-          ? 'Загрузка...'
+          ? 'Loading...'
           : item.customComponent === 'endOfList'
-          ? 'Конец списка'
+          ? 'End of list'
           : ''}
       </Text>
     );
@@ -130,8 +130,7 @@ const CatalogScreen = ({ navigation }) => {
   return (
     <View style={styles.root}>
       <Text style={styles.text}>
-        Загружено товаров:{' '}
-        {catalogCtx.products ? catalogCtx.products.length : 0}
+        Loaded: {catalogCtx.products ? catalogCtx.products.length : 0}
       </Text>
 
       {catalogCtx.products?.length > 0 ? (
@@ -196,10 +195,10 @@ const CatalogScreen = ({ navigation }) => {
           }
         >
           <Text style={{ fontFamily: 'Roboto-medium', fontSize: 16 }}>
-            Добро пожаловать!
+            Welcome!
           </Text>
           <Text style={{ textAlign: 'center', marginVertical: 4 }}>
-            Создайте свой первый товар.
+            Publish your first product.
           </Text>
         </ScrollView>
       )}

@@ -2,12 +2,7 @@ import { useContext, useState, useEffect, useLayoutEffect } from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import storage from '@react-native-firebase/storage';
 import { GlobalStyles } from '../../constants/styles';
-import {
-  IconButton,
-  ImagePicker,
-  ColorSelect,
-  LoadingOverlay,
-} from '../../components';
+import { IconButton, ImagePicker, LoadingOverlay } from '../../components';
 import { ShopContext } from '../../store';
 
 const EditDesignScreen = ({ navigation }) => {
@@ -61,7 +56,7 @@ const EditDesignScreen = ({ navigation }) => {
       const url = await storage().ref(file).getDownloadURL();
       return url;
     } catch (error) {
-      Alert('Ошибка при загрузке фотографии!', error.message);
+      Alert('Error when uploading the image!', error.message);
     }
   };
 
@@ -75,12 +70,12 @@ const EditDesignScreen = ({ navigation }) => {
   const submit = async () => {
     setIsUploading(true);
     const uploadLogo = uploadImage(selectedLogo[0]).catch((error) => {
-      Alert.alert('Ошибка при загрузке логотипа!', error.message);
+      Alert.alert('Error loading logo!', error.message);
     });
     const uploadBackgroundBanner = uploadImage(
       selectedBackgroundBanner[0],
     ).catch((error) => {
-      Alert.alert('Ошибка при загрузке фонового фото!', error.message);
+      Alert.alert('Error when uploading background photo!', error.message);
     });
     const uploadedPhotosArr = await Promise.all([
       uploadLogo,
@@ -96,10 +91,10 @@ const EditDesignScreen = ({ navigation }) => {
   };
 
   const cancelChanges = () => {
-    Alert.alert('Вы уверены, что хотите отменить все изменения?', undefined, [
-      { text: 'Продолжить редактирование', onPress: () => {} },
+    Alert.alert('Are you sure you want to undo all the changes?', undefined, [
+      { text: 'Continue editing', onPress: () => {} },
       {
-        text: 'Отменить',
+        text: 'Cancel',
         onPress: () => {
           setIsChanged(false);
           navigation.goBack();
@@ -117,7 +112,7 @@ const EditDesignScreen = ({ navigation }) => {
           name="save-sharp"
           size={22}
           onPress={submit}
-          label="Сохранить"
+          label="Save"
           labelColor={GlobalStyles.colors.primary}
           color={
             isChanged
@@ -133,7 +128,7 @@ const EditDesignScreen = ({ navigation }) => {
         headerLeft: () => (
           <IconButton
             onPress={cancelChanges}
-            label="Отмена"
+            label="Cancel"
             labelColor={GlobalStyles.colors.error}
             disabled={isUploading}
           />
@@ -150,7 +145,7 @@ const EditDesignScreen = ({ navigation }) => {
   if (isUploading) {
     return (
       <LoadingOverlay
-        message={'Загрузка изображений...'}
+        message={'Uploading images...'}
         progressBar={transferred}
       />
     );
@@ -165,7 +160,7 @@ const EditDesignScreen = ({ navigation }) => {
             setImages={changeDesignInfo.bind(this, 'logo')}
             maxLength={1}
             quality={0.6}
-            label="Логотип"
+            label="Logo"
           />
         </View>
         <View style={styles.formContainer}>
@@ -175,7 +170,7 @@ const EditDesignScreen = ({ navigation }) => {
             maxLength={1}
             aspect={[16, 9]}
             quality={0.85}
-            label="Фоновое фото"
+            label="Background banner"
           />
         </View>
       </View>

@@ -78,10 +78,10 @@ const EditContactDetailsScreen = ({ navigation }) => {
   };
 
   const cancelChanges = () => {
-    Alert.alert('Вы уверены, что хотите отменить все изменения?', undefined, [
-      { text: 'Продолжить редактирование', onPress: () => {} },
+    Alert.alert('Are you sure you want to undo all the changes?', undefined, [
+      { text: 'Continue editing', onPress: () => {} },
       {
-        text: 'Отменить',
+        text: 'Cancel',
         onPress: () => {
           setIsChanged(false);
           navigation.goBack();
@@ -99,7 +99,7 @@ const EditContactDetailsScreen = ({ navigation }) => {
           name="save-sharp"
           size={22}
           onPress={submit}
-          label="Сохранить"
+          label="Save"
           labelColor={GlobalStyles.colors.primary}
           color={
             isChanged
@@ -115,7 +115,7 @@ const EditContactDetailsScreen = ({ navigation }) => {
         headerLeft: () => (
           <IconButton
             onPress={cancelChanges}
-            label="Отмена"
+            label="Cancel"
             labelColor={GlobalStyles.colors.error}
           />
         ),
@@ -137,43 +137,43 @@ const EditContactDetailsScreen = ({ navigation }) => {
         <View style={styles.content}>
           <View style={styles.formContainer}>
             <TextField
-              label={'Номер телефона'}
+              label={'Phone number'}
               placeholder={'+7XXXXXXXXXX'}
               value={phoneNumber}
               onUpdateValue={changeContactsInfo.bind(this, 'phoneNumber')}
             />
             <TextField
-              label={'Whatsapp'}
+              label={'WhatsApp'}
               placeholder={'7XXXXXXXXXX'}
               value={whatsapp}
-              helperText={`Ссылка будет выглядеть вот так: https://wa.me/${
+              helperText={`The link will look like this: https://wa.me/${
                 whatsapp ?? '7XXXXXXXXXX'
               }`}
               onUpdateValue={changeContactsInfo.bind(this, 'whatsapp')}
             />
             <TextField
-              label={'Whatsapp 2 (не обязательно)'}
+              label={'Whatsapp 2 (optional)'}
               placeholder={'7XXXXXXXXXX'}
               value={whatsapp2}
-              helperText={`Ссылка будет выглядеть вот так: https://wa.me/${
+              helperText={`The link will look like this: https://wa.me/${
                 whatsapp2 ?? '7XXXXXXXXXX'
               }`}
               onUpdateValue={changeContactsInfo.bind(this, 'whatsapp2')}
             />
             <TextField
-              label={'Instagram аккаунт'}
+              label={'Instagram'}
               placeholder={'vash_magazin'}
               value={instagram}
-              helperText={`Ссылка будет выглядеть вот так: https://instagram.com/${
+              helperText={`The link will look like this: https://instagram.com/${
                 instagram ?? 'vash_magazin'
               }`}
               onUpdateValue={changeContactsInfo.bind(this, 'instagram')}
             />
             <TextField
-              label={'Instagram аккаунт 2 (не обязательно)'}
+              label={'Instagram 2 (optional)'}
               placeholder={'vash_magazin'}
               value={instagram2}
-              helperText={`Ссылка будет выглядеть вот так: https://instagram.com/${
+              helperText={`The link will look like this: https://instagram.com/${
                 instagram2 ?? 'vash_magazin'
               }`}
               onUpdateValue={changeContactsInfo.bind(this, 'instagram2')}
@@ -182,13 +182,13 @@ const EditContactDetailsScreen = ({ navigation }) => {
               label={'Telegram'}
               placeholder={'https://t.me/vash_magazin'}
               value={telegram}
-              helperText={`Ссылка будет выглядеть вот так: https://t.me/${
+              helperText={`The link will look like this: https://t.me/${
                 telegram ?? 'vash_magazin'
               }`}
               onUpdateValue={changeContactsInfo.bind(this, 'telegram')}
             />
             <TextField
-              label={'2ГИС (необязательно)'}
+              label={'2Gis (optional)'}
               value={twoGis}
               onUpdateValue={changeContactsInfo.bind(this, 'twoGis')}
             />

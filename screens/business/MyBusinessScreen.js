@@ -3,7 +3,6 @@ import {
   View,
   StyleSheet,
   ScrollView,
-  Alert,
   RefreshControl,
   Linking,
 } from 'react-native';
@@ -11,7 +10,6 @@ import FastImage from 'react-native-fast-image';
 import * as Clipboard from 'expo-clipboard';
 import { GlobalStyles } from '../../constants/styles';
 import {
-  PrimaryButton,
   IconButton,
   Text,
   HintBox,
@@ -51,7 +49,7 @@ const MyBusinessScreen = ({ navigation }) => {
   }, []);
 
   const copyToClipboard = async () => {
-    await Clipboard.setStringAsync('https://iris.shopy.ws/')
+    await Clipboard.setStringAsync(`https://${shopInfo.subdomain}.shopy.ws/`)
       .then(() => setCopiedToClipboard(true))
       .then(() =>
         setTimeout(() => {
@@ -108,7 +106,7 @@ const MyBusinessScreen = ({ navigation }) => {
         </View>
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Сайт вашего магазина</Text>
+            <Text style={styles.sectionTitle}>Your store's website</Text>
             <IconButton
               icon="ionicons"
               name="arrow-forward-circle-sharp"
@@ -127,9 +125,9 @@ const MyBusinessScreen = ({ navigation }) => {
                   color={GlobalStyles.colors.warning}
                 />
                 <Text style={{ marginLeft: 10 }}>
-                  Для активации укажите{' '}
-                  <Text style={{ fontFamily: 'Roboto-medium' }}>домен</Text> -
-                  название вашего сайта
+                  To activate, specify the{' '}
+                  <Text style={{ fontFamily: 'Roboto-medium' }}>domain</Text> -
+                  the name of your website
                 </Text>
               </View>
             ) : (
@@ -173,7 +171,7 @@ const MyBusinessScreen = ({ navigation }) => {
         </View>
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Информация о магазине</Text>
+            <Text style={styles.sectionTitle}>Store information</Text>
             <IconButton
               icon="ionicons"
               name="arrow-forward-circle-sharp"
@@ -184,29 +182,29 @@ const MyBusinessScreen = ({ navigation }) => {
           </View>
           <HintBox
             style={styles.hintBox}
-            label="Актуальная информация о вашем магазине будет отображена на сайте"
+            label="Up-to-date information about your store will be displayed on the website"
           />
           <View style={styles.infoElementContainer}>
-            <Text style={styles.infoTitle}>Название</Text>
+            <Text style={styles.infoTitle}>Name</Text>
             <View style={styles.infoElement}>
               <Text style={styles.infoElementText}>{shopInfo.shopName}</Text>
             </View>
           </View>
           <View style={styles.infoElementContainer}>
-            <Text style={styles.infoTitle}>Описание</Text>
+            <Text style={styles.infoTitle}>Description</Text>
             <View style={styles.infoElement}>
               <Text style={styles.infoElementText}>{shopInfo.description}</Text>
             </View>
           </View>
           <View style={styles.sectionContent}>
             <View style={styles.infoElementContainer}>
-              <Text style={styles.infoTitle}>Адрес</Text>
+              <Text style={styles.infoTitle}>Address</Text>
               <View style={styles.infoElement}>
                 <Text style={styles.infoElementText}>{shopInfo.address}</Text>
               </View>
             </View>
             <View style={[styles.infoElementContainer, styles.last]}>
-              <Text style={styles.infoTitle}>Рабочее время</Text>
+              <Text style={styles.infoTitle}>Working Hours</Text>
               <View style={styles.infoElement}>
                 <Text style={styles.infoElementText}>
                   {shopInfo.workingHours}
@@ -217,7 +215,7 @@ const MyBusinessScreen = ({ navigation }) => {
         </View>
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Контактные данные</Text>
+            <Text style={styles.sectionTitle}>Contact details</Text>
             <IconButton
               icon="ionicons"
               name="arrow-forward-circle-sharp"
@@ -228,10 +226,10 @@ const MyBusinessScreen = ({ navigation }) => {
           </View>
           <HintBox
             style={styles.hintBox}
-            label="Укажите контактные данные, чтобы клиентам было легко с вами связаться"
+            label="Provide contact information so that customers can easily get in touch with you"
           />
           <View style={styles.infoElementContainer}>
-            <Text style={styles.infoTitle}>Номер телефона</Text>
+            <Text style={styles.infoTitle}>Phone number</Text>
             <View style={styles.infoElement}>
               <IconButton
                 icon="feather"
@@ -283,7 +281,7 @@ const MyBusinessScreen = ({ navigation }) => {
             </View>
           </View>
           <View style={[styles.infoElementContainer, styles.last]}>
-            <Text style={styles.infoTitle}>2Гис</Text>
+            <Text style={styles.infoTitle}>2Gis</Text>
             <View style={styles.infoElement}>
               <IconButton
                 icon="foundation"
@@ -298,7 +296,7 @@ const MyBusinessScreen = ({ navigation }) => {
         </View>
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Дизайн сайта</Text>
+            <Text style={styles.sectionTitle}>Website design</Text>
             <IconButton
               icon="ionicons"
               name="arrow-forward-circle-sharp"
@@ -309,7 +307,7 @@ const MyBusinessScreen = ({ navigation }) => {
           </View>
           <HintBox
             style={styles.hintBox}
-            label="Персонализируйте сайт, изменив дизайн"
+            label="Personalize your website by changing the design"
           />
           <View style={styles.sectionContent}>
             <View
@@ -319,7 +317,7 @@ const MyBusinessScreen = ({ navigation }) => {
               ]}
             >
               <Text style={[styles.infoTitle, styles.flexHorizontalElement]}>
-                Акцентирующий цвет
+                Accent color
               </Text>
               <Text
                 style={[styles.infoElementText, styles.flexHorizontalElement]}
@@ -342,7 +340,7 @@ const MyBusinessScreen = ({ navigation }) => {
               ]}
             >
               <Text style={[styles.infoTitle, styles.flexHorizontalElement]}>
-                Лого
+                Logo
               </Text>
               <View style={[styles.flexHorizontalElement]}>
                 {shopInfo.logo ? (
@@ -365,7 +363,7 @@ const MyBusinessScreen = ({ navigation }) => {
               ]}
             >
               <Text style={[styles.infoTitle, styles.flexHorizontalElement]}>
-                Задний фон
+                Background image
               </Text>
               <View style={[styles.flexHorizontalElement]}>
                 {shopInfo.backgroundBanner ? (
@@ -384,7 +382,7 @@ const MyBusinessScreen = ({ navigation }) => {
         </View>
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Ссылки</Text>
+            <Text style={styles.sectionTitle}>Links</Text>
             <IconButton
               icon="ionicons"
               name="arrow-forward-circle-sharp"
@@ -395,7 +393,7 @@ const MyBusinessScreen = ({ navigation }) => {
           </View>
           <HintBox
             style={styles.hintBox}
-            label="Ссылки будут отображаться на вашем сайте"
+            label="The links will be displayed on your website"
           />
           {shopInfo.links?.length > 0 ? (
             shopInfo.links.map((linkElement, key) => (

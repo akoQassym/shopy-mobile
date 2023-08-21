@@ -21,9 +21,9 @@ const OrderCard = ({
         <View style={styles.left}>
           <Text style={styles.orderIdText}>#{itemId}</Text>
           {clientId ? (
-            <Text style={styles.title}>Акнур Касым</Text>
+            <Text style={styles.title}>Aknur Kassym</Text>
           ) : (
-            <Text style={[styles.title, styles.undefined]}>Неизвестно</Text>
+            <Text style={[styles.title, styles.undefined]}>Unknown</Text>
           )}
           <Text style={styles.date}>
             {createdDate.getDate()}/{createdDate.getMonth()}/

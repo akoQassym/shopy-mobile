@@ -28,7 +28,7 @@ const ColorSelectWheel = ({ currentColor }) => {
   return (
     <View>
       <Text style={styles.text}>
-        Выбранный цвет:{' '}
+        Selected color:{' '}
         <Text
           style={[
             styles.selectedColorText,
@@ -53,7 +53,7 @@ const ColorSelectWheel = ({ currentColor }) => {
         autoResetSlider
       />
       <View style={styles.buttonContainer}>
-        <PrimaryButton onPress={submitColor}>Выбрать</PrimaryButton>
+        <PrimaryButton onPress={submitColor}>Choose</PrimaryButton>
       </View>
     </View>
   );

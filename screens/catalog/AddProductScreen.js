@@ -16,7 +16,6 @@ import {
   TextField,
   ImagePicker,
   RadioButton,
-  IconButton,
   PressableContainer,
   HintBox,
   Card,
@@ -90,7 +89,7 @@ const AddProductScreen = ({ navigation }) => {
       const url = await storage().ref(file).getDownloadURL();
       return url;
     } catch (error) {
-      Alert('Ошибка при загрузке фотографии!', error.message);
+      Alert('Error when uploading a photo!', error.message);
     }
   };
 
@@ -101,7 +100,7 @@ const AddProductScreen = ({ navigation }) => {
       uploadedPhotosArr = await Promise.all(
         selectedPhotos.map(async (selectedPhoto) => {
           const url = await uploadImage(selectedPhoto).catch((error) => {
-            Alert.alert('Ошибка при загрузке изображения!', error.message);
+            Alert.alert('Error when uploading a photo!', error.message);
           });
           return { type: 'photo', uri: url };
         }),
@@ -120,15 +119,15 @@ const AddProductScreen = ({ navigation }) => {
   };
 
   const clear = (variable) => {
-    Alert.alert('Вы уверены?', undefined, [
+    Alert.alert('Are you sure?', undefined, [
       {
-        text: 'Да',
+        text: 'Yes',
         onPress: () => {
           if (variable === 'optionGroups') setSelectedOptionGroups([]);
         },
       },
       {
-        text: 'Нет',
+        text: 'No',
         onPress: () => {},
       },
     ]);
@@ -144,7 +143,7 @@ const AddProductScreen = ({ navigation }) => {
   if (isUploading) {
     return (
       <LoadingOverlay
-        message={'Загрузка изображений...'}
+        message={'Uploading images...'}
         progressBar={transferred}
       />
     );
@@ -156,31 +155,31 @@ const AddProductScreen = ({ navigation }) => {
         <View style={styles.content}>
           <SectionWrapper>
             <TextField
-              label={'Название товара'}
+              label={'Product name'}
               required
               onUpdateValue={changeProductInfo.bind(this, 'name')}
             />
             <TextField
-              label={'Описание'}
+              label={'Description'}
               type={'multiline'}
               required
               onUpdateValue={changeProductInfo.bind(this, 'description')}
             />
             <TextField
-              label={'Цена'}
+              label={'Price'}
               iconType="tenge"
               required
               keyboardType={'decimal-pad'}
               onUpdateValue={changeProductInfo.bind(this, 'price')}
             />
           </SectionWrapper>
-          <SectionWrapper label={'Фото'}>
+          <SectionWrapper label={'Photo'}>
             <ImagePicker
               images={selectedPhotos}
               setImages={setSelectedPhotos}
             />
           </SectionWrapper>
-          <SectionWrapper label={'Категория'}>
+          <SectionWrapper label={'Category'}>
             <RadioButton
               data={catalogCtx.categories ?? []}
               selectedId={enteredProductInfo.categoryId}
@@ -188,7 +187,7 @@ const AddProductScreen = ({ navigation }) => {
             />
           </SectionWrapper>
           <SectionWrapper
-            label={'Опции товара'}
+            label={'Product Options'}
             button={
               selectedOptionGroups?.length ? (
                 <PressableContainer onPress={clear.bind(this, 'optionGroups')}>
@@ -198,13 +197,13 @@ const AddProductScreen = ({ navigation }) => {
                       fontSize: 12,
                     }}
                   >
-                    Очистить
+                    Clear
                   </Text>
                 </PressableContainer>
               ) : null
             }
           >
-            <HintBox label="Например: Размер одежды (S, M, L, XL)" />
+            <HintBox label="For example: Clothing size (S, M, L, XL)" />
             {selectedOptionGroups?.length ? (
               <Card onPress={openSelectOptionGroupsScreen} withArrow>
                 <View>
@@ -212,7 +211,7 @@ const AddProductScreen = ({ navigation }) => {
                     {selectedOptionGroups[0].name}
                   </Text>
                   <Text style={styles.cardSubtitle}>
-                    {selectedOptionGroups[0].items?.length} выбрано
+                    {selectedOptionGroups[0].items?.length} selected
                   </Text>
                 </View>
               </Card>
@@ -221,7 +220,7 @@ const AddProductScreen = ({ navigation }) => {
                 type="outlined"
                 onPress={openSelectOptionGroupsScreen}
               >
-                Выбрать опции
+                Select options
               </PrimaryButton>
             )}
           </SectionWrapper>
@@ -234,7 +233,7 @@ const AddProductScreen = ({ navigation }) => {
                 !enteredProductInfo.price
               }
             >
-              Сохранить
+              Save
             </PrimaryButton>
           </View>
         </View>

@@ -24,14 +24,14 @@ const UserProfileStack = () => {
         name="UserScreen"
         component={UserScreen}
         options={{
-          title: 'Профиль',
+          title: 'Profile',
         }}
       />
       <Stack.Screen
         name="EditUserInfoScreen"
         component={EditUserInfoScreen}
         options={{
-          title: 'Изменить',
+          title: 'Update',
         }}
       />
     </Stack.Navigator>

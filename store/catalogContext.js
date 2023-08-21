@@ -56,7 +56,7 @@ const CatalogContextProvider = ({ children }) => {
         snackbarCtx.createSnackbar(
           'error',
           null,
-          `Произошла ошибка при загрузке товаров. Попробуйте еще раз или обратитесь в службу поддержки. ${error}`,
+          `An error occurred while loading products. Try again or contact support. ${error}`,
           3500,
         );
       });
@@ -85,7 +85,7 @@ const CatalogContextProvider = ({ children }) => {
         snackbarCtx.createSnackbar(
           'error',
           null,
-          `Произошла ошибка при загрузке товаров. Попробуйте еще раз или обратитесь в службу поддержки. ${error}`,
+          `An error occurred while loading products. Try again or contact support. ${error}`,
           3500,
         );
       });
@@ -100,7 +100,7 @@ const CatalogContextProvider = ({ children }) => {
     optionVariants,
   ) => {
     const shopId = shopCtx.shopInfo.shopId;
-    snackbarCtx.createSnackbar('info', name, 'Товар загружается...');
+    snackbarCtx.createSnackbar('info', name, 'Product is uploading...');
     await functions()
       .httpsCallable('productCreate')({
         name: name,
@@ -112,13 +112,17 @@ const CatalogContextProvider = ({ children }) => {
         shopId: shopId,
       })
       .then(() => {
-        snackbarCtx.createSnackbar('success', name, 'Товар успешно создан');
+        snackbarCtx.createSnackbar(
+          'success',
+          name,
+          'The product has been successfully created',
+        );
       })
       .catch((error) => {
         snackbarCtx.createSnackbar(
           'error',
           name,
-          `Произошла ошибка при создании товара!${error}`,
+          `There was an error when creating a product! ${error}`,
         );
       });
   };
@@ -136,7 +140,7 @@ const CatalogContextProvider = ({ children }) => {
     active,
     orderNumber,
   ) => {
-    snackbarCtx.createSnackbar('info', name, 'Изменения загружаются...');
+    snackbarCtx.createSnackbar('info', name, 'Updates are uploading...');
     await functions()
       .httpsCallable('productEdit')({
         productId: productId,
@@ -173,19 +177,23 @@ const CatalogContextProvider = ({ children }) => {
           orderNumber: orderNumber,
         };
         setProductsList(list);
-        snackbarCtx.createSnackbar('success', name, 'Товар успешно изменен');
+        snackbarCtx.createSnackbar(
+          'success',
+          name,
+          'The product has been successfully updated',
+        );
       })
       .catch(() => {
         snackbarCtx.createSnackbar(
           'error',
           name,
-          'Произошла ошибка при изменении товара!',
+          'There was an error when updating a product!',
         );
       });
   };
 
   const deleteProduct = async (productId) => {
-    snackbarCtx.createSnackbar('info', 'Товар удаляется...');
+    snackbarCtx.createSnackbar('info', 'The product is being deleted...');
     await functions()
       .httpsCallable('productDelete')({
         productId: productId,
@@ -194,12 +202,15 @@ const CatalogContextProvider = ({ children }) => {
         setProductsList((prevList) =>
           prevList.filter((elem) => elem.id !== productId),
         );
-        snackbarCtx.createSnackbar('success', 'Товар успешно удален');
+        snackbarCtx.createSnackbar(
+          'success',
+          'The product has been successfully deleted',
+        );
       })
       .catch(() => {
         snackbarCtx.createSnackbar(
           'error',
-          'Произошла ошибка при удалении товара!',
+          'There was an error when deleting a product!',
         );
       });
   };
@@ -217,7 +228,7 @@ const CatalogContextProvider = ({ children }) => {
         snackbarCtx.createSnackbar(
           'error',
           null,
-          'Произошла ошибка при загрузке опций. Попробуйте еще раз или обратитесь в службу поддержки.',
+          'An error occurred while loading options. Try again or contact support.',
           3500,
         );
       });
@@ -225,7 +236,7 @@ const CatalogContextProvider = ({ children }) => {
 
   const addOptionGroup = async (name, optionGroupVariants) => {
     const shopId = shopCtx.shopInfo.shopId;
-    snackbarCtx.createSnackbar('info', name, 'Опции создаются...');
+    snackbarCtx.createSnackbar('info', name, 'Options are being created...');
     await functions()
       .httpsCallable('optionGroupCreate')({
         shopId: shopId,
@@ -233,13 +244,17 @@ const CatalogContextProvider = ({ children }) => {
         optionGroupVariants: optionGroupVariants,
       })
       .then(() => {
-        snackbarCtx.createSnackbar('success', name, 'Опции успешно созданы');
+        snackbarCtx.createSnackbar(
+          'success',
+          name,
+          'The options have been successfully created',
+        );
       })
       .catch(() => {
         snackbarCtx.createSnackbar(
           'error',
           null,
-          'Произошла ошибка при добавлении опции. Попробуйте еще раз или обратитесь в службу поддержки.',
+          'An error occurred while adding an option. Try again or contact support.',
           3500,
         );
       });
@@ -258,7 +273,7 @@ const CatalogContextProvider = ({ children }) => {
         snackbarCtx.createSnackbar(
           'error',
           null,
-          'Произошла ошибка при загрузке категорий. Попробуйте еще раз или обратитесь в службу поддержки.',
+          'An error occurred while loading categories. Try again or contact support.',
           3500,
         );
       });
@@ -266,7 +281,7 @@ const CatalogContextProvider = ({ children }) => {
 
   const addCategory = async (name, description) => {
     const shopId = shopCtx.shopInfo.shopId;
-    snackbarCtx.createSnackbar('info', name, 'Категория создается...');
+    snackbarCtx.createSnackbar('info', name, 'Categories are being created...');
     await functions()
       .httpsCallable('categoryCreate')({
         shopId: shopId,
@@ -277,21 +292,21 @@ const CatalogContextProvider = ({ children }) => {
         snackbarCtx.createSnackbar(
           'success',
           name,
-          'Категория успешно создана',
+          'The category has been successfully created',
         );
       })
       .catch((error) => {
         snackbarCtx.createSnackbar(
           'error',
           null,
-          'Произошла ошибка при добавлении категории. Попробуйте еще раз или обратитесь в службу поддержки.',
+          'An error occurred while adding a category. Try again or contact support.',
           3500,
         );
       });
   };
 
   const editCategory = async (categoryId, name, description, active) => {
-    snackbarCtx.createSnackbar('info', name, 'Изменения загружаются...');
+    snackbarCtx.createSnackbar('info', name, 'Updates are uploading...');
     await functions()
       .httpsCallable('categoryEdit')({
         categoryId: categoryId,
@@ -303,14 +318,14 @@ const CatalogContextProvider = ({ children }) => {
         snackbarCtx.createSnackbar(
           'success',
           name,
-          'Категория успешно изменена',
+          'The category has been successfully updated',
         );
       })
       .catch((error) => {
         snackbarCtx.createSnackbar(
           'error',
           name,
-          `Произошла ошибка при изменении категории! ${error}`,
+          `An error occurred when updating a category! ${error}`,
         );
       });
   };

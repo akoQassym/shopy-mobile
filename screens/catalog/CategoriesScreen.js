@@ -68,7 +68,7 @@ const CategoriesScreen = ({ navigation }) => {
           }
           onPress={addCategory}
         >
-          Создать категорию
+          Create a category
         </PrimaryButton>
       </View>
       {isFetching && <LoadingOverlay />}

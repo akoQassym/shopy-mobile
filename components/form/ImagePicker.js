@@ -35,8 +35,8 @@ const ImagePicker = ({
     }
     if (cameraPermissionStatus.status === PermissionStatus.DENIED) {
       Alert.alert(
-        'Недостаточно прав!',
-        'Для использовании данной функции необходимо предоставить доступ к камере.',
+        'Not enough rights!',
+        'To use this function, you must provide access to the camera.',
       );
       return false;
     }
@@ -72,8 +72,8 @@ const ImagePicker = ({
     }
     if (mediaPermissionStatus.status === PermissionStatus.DENIED) {
       Alert.alert(
-        'Недостаточно прав!',
-        'Для использовании данной функции необходимо предоставить доступ к галерее.',
+        'Not enough rights!',
+        'To use this feature, you must grant access to the gallery.',
       );
       return false;
     }
@@ -104,14 +104,14 @@ const ImagePicker = ({
   };
 
   const deleteImage = (key) => {
-    Alert.alert('Вы уверены, что хотите удалить изображение?', undefined, [
+    Alert.alert('Are you sure, что хотите удалить изображение?', undefined, [
       {
-        text: 'Удалить',
+        text: 'Delete',
         onPress: () =>
           setImages([...images.slice(0, key), ...images.slice(key + 1)]),
       },
       {
-        text: 'Отменить',
+        text: 'Cancel',
         onPress: () => {},
       },
     ]);
@@ -154,7 +154,7 @@ const ImagePicker = ({
               form="rectangle"
               onPress={takeImage}
             >
-              Сделать фотографию
+              Take a photo
             </SecondaryButton>
             <SecondaryButton
               icon={
@@ -168,7 +168,7 @@ const ImagePicker = ({
               onPress={pickImageFromMedia}
               style={{ marginTop: 5 }}
             >
-              Выбрать фотографию
+              Chose a photo
             </SecondaryButton>
           </View>
         )}
