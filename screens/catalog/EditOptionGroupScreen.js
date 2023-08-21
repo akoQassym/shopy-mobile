@@ -12,7 +12,6 @@ import {
   PrimaryButton,
   IconButton,
   Text,
-  LoadingOverlay,
   SectionWrapper,
   TextField,
 } from '../../components';
@@ -20,7 +19,6 @@ import { CatalogContext } from '../../store';
 
 const EditOptionGroupScreen = ({ navigation }) => {
   const catalogCtx = useContext(CatalogContext);
-  const [isCreating, setIsCreating] = useState(false);
   const [optionGroupName, setOptionGroupName] = useState();
   const [newOptionName, setNewOptionName] = useState();
   const [optionGroupVariants, setOptionsGroupVariants] = useState([]);
@@ -51,10 +49,6 @@ const EditOptionGroupScreen = ({ navigation }) => {
     catalogCtx.addOptionGroup(optionGroupName, optionGroupVariants);
     navigation.goBack();
   };
-
-  if (isCreating) {
-    return <LoadingOverlay message="Создаем..." />;
-  }
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
