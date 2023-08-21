@@ -100,9 +100,9 @@ const LoginScreen = () => {
   };
 
   if (status === 'authenticating') {
-    return <LoadingOverlay message="Сверяем данные..." />;
+    return <LoadingOverlay message="Verifying the user..." />;
   } else if (status === 'retrievingData') {
-    return <LoadingOverlay message="Загружаем ваш магазин..." />;
+    return <LoadingOverlay message="Loading your storefront..." />;
   }
 
   return (
@@ -114,30 +114,30 @@ const LoginScreen = () => {
         <View style={styles.content}>
           <View>
             <Text style={styles.title}>
-              Рады видеть вас снова, войдите в систему
+              Good to see you again, please login
             </Text>
             {phoneError && (
               <InformBadge
                 type="error"
-                errorHighlightedText="номер телефона (+7XXXXXXXXXX)"
+                errorHighlightedText="Phone number (+7XXXXXXXXXX)"
               />
             )}
             {passwordError && (
               <InformBadge
                 type="error"
-                customMessage="Пароль должен содержать больше 6 символов"
+                customMessage="Password must contain more than 6 characters"
               />
             )}
             <View style={styles.form}>
               <TextField
-                placeholder="Номер телефона"
+                placeholder="Phone number"
                 iconType="phone"
                 onUpdateValue={changePhoneNumber}
                 value={enteredPhoneNumber}
                 keyboardType="phone-pad"
               />
               <TextField
-                placeholder="Пароль"
+                placeholder="Password"
                 type="password"
                 iconType="password"
                 onUpdateValue={changePassword}
@@ -148,15 +148,15 @@ const LoginScreen = () => {
               style={[styles.supplementaryText, { textAlign: 'right' }]}
               to={{ screen: 'PasswordReset' }}
             >
-              Забыли пароль?
+              Forgot your password?
             </Link>
           </View>
           <View style={styles.buttonContainer}>
             <View style={styles.supplementaryTextContainer}>
               <Text style={styles.supplementaryText}>
-                У вас нет аккаунта?{' '}
+                You don't have an account?{' '}
                 <Link to={{ screen: 'Signup1' }} replace>
-                  Регистрация
+                  Sign up
                 </Link>
               </Text>
             </View>
@@ -164,7 +164,7 @@ const LoginScreen = () => {
               onPress={submit}
               disabled={!enteredPhoneNumber || !enteredPassword}
             >
-              Войти
+              Login
             </PrimaryButton>
           </View>
         </View>

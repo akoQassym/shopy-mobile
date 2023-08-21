@@ -29,10 +29,10 @@ const EditSubdomainScreen = ({ navigation }) => {
   };
 
   const cancelChanges = () => {
-    Alert.alert('Вы уверены, что хотите отменить все изменения?', undefined, [
-      { text: 'Продолжить редактирование', onPress: () => {} },
+    Alert.alert('Are you sure you want to undo all the changes?', undefined, [
+      { text: 'Continue editing', onPress: () => {} },
       {
-        text: 'Отменить',
+        text: 'Cancel',
         onPress: () => {
           setIsChanged(false);
           navigation.goBack();
@@ -50,7 +50,7 @@ const EditSubdomainScreen = ({ navigation }) => {
           name="save-sharp"
           size={22}
           onPress={submit}
-          label="Сохранить"
+          label="Save"
           labelColor={GlobalStyles.colors.primary}
           color={
             isChanged
@@ -66,7 +66,7 @@ const EditSubdomainScreen = ({ navigation }) => {
         headerLeft: () => (
           <IconButton
             onPress={cancelChanges}
-            label="Отмена"
+            label="Cancel"
             labelColor={GlobalStyles.colors.error}
           />
         ),
@@ -79,13 +79,13 @@ const EditSubdomainScreen = ({ navigation }) => {
         <View style={styles.content}>
           <SectionWrapper>
             <TextField
-              label={'Домен сайта'}
+              label={'Website domain'}
               value={subdomain}
               autoCapitalize="none"
               onUpdateValue={changeSubdomain}
-              placeholder="vash-magazin"
-              helperText={`Ссылка на ваш сайт будет выглядеть вот так:\nhttps://${
-                subdomain ?? 'vash-magazin'
+              placeholder="your-store"
+              helperText={`The link to your site will look like this:\nhttps://${
+                subdomain ?? 'your-store'
               }.shopy.ws/`}
             />
           </SectionWrapper>

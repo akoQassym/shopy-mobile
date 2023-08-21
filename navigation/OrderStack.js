@@ -24,10 +24,10 @@ const OrderStack = () => {
         name="OrdersScreen"
         component={OrdersScreen}
         options={{
-          title: 'Заказы',
+          title: 'Orders',
           headerSearchBarOptions: {
             placeholder: 'Search',
-            cancelButtonText: 'Отмена',
+            cancelButtonText: 'Cancel',
             hideWhenScrolling: false,
           },
           headerRight: () => (

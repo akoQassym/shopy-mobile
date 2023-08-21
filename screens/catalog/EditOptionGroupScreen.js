@@ -12,7 +12,6 @@ import {
   PrimaryButton,
   IconButton,
   Text,
-  LoadingOverlay,
   SectionWrapper,
   TextField,
 } from '../../components';
@@ -20,7 +19,6 @@ import { CatalogContext } from '../../store';
 
 const EditOptionGroupScreen = ({ navigation }) => {
   const catalogCtx = useContext(CatalogContext);
-  const [isCreating, setIsCreating] = useState(false);
   const [optionGroupName, setOptionGroupName] = useState();
   const [newOptionName, setNewOptionName] = useState();
   const [optionGroupVariants, setOptionsGroupVariants] = useState([]);
@@ -41,20 +39,16 @@ const EditOptionGroupScreen = ({ navigation }) => {
   const submit = () => {
     if (optionGroupName === null) {
       Alert.alert(
-        'Заполните поля',
-        'Название опции является обязательным полем',
+        'Fill in the blanks',
+        'The name of the option is a required field',
       );
       return;
     } else if (optionGroupVariants.length === 0) {
-      Alert.alert('Добавьте опции', 'Должна быть как минимум одна опция');
+      Alert.alert('Add options', 'There must be at least one option');
     }
     catalogCtx.addOptionGroup(optionGroupName, optionGroupVariants);
     navigation.goBack();
   };
-
-  if (isCreating) {
-    return <LoadingOverlay message="Создаем..." />;
-  }
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -62,8 +56,8 @@ const EditOptionGroupScreen = ({ navigation }) => {
         <View style={styles.content}>
           <SectionWrapper>
             <TextField
-              label={'Название опции'}
-              placeholder={'Цвет/Размер/Материал и тд'}
+              label={'Option name'}
+              placeholder={'Color/Size/Material, etc.'}
               value={optionGroupName}
               onUpdateValue={changeOptionGroupName}
               required
@@ -87,7 +81,7 @@ const EditOptionGroupScreen = ({ navigation }) => {
               ))}
             <View style={styles.optionAddContainer}>
               <TextField
-                placeholder={'Опция: XL'}
+                placeholder={'Option: XL'}
                 value={newOptionName}
                 onUpdateValue={changeNewOptionName}
                 wrapperStyle={styles.optionAddTextField}
@@ -111,7 +105,7 @@ const EditOptionGroupScreen = ({ navigation }) => {
             onPress={submit}
             disabled={!optionGroupName || !optionGroupVariants.length}
           >
-            Создать
+            Create
           </PrimaryButton>
         </View>
       </ScrollView>

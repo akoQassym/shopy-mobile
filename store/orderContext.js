@@ -32,7 +32,7 @@ const OrderContextProvider = ({ children }) => {
         snackbarCtx.createSnackbar(
           'error',
           null,
-          `Произошла ошибка при загрузке заказов. Попробуйте еще раз или обратитесь в службу поддержки. ${error}`,
+          `An error occurred while uploading orders. Try again or contact support. ${error}`,
           3500,
         );
       });
@@ -60,7 +60,7 @@ const OrderContextProvider = ({ children }) => {
         snackbarCtx.createSnackbar(
           'error',
           null,
-          `Произошла ошибка при загрузке заказов. Попробуйте еще раз или обратитесь в службу поддержки. ${error}`,
+          `An error occurred while uploading orders. Try again or contact support. ${error}`,
           3500,
         );
       });

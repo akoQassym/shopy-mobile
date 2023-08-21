@@ -14,7 +14,7 @@ const InformBadge = ({ type, errorHighlightedText, customMessage }) => {
           <Text
             style={[styles.badgeText, type === 'error' && styles.errorText]}
           >
-            Пожалуйста, введите корректный{' '}
+            Please, enter correct{' '}
             <Text style={{ fontFamily: 'Roboto-medium' }}>
               {errorHighlightedText}
             </Text>

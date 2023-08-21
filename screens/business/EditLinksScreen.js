@@ -37,9 +37,9 @@ const EditLinksScreen = ({ navigation }) => {
   };
 
   const deleteLink = (key) => {
-    Alert.alert('Вы уверены?', undefined, [
+    Alert.alert('Are you sure?', undefined, [
       {
-        text: 'Да',
+        text: 'Yes',
         onPress: () => {
           !isChanged && setIsChanged(true);
           setLinks((links) => [
@@ -49,7 +49,7 @@ const EditLinksScreen = ({ navigation }) => {
         },
       },
       {
-        text: 'Нет',
+        text: 'No',
         onPress: () => {},
       },
     ]);
@@ -77,10 +77,10 @@ const EditLinksScreen = ({ navigation }) => {
   };
 
   const cancelChanges = () => {
-    Alert.alert('Вы уверены, что хотите отменить все изменения?', undefined, [
-      { text: 'Продолжить редактирование', onPress: () => {} },
+    Alert.alert('Are you sure you want to undo all the changes?', undefined, [
+      { text: 'Continue editing', onPress: () => {} },
       {
-        text: 'Отменить',
+        text: 'Cancel',
         onPress: () => {
           setIsChanged(false);
           navigation.goBack();
@@ -98,7 +98,7 @@ const EditLinksScreen = ({ navigation }) => {
           name="save-sharp"
           size={22}
           onPress={submit}
-          label="Сохранить"
+          label="Save"
           labelColor={GlobalStyles.colors.primary}
           color={
             isChanged
@@ -114,7 +114,7 @@ const EditLinksScreen = ({ navigation }) => {
         headerLeft: () => (
           <IconButton
             onPress={cancelChanges}
-            label="Отмена"
+            label="Cancel"
             labelColor={GlobalStyles.colors.error}
           />
         ),
@@ -126,24 +126,24 @@ const EditLinksScreen = ({ navigation }) => {
       <View style={styles.content}>
         <View style={styles.formContainer}>
           <TextField
-            placeholder={'Заголовок'}
+            placeholder={'Title'}
             value={newLink.title}
             onUpdateValue={changeNewLink.bind(this, 'title')}
           />
           <TextField
-            placeholder={'Краткое описание'}
+            placeholder={'Short description'}
             value={newLink.subtitle}
             onUpdateValue={changeNewLink.bind(this, 'subtitle')}
           />
           <TextField
-            placeholder={'Ссылка'}
+            placeholder={'Link'}
             value={newLink.link}
             onUpdateValue={changeNewLink.bind(this, 'link')}
           />
-          <PrimaryButton onPress={confirmNewLink}>Добавить</PrimaryButton>
+          <PrimaryButton onPress={confirmNewLink}>Add</PrimaryButton>
         </View>
         <Text style={[styles.title, { fontSize: 22, marginVertical: 10 }]}>
-          Ссылки
+          Links
         </Text>
         <View style={styles.links}>
           {links?.length > 0 ? (
@@ -182,7 +182,7 @@ const EditLinksScreen = ({ navigation }) => {
                     textStyle={styles.deleteBtnText}
                     onPress={deleteLink.bind(this, key)}
                   >
-                    Удалить ссылку
+                    Delete link
                   </PrimaryButton>
                 </View>
               </View>

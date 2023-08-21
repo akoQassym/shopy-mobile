@@ -112,7 +112,7 @@ const ColorSelect = ({
       </ScrollView>
       {currentColor && (
         <ColorLabelBadge
-          label={'Выбранный цвет:'}
+          label={'Selected color:'}
           color={currentColor}
           textColor={selectedTextColor}
         />

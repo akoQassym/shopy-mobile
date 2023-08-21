@@ -16,9 +16,9 @@ const RenderOrderItem = ({ item, onPress }) => {
         }}
       >
         {item.customComponent === 'loader'
-          ? 'Загрузка...'
+          ? 'Loading...'
           : item.customComponent === 'endOfList'
-          ? 'Конец списка'
+          ? 'End of list'
           : ''}
       </Text>
     );
@@ -92,11 +92,11 @@ const OrdersScreen = ({ navigation }) => {
               marginVertical: 4,
             }}
           >
-            Заказов пока нет
+            No orders yet
           </Text>
           <Text style={{ textAlign: 'center', marginVertical: 4 }}>
-            Заказ, сделанный на сайте, появится здесь. Также вы можете вручную
-            создать новый заказ.
+            An order placed on the website will appear here. You can also
+            manually to create a new order.
           </Text>
         </ScrollView>
       )}

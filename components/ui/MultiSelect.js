@@ -29,7 +29,7 @@ const MultiSelect = ({
         <View>
           <Text style={styles.labelText}>{label}</Text>
           <Text style={styles.labelHelperText}>
-            {selectedItems?.length ?? '0'} выбрано
+            {selectedItems?.length ?? '0'} selected
           </Text>
         </View>
         <View>

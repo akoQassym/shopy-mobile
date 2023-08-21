@@ -36,12 +36,12 @@ const CategoryInfoScreen = ({ route, navigation }) => {
 
   return (
     <ScrollView style={styles.root}>
-      <SectionWrapper label="Название">
+      <SectionWrapper label="Name">
         {categoryData.name && (
           <Text style={styles.text}>{categoryData.name}</Text>
         )}
       </SectionWrapper>
-      <SectionWrapper label="Описание">
+      <SectionWrapper label="Description">
         <Text style={styles.text}>
           {!categoryData.description || categoryData.description === ''
             ? '-'
@@ -50,7 +50,7 @@ const CategoryInfoScreen = ({ route, navigation }) => {
       </SectionWrapper>
       <SectionWrapper>
         <View style={styles.fieldContainer}>
-          <Text>Показывать на сайте</Text>
+          <Text>Display on website</Text>
           <ToggleSwitch value={categoryData.active} disabled />
         </View>
       </SectionWrapper>

@@ -56,7 +56,7 @@ const UserScreen = ({ navigation }) => {
           shopCtx.clean();
         },
       },
-      { text: 'Отмена', onPress: () => {} },
+      { text: 'Cancel', onPress: () => {} },
     ]);
   };
 
@@ -85,14 +85,14 @@ const UserScreen = ({ navigation }) => {
           }
           onPress={openEditUserInfoPage}
         >
-          Изменить
+          Edit
         </PrimaryButton>
       </View>
       <View style={styles.container}>
-        <Text style={styles.text}>Связаться с Shopy</Text>
+        <Text style={styles.text}>Contact with Shopy</Text>
         <HintBox
           style={styles.hintBox}
-          label="При появлении вопросов или ошибок, обращайтесь к нам. Мы с нашей командой всегда рады помочь!"
+          label="If you have any questions or errors, please do not hesitate to contact us. Our team and I are always happy to help!"
         />
         <View
           style={{
@@ -134,7 +134,7 @@ const UserScreen = ({ navigation }) => {
         name="exit-outline"
         size={28}
         color={GlobalStyles.colors.darkError}
-        label="Выйти"
+        label="Log out"
         labelColor={GlobalStyles.colors.darkError}
         onPress={logout}
         style={styles.exitBtn}

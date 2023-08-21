@@ -20,7 +20,6 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.shopyws.app",
-      "googleServicesFile": "./assets/GoogleService-Info.plist",
       "buildNumber": "11",
       "infoPlist": {
         "NSUserTrackingUsageDescription": "Мы используем данные для исправления багов/ошибок и улучшения опыта использования приложения" 
@@ -35,8 +34,7 @@
         "android.permission.RECORD_AUDIO"
       ],
       "package": "com.shopyws.app",
-      "versionCode": 1,
-      "googleServicesFile": "./assets/google-services.json"
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"

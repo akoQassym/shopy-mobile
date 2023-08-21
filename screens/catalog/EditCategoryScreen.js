@@ -59,10 +59,10 @@ const EditCategoryScreen = ({ route, navigation }) => {
   };
 
   const cancelChanges = () => {
-    Alert.alert('Вы уверены, что хотите отменить все изменения?', undefined, [
-      { text: 'Продолжить редактирование', onPress: () => {} },
+    Alert.alert('Are you sure you want to undo all the changes?', undefined, [
+      { text: 'Continue editing', onPress: () => {} },
       {
-        text: 'Отменить',
+        text: 'Cancel',
         onPress: () => {
           setIsChanged(false);
           navigation.goBack();
@@ -80,7 +80,7 @@ const EditCategoryScreen = ({ route, navigation }) => {
           name="save-sharp"
           size={22}
           onPress={submit}
-          label="Сохранить"
+          label="Save"
           labelColor={GlobalStyles.colors.primary}
           color={
             isChanged
@@ -96,7 +96,7 @@ const EditCategoryScreen = ({ route, navigation }) => {
         headerLeft: () => (
           <IconButton
             onPress={cancelChanges}
-            label="Отмена"
+            label="Cancel"
             labelColor={GlobalStyles.colors.error}
           />
         ),
@@ -109,21 +109,21 @@ const EditCategoryScreen = ({ route, navigation }) => {
         <View style={styles.content}>
           <SectionWrapper>
             <TextField
-              label={'Название категории'}
-              placeholder={'Обувь'}
+              label={'Category name'}
+              placeholder={'Sneakers'}
               onUpdateValue={changeCategoryInfo.bind(this, 'name')}
               value={categoryName}
               required
             />
             <TextField
-              label={'Описание'}
+              label={'Description'}
               type={'multiline'}
               value={description}
               onUpdateValue={changeCategoryInfo.bind(this, 'description')}
             />
           </SectionWrapper>
           <SectionWrapper>
-            <Text style={styles.addText}>Товаров в категории: 0</Text>
+            <Text style={styles.addText}>Products in category: 0</Text>
             <PrimaryButton
               style={styles.addButton}
               textStyle={styles.addButtonText}
@@ -138,12 +138,12 @@ const EditCategoryScreen = ({ route, navigation }) => {
               }
               onPress={() => {}}
             >
-              Добавить товары
+              Add products
             </PrimaryButton>
           </SectionWrapper>
           <SectionWrapper>
             <View style={styles.fieldContainer}>
-              <Text>Показывать на сайте</Text>
+              <Text>Display on website</Text>
               <ToggleSwitch
                 value={activityStatus}
                 onValueChange={changeCategoryInfo.bind(this, 'active')}

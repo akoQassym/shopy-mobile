@@ -66,21 +66,21 @@ const WelcomeScreen = ({ navigation }) => {
       </View>
       <View style={styles.content}>
         <View style={styles.welcomeText}>
-          <Text style={styles.title}>Онлайн-магазин за 3 минуты</Text>
+          <Text style={styles.title}>Personal storefront in 15 minutes</Text>
           <Text style={styles.subtitle}>
-            Запусти сайт для своего бизнеса, прикрепи к Instagram и Whatsapp, и
-            получай заказы
+            Launch a website for your business, connect it to Instagram and
+            Whatsapp, and receive orders
           </Text>
         </View>
         <View style={styles.buttonContainer}>
           <View style={styles.supplementaryTextContainer}>
             <Text style={styles.supplementaryText}>
-              У вас уже есть аккаунт?{' '}
+              Do you already have an account?{' '}
             </Text>
-            <Link to={{ screen: 'Login' }}>Логин</Link>
+            <Link to={{ screen: 'Login' }}>Login</Link>
           </View>
           <PrimaryButton onPress={proceedToNextPage}>
-            Создать аккаунт
+            Create an account
           </PrimaryButton>
           <PressableContainer
             style={{ marginTop: 10 }}
@@ -92,7 +92,7 @@ const WelcomeScreen = ({ navigation }) => {
                 { fontSize: 10, textDecorationLine: 'underline' },
               ]}
             >
-              Политика конфиденциальности
+              Privacy Policy
             </Text>
           </PressableContainer>
         </View>

@@ -31,9 +31,9 @@ const SignupScreen1 = ({ navigation }) => {
         <View style={styles.content}>
           <View style={styles.loadingSlider} />
           <View>
-            <Text style={styles.title}>Как называется ваш магазин?</Text>
+            <Text style={styles.title}>What is the name of your store?</Text>
             <TextField
-              placeholder="Название"
+              placeholder="Store name"
               iconType="shop"
               value={shopName}
               onUpdateValue={changeShopName}
@@ -42,14 +42,14 @@ const SignupScreen1 = ({ navigation }) => {
           <View style={styles.buttonContainer}>
             <View style={styles.supplementaryTextContainer}>
               <Text style={styles.supplementaryText}>
-                У вас уже есть аккаунт?{' '}
+                Do you already have an account?{' '}
               </Text>
               <Link to={{ screen: 'Login' }} replace>
-                Войти
+                Login
               </Link>
             </View>
             <PrimaryButton onPress={submit} disabled={!shopName}>
-              Далее
+              Continue
             </PrimaryButton>
           </View>
         </View>

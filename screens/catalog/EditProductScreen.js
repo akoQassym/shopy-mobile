@@ -113,7 +113,7 @@ const EditProductScreen = ({ navigation, route }) => {
       const url = await storage().ref(file).getDownloadURL();
       return url;
     } catch (error) {
-      Alert('Ошибка при загрузке фотографии!', error.message);
+      Alert('Error when uploading a photo!', error.message);
     }
   };
 
@@ -134,7 +134,7 @@ const EditProductScreen = ({ navigation, route }) => {
             return selectedPhoto;
           }
           const url = await uploadImage(selectedPhoto).catch((error) => {
-            Alert.alert('Ошибка при загрузке изображения!', error.message);
+            Alert.alert('Error when loading an image!', error.message);
           });
           return { type: 'photo', uri: url };
         }),
@@ -159,10 +159,10 @@ const EditProductScreen = ({ navigation, route }) => {
   };
 
   const cancelChanges = () => {
-    Alert.alert('Вы уверены, что хотите отменить все изменения?', undefined, [
-      { text: 'Продолжить редактирование', onPress: () => {} },
+    Alert.alert('Are you sure you want to undo all the changes?', undefined, [
+      { text: 'Continue editing', onPress: () => {} },
       {
-        text: 'Отменить',
+        text: 'Cancel',
         onPress: () => {
           setIsChanged(false);
           navigation.goBack();
@@ -172,31 +172,31 @@ const EditProductScreen = ({ navigation, route }) => {
   };
 
   const clear = (variable) => {
-    Alert.alert('Вы уверены?', undefined, [
+    Alert.alert('Are you sure?', undefined, [
       {
-        text: 'Да',
+        text: 'Yes',
         onPress: () => {
           if (variable === 'optionGroups') setSelectedOptionGroups([]);
         },
       },
       {
-        text: 'Нет',
+        text: 'No',
         onPress: () => {},
       },
     ]);
   };
 
   const deleteProduct = () => {
-    Alert.alert('Вы уверены, что хотите удалить товар?', undefined, [
+    Alert.alert('Are you sure, что хотите удалить товар?', undefined, [
       {
-        text: 'Да',
+        text: 'Yes',
         onPress: () => {
           catalogCtx.deleteProduct(productId);
           navigation.pop(2);
         },
       },
       {
-        text: 'Нет',
+        text: 'No',
         onPress: () => {},
       },
     ]);
@@ -211,7 +211,7 @@ const EditProductScreen = ({ navigation, route }) => {
           name="save-sharp"
           size={22}
           onPress={submit}
-          label="Сохранить"
+          label="Save"
           labelColor={GlobalStyles.colors.primary}
           color={
             isChanged
@@ -227,7 +227,7 @@ const EditProductScreen = ({ navigation, route }) => {
         headerLeft: () => (
           <IconButton
             onPress={cancelChanges}
-            label="Отмена"
+            label="Cancel"
             labelColor={GlobalStyles.colors.error}
             disabled={isUploading}
           />
@@ -249,7 +249,7 @@ const EditProductScreen = ({ navigation, route }) => {
   if (isUploading) {
     return (
       <LoadingOverlay
-        message={'Загрузка изображений...'}
+        message={'Uploading images...'}
         progressBar={transferred}
       />
     );
@@ -272,7 +272,7 @@ const EditProductScreen = ({ navigation, route }) => {
                   },
                 ]}
               >
-                Есть в наличии
+                In stock
               </Text>
               <ToggleSwitch
                 value={inStockStatus}
@@ -286,20 +286,20 @@ const EditProductScreen = ({ navigation, route }) => {
           </SectionWrapper>
           <SectionWrapper>
             <TextField
-              label={'Название товара'}
+              label={'Product name'}
               value={productName}
               onUpdateValue={changeProductInfo.bind(this, 'name')}
               required
             />
             <TextField
-              label={'Описание'}
+              label={'Description'}
               type={'multiline'}
               value={description}
               onUpdateValue={changeProductInfo.bind(this, 'description')}
               required
             />
             <TextField
-              label={'Цена'}
+              label={'Price'}
               iconType="tenge"
               keyboardType={'decimal-pad'}
               value={price}
@@ -307,7 +307,7 @@ const EditProductScreen = ({ navigation, route }) => {
               required
             />
             <TextField
-              label={'Старая цена (необязательно)'}
+              label={'Old Price (optional)'}
               iconType="tenge"
               required
               keyboardType={'decimal-pad'}
@@ -315,13 +315,13 @@ const EditProductScreen = ({ navigation, route }) => {
               onUpdateValue={changeProductInfo.bind(this, 'oldPrice')}
             />
           </SectionWrapper>
-          <SectionWrapper label={'Фото'}>
+          <SectionWrapper label={'Photo'}>
             <ImagePicker
               images={selectedPhotos}
               setImages={changeProductInfo.bind(this, 'content')}
             />
           </SectionWrapper>
-          <SectionWrapper label={'Категория'}>
+          <SectionWrapper label={'Category'}>
             <RadioButton
               data={catalogCtx.categories}
               selectedId={categoryId}
@@ -329,7 +329,7 @@ const EditProductScreen = ({ navigation, route }) => {
             />
           </SectionWrapper>
           <SectionWrapper
-            label={'Опции товара'}
+            label={'Product options'}
             button={
               selectedOptionGroups?.length ? (
                 <PressableContainer onPress={clear.bind(this, 'optionGroups')}>
@@ -339,13 +339,13 @@ const EditProductScreen = ({ navigation, route }) => {
                       fontSize: 12,
                     }}
                   >
-                    Очистить
+                    Clear
                   </Text>
                 </PressableContainer>
               ) : null
             }
           >
-            <HintBox label="Например: Размер одежды (S, M, L, XL)" />
+            <HintBox label="For example: Clothing size (S, M, L, XL)" />
             {selectedOptionGroups?.length ? (
               <Card onPress={openSelectOptionGroupsScreen} withArrow>
                 <View>
@@ -362,13 +362,13 @@ const EditProductScreen = ({ navigation, route }) => {
                 type="outlined"
                 onPress={openSelectOptionGroupsScreen}
               >
-                Выбрать опции
+                Select option
               </PrimaryButton>
             )}
           </SectionWrapper>
           <SectionWrapper>
             <View style={styles.fieldContainer}>
-              <Text style={styles.fieldContainerText}>Показывать на сайте</Text>
+              <Text style={styles.fieldContainerText}>Display on website</Text>
               <ToggleSwitch
                 value={activityStatus}
                 onValueChange={changeProductInfo.bind(this, 'active')}
@@ -395,7 +395,7 @@ const EditProductScreen = ({ navigation, route }) => {
               textStyle={styles.deleteBtnText}
               onPress={deleteProduct}
             >
-              Удалить товар
+              Delete the product
             </PrimaryButton>
           </View>
         </View>

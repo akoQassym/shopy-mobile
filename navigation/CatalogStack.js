@@ -35,14 +35,14 @@ const CatalogTabs = () => {
         name="CatalogScreen"
         component={CatalogScreen}
         options={{
-          title: 'Товары',
+          title: 'Products',
         }}
       />
       <TopTab.Screen
         name="CategoriesScreen"
         component={CategoriesScreen}
         options={{
-          title: 'Категории',
+          title: 'Categories',
         }}
       />
     </TopTab.Navigator>
@@ -67,7 +67,7 @@ const CatalogStack = () => {
         name="CatalogTabs"
         component={CatalogTabs}
         options={{
-          title: 'Каталог',
+          title: 'Catalog',
           headerShown: false,
         }}
       />
@@ -75,14 +75,14 @@ const CatalogStack = () => {
         name="ProductInfoScreen"
         component={ProductInfoScreen}
         options={{
-          title: 'Загрузка...',
+          title: 'Loading...',
         }}
       />
       <Stack.Screen
         name="AddProductScreen"
         component={AddProductScreen}
         options={{
-          title: 'Добавить товар',
+          title: 'Add product',
         }}
       />
       <Stack.Screen
@@ -96,14 +96,14 @@ const CatalogStack = () => {
         name="CategoryInfoScreen"
         component={CategoryInfoScreen}
         options={{
-          title: 'Загрузка...',
+          title: 'Loading...',
         }}
       />
       <Stack.Screen
         name="AddCategoryScreen"
         component={AddCategoryScreen}
         options={{
-          title: 'Новая категория',
+          title: 'New category',
         }}
       />
       <Stack.Screen
@@ -117,21 +117,21 @@ const CatalogStack = () => {
         name="AddOptionGroupScreen"
         component={AddOptionGroupScreen}
         options={{
-          title: 'Новая опция',
+          title: 'New option',
         }}
       />
       <Stack.Screen
         name="SelectOptionGroupsScreen"
         component={SelectOptionGroupsScreen}
         options={{
-          title: 'Опции',
+          title: 'Options',
         }}
       />
       <Stack.Screen
         name="EditOptionGroupScreen"
         component={EditOptionGroupScreen}
         options={{
-          title: 'Информация о заказе',
+          title: 'Order details',
           presentation: 'modal',
         }}
       />
